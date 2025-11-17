@@ -24,7 +24,9 @@ Documentar, segundo o Rational Unified Process, as sequências de interação en
 ---
 
 ## Fluxo 1 — Autenticação e Onboarding com MFA/SSO ([REQ-110](../02-planejamento/requisitos-spec.md#req-110), [REQ-111](../02-planejamento/requisitos-spec.md#req-111))
-1. **Login inicial:** usuário escolhe entre login/senha tradicional ou SSO (Google/Microsoft/Azure AD); sistema detecta se MFA é necessário baseado no perfil de risco.
+1. **Login inicial:** usuário escolhe entre login/senha tradicional ou SSO com provedor corporativo (OIDC/SAML); sistema detecta se MFA é necessário baseado no perfil de risco.
+
+> Passo ajustado para remover marcas legadas e manter microcopy neutra conforme manual de marca.
 2. **Verificação multifatorial:** para operações sensíveis, solicita segundo fator (SMS/E-mail/App authenticator); sessões OIDC são mantidas com refresh automático.
 3. **Cadastro completo:** coleta CPF, nome completo, telefone, aceita consentimento LGPD; inicia processo KYC automatizado com validação documental.
 4. **Múltiplos perfis:** usuário pode associar-se a diferentes organizações (fornecedor, comprador, parceiro) com permissões específicas por contexto.
@@ -49,7 +51,7 @@ Documentar, segundo o Rational Unified Process, as sequências de interação en
 
 ## Fluxo 4 — Sistema de Escrow e Pagamentos ([REQ-117](../02-planejamento/requisitos-spec.md#req-117), [REQ-118](../02-planejamento/requisitos-spec.md#req-118))
 1. **Criação de custódia:** após acordo comercial, sistema cria conta de escrow específica para a transação; comprador deposita valor total.
-2. **Múltiplos gateways:** integração com Pagar.me, Stone, Mercado Pago permite PIX, cartão, boleto; contas virtuais por usuário facilitam conciliação.
+2. **Múltiplos gateways:** integração com provedores de pagamento homologados permite PIX, cartão, boleto; contas virtuais por usuário facilitam conciliação.
 3. **Split configurável:** valor é dividido automaticamente entre fornecedor, plataforma, parceiros logísticos, fundo climático conforme regras pré-definidas.
 4. **Liberação automatizada:** mediante comprovante de entrega e aceitação pelo comprador, valores são liberados automaticamente para cada parte.
 5. **Conciliação bancária:** webhook de gateways atualiza status em tempo real; relatórios financeiros são gerados automaticamente.

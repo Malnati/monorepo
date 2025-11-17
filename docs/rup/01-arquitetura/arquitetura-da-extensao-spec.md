@@ -12,13 +12,15 @@ Este documento traduz o blueprint herdado do Yagnostic para a realidade climáti
 ## Atualizações para novos requisitos
 
 ### Épicos M1 Integrados à Arquitetura
-- **E1 - Autenticação e Acesso ([REQ-110](../02-planejamento/requisitos-spec.md#req-110)):** integração com provedores SSO (Google, Microsoft, Azure AD), implementação de MFA, gestão de sessões OIDC
+- **E1 - Autenticação e Acesso ([REQ-110](../02-planejamento/requisitos-spec.md#req-110)):** integração com provedores SSO corporativos (OIDC/SAML), implementação de MFA, gestão de sessões OIDC
 - **E2 - Cadastros ([REQ-111](../02-planejamento/requisitos-spec.md#req-111) a [REQ-115](../02-planejamento/requisitos-spec.md#req-115)):** módulos específicos para cada entidade (usuários, organizações, unidades, veículos, parceiros) com validação automática e integração geoespacial
 - **E3 - Marketplace ([REQ-116](../02-planejamento/requisitos-spec.md#req-116)):** engine de precificação dinâmica com algoritmos de matching baseados em localização, qualidade e histórico
 - **E4 - Pagamentos e Escrow ([REQ-117](../02-planejamento/requisitos-spec.md#req-117), [REQ-118](../02-planejamento/requisitos-spec.md#req-118)):** sistema de custódia avançado com múltiplos gateways de pagamento, contas virtuais e split automatizado
 - **E5 - Logística, ESG e Fiscal ([REQ-119](../02-planejamento/requisitos-spec.md#req-119) a [REQ-121](../02-planejamento/requisitos-spec.md#req-121)):** rastreamento GPS, emissão fiscal automática via SEFAZ, cálculos ESG padronizados
 - **E6 - APP Coin ([REQ-122](../02-planejamento/requisitos-spec.md#req-122)):** smart contracts blockchain, minting controlado, lastro ambiental verificável
 - **E7 - Administração ([REQ-123](../02-planejamento/requisitos-spec.md#req-123)):** dashboard unificado com métricas em tempo real, gestão de permissões RBAC/ABAC
+
+> Terminologia de integrações e pagamentos neutralizada para remover marcas legadas e manter aderência ao manual de marca.
 
 ### Requisitos Arquiteturais Consolidados
 - **Requisitos funcionais (App `REQ-101`, `REQ-103`, `REQ-107`, `REQ-110`…`REQ-123`; legado `REQ-001`…`REQ-007`):** registre mudanças que impactem onboarding verde, marketplace de resíduos e liquidação climática. Sempre sincronize `integracoes-com-apis-spec.md`, `../02-design/fluxos-spec.md` e o catálogo de requisitos com a equivalência legada.
