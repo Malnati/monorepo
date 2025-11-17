@@ -4,9 +4,9 @@
 > Base: [./riscos-e-mitigacoes.md](./riscos-e-mitigacoes.md)
 > Plano: [/docs/plans/20251025093000-evolucao-req-spec.md](/docs/plans/20251025093000-evolucao-req-spec.md)
 > Changelog: [/CHANGELOG.md#2025-10-25](/CHANGELOG.md#2025-10-25)
-> Referências correlatas: [Arquitetura da extensão](/rup/01-arquitetura/arquitetura-da-extensao-spec.md) · [Design geral](/rup/02-design/design-geral-spec.md) · [Testes end-to-end](/rup/04-testes-e-validacao/testes-end-to-end-spec.md)
+> Referências correlatas: [Arquitetura da plataforma](../01-arquitetura/arquitetura-da-extensao-spec.md) · [Design geral](../02-design/design-geral-spec.md) · [Testes end-to-end](../04-testes-e-validacao/testes-end-to-end-spec.md)
 
-Este capítulo consolida a gestão de riscos do programa RUP da extensão Chrome MBRA. Ele unifica a matriz geral de riscos anteriormente mantida em `RISKS.md` com os riscos específicos do plano de requisitos UI/UX versão 5, garantindo rastreabilidade única.
+Este capítulo consolida a gestão de riscos do programa RUP da plataforma App CLImate INvestment. Ele unifica a matriz geral de riscos anteriormente mantida em `RISKS.md` com os riscos específicos do plano de requisitos UI/UX versão 5, garantindo rastreabilidade única.
 
 - **Matriz geral (IDs `RISK-###`):** migrada do documento `RISKS.md`, preservando categorias, impactos e referências cruzadas com requisitos, pipelines e relatórios.
 - **Riscos específicos de UI/UX (IDs `R1`–`R8`):** mantidos do plano de requisitos UI/UX v5 para monitorar divergências de design e operação.
@@ -33,18 +33,18 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 | --- | --- |
 | Técnico | Riscos relacionados a arquitetura, código, tecnologia e compatibilidade. |
 | Operacional | Falhas humanas, processos ou infraestrutura. |
-| Legal / Conformidade | Violação de LGPD, políticas do Chrome ou obrigações contratuais. |
+| Legal / Conformidade | Violação de LGPD, políticas regulatórias ou obrigações contratuais. |
 | Externo / Dependência | Dependência de serviços externos (APIs e provedores SaaS de identidade/mapas). |
 
 ### Riscos Técnicos
 
 | ID | Descrição | Impacto | Prob. | Mitigação | Rastreio | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| RISK-001 | Falha de autenticação SSO com provedor corporativo em ambientes restritos (rede interna). | 🟧 Médio | Média | Implementar fallback de autenticação com mensagem orientativa. | [REQ-001](requisitos-spec.md#req-001), [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
-| RISK-002 | Quebra de compatibilidade com futuras versões do Chrome Manifest V3. | 🟥 Alto | Alta | Revisar Manifest a cada release e validar via `audit.yml`. | [REQ-018](requisitos-spec.md#req-018), [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
-| RISK-003 | Corrupção de dados no IndexedDB por fechamento abrupto do navegador. | 🟨 Baixo | Média | Sincronizar transações e utilizar IndexedDB Promises. | [REQ-011](requisitos-spec.md#req-011), [`../03-implementacao/testes.md`](../03-implementacao/testes-spec.md) | Ativo |
-| RISK-004 | Falha de interceptação de downloads devido a políticas CORS. | 🟥 Alto | Média | Validar permissões `downloads` e `host_permissions`. | [REQ-020](requisitos-spec.md#req-020) | Ativo |
-| RISK-005 | Dependência excessiva de modelos externos (OpenRouter). | 🟧 Médio | Alta | Garantir fallback local via LM Studio / Ollama. | [`../../AGENTS.md`](../../AGENTS.md) | Ativo |
+| RISK-001 | Falha de autenticação SSO com provedor corporativo em ambientes restritos (rede interna). | 🟧 Médio | Média | Implementar fallback de autenticação com mensagem orientativa. | [REQ-101](requisitos-spec.md#req-101), [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
+| RISK-002 | Quebra de compatibilidade entre microsserviços e barramento de eventos durante releases coordenados. | 🟥 Alto | Alta | Padronizar contratos de eventos, validar versionamento semântico e rodar `audit.yml` antes de publicar. | [REQ-018](requisitos-spec.md#req-018), [REQ-020](requisitos-spec.md#req-020) | Ativo |
+| RISK-003 | Corrupção de dados transacionais por desligamento abrupto ou rollback incompleto. | 🟨 Baixo | Média | Garantir transações idempotentes e sincronizar gravações críticas com checkpoints. | [REQ-011](requisitos-spec.md#req-011), [`../03-implementacao/testes.md`](../03-implementacao/testes-spec.md) | Ativo |
+| RISK-004 | Falha na ingestão de anexos do passaporte digital por políticas de segurança ou timeout de upload. | 🟥 Alto | Média | Validar tamanhos permitidos, reforçar validação de conteúdo e prever reenvio assistido. | [REQ-005](requisitos-spec.md#req-005), [REQ-020](requisitos-spec.md#req-020) | Ativo |
+| RISK-005 | Dependência excessiva de modelos externos para automações e diagnósticos. | 🟧 Médio | Alta | Garantir fallback local via LM Studio / Ollama e registrar versões em uso. | [`../../AGENTS.md`](../../AGENTS.md) | Ativo |
 
 ### Riscos Operacionais
 
@@ -63,17 +63,17 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 | RISK-011 | Falta de exibição do termo de consentimento LGPD antes da coleta de dados. | 🟥 Alto | Média | Validar exibição via testes E2E e auditoria mensal. | [REQ-024](requisitos-spec.md#req-024), [REQ-025](requisitos-spec.md#req-025) | Ativo |
 | RISK-012 | Armazenamento indevido de informações pessoais fora do IndexedDB. | 🟥 Alto | Baixa | Proibir `localStorage` e validar via lint de segurança. | [REQ-027](requisitos-spec.md#req-027) | Ativo |
 | RISK-013 | Falha no direito de exclusão de dados (revogação LGPD). | 🟧 Médio | Média | Incluir função "Excluir Dados" obrigatória no painel. | [REQ-027](requisitos-spec.md#req-027) | Ativo |
-| RISK-014 | Violação das políticas do Chrome Web Store (execução remota). | 🟥 Alto | Baixa | Auditar CSP e Manifest antes de cada release. | [REQ-030](requisitos-spec.md#req-030) | Ativo |
+| RISK-014 | Violações regulatórias ou de políticas ESG durante publicação e operação financeira. | 🟥 Alto | Baixa | Revisar requisitos BACEN/PNRS, manter checklist de conformidade e rodar auditorias antes de liberar releases. | [REQ-030](requisitos-spec.md#req-030) | Ativo |
 | RISK-015 | Uso indevido de tokens JWT expostos em logs. | 🟥 Alto | Média | Redigir máscaras automáticas nos logs CI/CD. | [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
 
 ### Riscos Externos e de Dependência
 
 | ID | Descrição | Impacto | Prob. | Mitigação | Rastreio | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| RISK-016 | Indisponibilidade da API dominio.com.br. | 🟥 Alto | Média | Implementar retries e fallback de status offline. | [REQ-003](requisitos-spec.md#req-003), [REQ-005](requisitos-spec.md#req-005) | Ativo |
-| RISK-017 | Alterações não anunciadas na API MBRA (versão RESTful). | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`). | [REQ-003](requisitos-spec.md#req-003), [REQ-005](requisitos-spec.md#req-005) | Ativo |
-| RISK-018 | Incompatibilidade com OpenRouter ou Codex devido a mudanças de modelo. | 🟧 Médio | Alta | Registrar versões de modelo em [`../../AGENTS.md`](../../AGENTS.md). | Ativo |
-| RISK-019 | Falhas de autenticação com o provedor SSO federado. | 🟥 Alto | Baixa | Exibir erro informativo e reautenticação automática. | [REQ-001](requisitos-spec.md#req-001) | Ativo |
+| RISK-016 | Indisponibilidade das APIs de parceiros logísticos ou financeiros durante operações críticas. | 🟥 Alto | Média | Implementar retries, circuit breaker e fallback de status offline. | [REQ-003](requisitos-spec.md#req-003), [REQ-004](requisitos-spec.md#req-004) | Ativo |
+| RISK-017 | Alterações não anunciadas nas APIs internas do marketplace climático. | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`) e testes de contrato. | [REQ-003](requisitos-spec.md#req-003), [REQ-046](requisitos-spec.md#req-046) | Ativo |
+| RISK-018 | Incompatibilidade com provedores de modelos IA devido a mudanças de versão. | 🟧 Médio | Alta | Registrar versões de modelo em [`../../AGENTS.md`](../../AGENTS.md) e prever rollback rápido. | Ativo |
+| RISK-019 | Falhas de autenticação com o provedor SSO federado. | 🟥 Alto | Baixa | Exibir erro informativo e reautenticação automática. | [REQ-101](requisitos-spec.md#req-101) | Ativo |
 
 > Textos neutralizados para remover marcas legadas e manter vocabulário padrão de risco.
 | RISK-020 | Bloqueio temporário de execução IA por uso excessivo. | 🟨 Baixo | Média | Aplicar rate limit inteligente nos pipelines. | [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
@@ -100,7 +100,7 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 ### Responsabilidade técnica
 
 **Responsável:** Ricardo Malnati — Engenheiro de Software  \
-**Organização:** Millennium Brasil (MBRA)  \
+**Organização:** Programa App CLImate INvestment  \
 **Documento:** Matriz de Riscos e Mitigações RUP  \
 **Status:** Ativo e sob auditoria contínua
 
