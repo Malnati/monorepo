@@ -4,7 +4,7 @@
 > Base: [./auditoria-e-rastreabilidade.md](./auditoria-e-rastreabilidade.md)
 
 ## Objetivo
-Garantir rastreabilidade integral entre requisitos, código, dados climáticos e entregas do App, permitindo auditorias contínuas das obrigações técnicas, legais e socioambientais. A estrutura espelha o modelo Yagnostic (`REQ-001`…`REQ-030`) adaptado aos requisitos do catálogo App (`REQ-101`…`REQ-404`).
+Garantir rastreabilidade integral entre requisitos, código, dados operacionais e entregas do template, permitindo auditorias contínuas das obrigações técnicas, legais e de UX. A estrutura espelha o modelo base (`REQ-001`…`REQ-030`) adaptado aos requisitos do catálogo do template (`REQ-101`…`REQ-404`).
 
 ---
 

@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { activateAccount, resendActivationEmail } from '../services/onboarding.service';
 import { useFeedback } from '../hooks/useFeedback';
+import { brandTokens } from '../constants/brand';
 
-const LOGO_PATH = '/assets/dominio-logo-transparencia-colors.png';
+const LOGO_PATH = brandTokens.logo;
 
 type ActivationState = 'loading' | 'success' | 'expired' | 'error' | 'invalid';
 
@@ -134,9 +135,9 @@ export default function OnboardingActivationPage() {
     <div className="min-h-screen bg-surface dark:bg-dark-surface flex flex-col items-center justify-center p-4">
       {/* Logo */}
       <div className="mb-8">
-        <img 
-          src={LOGO_PATH} 
-          alt="APP Logo" 
+        <img
+          src={LOGO_PATH}
+          alt={`${brandTokens.name} Logo`}
           className="h-12 w-auto"
         />
       </div>

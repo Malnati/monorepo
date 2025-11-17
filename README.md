@@ -1,7 +1,7 @@
 <!-- README.md -->
-# App — CLImate INvestment
+# Template APP — White-label
 
-O **App — CLImate INvestment** é uma iniciativa da **Millennium Brasil (MBRA)** para estruturar um App focado em impacto climático, reciclagem em larga escala e financiamento verde. Este repositório concentra os artefatos oficiais do ciclo RUP (Rational Unified Process), assegurando rastreabilidade, governança técnica e conformidade regulatória.
+Este repositório mantém um template agnóstico de domínio para aplicativos white-label. Toda a documentação segue o ciclo RUP (Rational Unified Process) e prioriza linguagem neutra, permitindo que times adaptem requisitos, riscos e operações a produtos ou serviços genéricos sem herdar marcas ou narrativas anteriores.
 
 ## Panorama geral
 
@@ -49,9 +49,9 @@ A documentação e os ativos técnicos estão organizados em diretórios especia
 
 ### Outros diretórios relevantes
 
-- [`docs/checklists/`](./docs/checklists/) – checklists operacionais e de QA que devem ser referenciados nos planos de auditoria, mantendo rastreabilidade direta com as diretrizes de governança descritas em [`AGENTS.md`](./AGENTS.md).
+- [`docs/checklists/`](./docs/checklists/) – checklists operacionais e de QA referenciados nos planos de auditoria, mantendo rastreabilidade direta com as diretrizes de governança descritas em [`AGENTS.md`](./AGENTS.md).
 - [`landing/`](./landing/) – front-end de divulgação e experimentação, documentado em [`landing/README.md`](./landing/README.md).
-- [`holding-page/`](./holding-page/) – página estática temporária exibindo a mensagem oficial de lançamento no domínio público dominio.com.br`.
+- [`holding-page/`](./holding-page/) – página estática temporária com mensagem neutra de lançamento.
 - [`CHANGELOG`](./CHANGELOG) – registro resumido das alterações efetuadas.
 - [`prompt-codex-app.md`](./prompt-codex-app.md) – instruções para agentes automatizados.
 
@@ -75,4 +75,4 @@ Todos os artefatos devem seguir as políticas descritas em [`AGENTS.md`](./AGENT
 
 ---
 
-© Millennium Brasil (MBRA) — uso corporativo restrito. A documentação deve ser mantida atualizada conforme auditorias e revisões periódicas do programa App.
+© Template APP — uso interno para inicialização de produtos white-label.

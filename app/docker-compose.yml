@@ -61,7 +61,7 @@ services:
       GMAIL_CLIENT_ID: "${GMAIL_CLIENT_ID:-}"
       GMAIL_CLIENT_SECRET: "${GMAIL_CLIENT_SECRET:-}"
       GMAIL_REFRESH_TOKEN: "${GMAIL_REFRESH_TOKEN:-}"
-      GMAIL_SENDER: "${GMAIL_SENDER:-noreply@dominio.com.br}"
+      GMAIL_SENDER: "${GMAIL_SENDER:-noreply@example.com}"
       APP_BASE_URL: "${APP_BASE_URL:-http://localhost:5174}"
       OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
       OPENROUTER_BASE_URL: "${OPENROUTER_BASE_URL:-https://openrouter.ai/app/apiv1/chat/completions}"
@@ -153,8 +153,8 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      CADDY_DOMAIN: "${APP_CADDY_DOMAIN:-app.dominio.com.br}"
-      CADDY_EMAIL: "${APP_CADDY_EMAIL:-admin@dominio.com.br}"
+      CADDY_DOMAIN: "${APP_CADDY_DOMAIN:-app.example.com}"
+      CADDY_EMAIL: "${APP_CADDY_EMAIL:-admin@example.com}"
     depends_on:
       - ui
       - api

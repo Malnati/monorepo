@@ -4,7 +4,7 @@
 > Base: [./governanca-tecnica.md](./governanca-tecnica.md)
 
 ## Objetivo
-Estabelecer a cadeia de decisão técnica do **App — CLImate INvestment**, garantindo que cada incremento de produto cumpra os requisitos climáticos, financeiros e regulatórios (`REQ-001`…`REQ-030`) herdados da base Yagnostic e seus equivalentes no catálogo App (`REQ-101`…`REQ-404`). A governança aplica o princípio **“IA executa, humano valida”**, assegurando rastreabilidade integral das decisões socioambientais.
+Estabelecer a cadeia de decisão técnica do template APP, garantindo que cada incremento de produto cumpra requisitos funcionais, técnicos e regulatórios (`REQ-001`…`REQ-404`) sem amarrar o conteúdo a um domínio específico. A governança aplica o princípio **“IA executa, humano valida”**, assegurando rastreabilidade integral das decisões documentadas.
 
 ## Papéis e Responsabilidades
 - **Diretoria Técnica App** — aprova roadmaps climáticos, alinha INvestimentos tecnológicos e valida métricas de impacto ESG.  

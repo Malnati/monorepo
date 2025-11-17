@@ -5,13 +5,14 @@ import { CredentialResponse } from '@react-oauth/google';
 import GoogleSignInButton from '../components/GoogleSignInButton';
 import { googleLogin } from '../services/auth.service';
 import { useAuth } from '../contexts/AuthContext';
+import { brandTokens } from '../constants/brand';
 
-const LOGO_PATH = '/assets/dominio-logo-transparencia-colors.png';
+const LOGO_PATH = brandTokens.logo;
 const ERROR_MSG_LOGIN_FAILED = 'Falha no login. Verifique suas credenciais.';
 const ERROR_MSG_EMAIL_NOT_AUTHORIZED = 'Email não autorizado. Entre em contato com o administrador.';
 const ERROR_MSG_GENERIC = 'Erro ao processar login. Tente novamente.';
 const LOADING_TEXT = 'Processando login...';
-const OLIVE_GREEN_COLOR = '#6B8E23';
+const OLIVE_GREEN_COLOR = brandTokens.accent;
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-8">
             <img
               src={LOGO_PATH}
-              alt="APP"
+              alt={brandTokens.name}
               className="h-32 w-auto cursor-pointer"
               onClick={() => window.location.reload()}
               role="button"

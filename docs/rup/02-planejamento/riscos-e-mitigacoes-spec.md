@@ -6,7 +6,7 @@
 > Changelog: [/CHANGELOG.md#2025-10-25](/CHANGELOG.md#2025-10-25)
 > Referências correlatas: [Arquitetura da plataforma](../01-arquitetura/arquitetura-da-extensao-spec.md) · [Design geral](../02-design/design-geral-spec.md) · [Testes end-to-end](../04-testes-e-validacao/testes-end-to-end-spec.md)
 
-Este capítulo consolida a gestão de riscos do programa RUP da plataforma App CLImate INvestment. Ele unifica a matriz geral de riscos anteriormente mantida em `RISKS.md` com os riscos específicos do plano de requisitos UI/UX versão 5, garantindo rastreabilidade única.
+Este capítulo consolida a gestão de riscos do programa RUP do template white-label. Ele unifica a matriz geral de riscos anteriormente mantida em `RISKS.md` com os riscos específicos do plano de requisitos UI/UX versão 5, garantindo rastreabilidade única para qualquer implementação.
 
 - **Matriz geral (IDs `RISK-###`):** migrada do documento `RISKS.md`, preservando categorias, impactos e referências cruzadas com requisitos, pipelines e relatórios.
 - **Riscos específicos de UI/UX (IDs `R1`–`R8`):** mantidos do plano de requisitos UI/UX v5 para monitorar divergências de design e operação.
