@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-governanca-documentacao-politica-documentacao.md -->
+
 ---
 name: Governança - Política de Documentação
 description: Garante conformidade com a política de documentação RUP e estrutura de pares .md/.md-spec

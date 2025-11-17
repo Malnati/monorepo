@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-espacamento-8pt.md -->
+
 ---
 name: UX - Espaçamento 8pt Grid
 description: Garante espaçamentos modulares em múltiplos de 8px ou divisíveis por 4px

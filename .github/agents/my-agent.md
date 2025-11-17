@@ -1,3 +1,5 @@
+<!-- .github/agents/my-agent.md -->
+
 ---
 name: AGENTS GUIDELINES
 description: To follow the guidelines described at AGENTS.md and RUP requirements.

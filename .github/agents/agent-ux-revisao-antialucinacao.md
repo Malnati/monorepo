@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-revisao-antialucinacao.md -->
+
 ---
 name: UX - Revisão Antialucinação
 description: Valida que cores, textos e elementos visuais não foram inventados ou supostos

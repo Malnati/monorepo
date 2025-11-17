@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-codigo-convencoes.md -->
+
 ---
 name: Engenharia - Convenções de Código
 description: Garante conformidade com convenções de código e extração de valores hardcoded

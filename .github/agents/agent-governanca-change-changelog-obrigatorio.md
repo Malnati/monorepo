@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-governanca-change-changelog-obrigatorio.md -->
+
 ---
 name: Governança - CHANGELOG Obrigatório
 description: Garante a política de CHANGELOGs obrigatórios conforme AGENTS.md e documentação RUP

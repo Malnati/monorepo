@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-governanca-rastreabilidade-conformidade.md -->
+
 ---
 name: Governança - Rastreabilidade e Conformidade
 description: Garante rastreabilidade de execuções e conformidade com requisitos, riscos e relatórios

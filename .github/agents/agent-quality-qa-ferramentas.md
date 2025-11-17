@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-quality-qa-ferramentas.md -->
+
 ---
 name: Quality - QA Ferramentas
 description: Garante uso correto de ferramentas QA homologadas e formato de relatórios

@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-docker-operacional.md -->
+
 ---
 name: Engenharia - Docker Operacional
 description: Garante conformidade com convenções Docker e cadeia de configuração obrigatória

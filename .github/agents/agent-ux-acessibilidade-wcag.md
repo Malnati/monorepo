@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-acessibilidade-wcag.md -->
+
 ---
 name: UX - Acessibilidade WCAG
 description: Garante conformidade WCAG 2.1 AA e experiência inclusiva com tecnologias assistivas
