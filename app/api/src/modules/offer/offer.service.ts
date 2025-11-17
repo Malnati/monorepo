@@ -487,7 +487,7 @@ export class OfferService {
       .leftJoinAndSelect('offer.unidade', 'unidade')
       .leftJoinAndSelect('offer.fornecedor', 'fornecedor')
       .leftJoinAndSelect('offer.fotos', 'fotos')
-      .leftJoin('tb_transacao', 't', 't.lote_residuo_id = offer.id')
+      .leftJoin('tb_transacao', 't', 't.offer_id = offer.id')
       .where('t.id IS NULL') // Apenas lotes sem transação (disponíveis para venda)
       .andWhere('offer.quantidade_vendida = 0'); // Salvaguarda adicional: apenas lotes não vendidos
 
@@ -628,7 +628,7 @@ export class OfferService {
       .getOne();
 
     if (!offer) {
-      throw new NotFoundException(`Lote com ID ${id} não encontrado`);
+      throw new NotFoundException(`Oferta com ID ${id} não encontrada`);
     }
 
     const loteData = offer as OfferWithCoordinates;
@@ -720,7 +720,7 @@ export class OfferService {
 
   async updateLocation(id: number, updateDto: UpdateLocationDto, userId: number | null) {
     const logger = new Logger(OfferService.name);
-    logger.log(`updateLocation - User: ${userId || 'anonymous'} - Lote ID: ${id}`);
+    logger.log(`updateLocation - User: ${userId || 'anonymous'} - Offer ID: ${id}`);
     const offer = await this.offerRepository.findOne({
       where: { id },
     });
@@ -834,7 +834,7 @@ export class OfferService {
       .leftJoinAndSelect('offer.fornecedor', 'fornecedor')
       .leftJoinAndSelect('offer.fotos', 'fotos')
       .innerJoin('tb_user_fornecedor', 'uf', 'uf.fornecedor_id = offer.fornecedor_id')
-      .innerJoin('tb_transacao', 't', 't.lote_residuo_id = offer.id')
+      .innerJoin('tb_transacao', 't', 't.offer_id = offer.id')
       .leftJoin('t.comprador', 'comprador')
       .addSelect(['comprador.id', 'comprador.nome'])
       .addSelect('t.id', 'transacao_id')
@@ -846,14 +846,14 @@ export class OfferService {
       .take(pageSize)
       .getRawAndEntities();
 
-    // Buscar lotes comprados com dados da transação
+    // Buscar ofertas compradas com dados da transação
     const lotesCompradosResult = await this.offerRepository
       .createQueryBuilder('offer')
       .leftJoinAndSelect('offer.tipo', 'tipo')
       .leftJoinAndSelect('offer.unidade', 'unidade')
       .leftJoinAndSelect('offer.fornecedor', 'fornecedor')
       .leftJoinAndSelect('offer.fotos', 'fotos')
-      .innerJoin('tb_transacao', 't', 't.lote_residuo_id = offer.id')
+      .innerJoin('tb_transacao', 't', 't.offer_id = offer.id')
       .addSelect('t.id', 'transacao_id')
       .addSelect('t.quantidade', 'transacao_quantidade')
       .addSelect('t.created_at', 'transacao_created_at')
@@ -864,7 +864,7 @@ export class OfferService {
       .take(pageSize)
       .getRawAndEntities();
 
-    // Mapear lotes vendidos com dados de transação dos raw results
+    // Mapear ofertas vendidas com dados de transação dos raw results
     const lotesVendidos = lotesVendidosResult.entities.map((offer, index) => {
       const raw = lotesVendidosResult.raw[index];
       return {
@@ -904,7 +904,7 @@ export class OfferService {
       };
     });
 
-    // Mapear lotes comprados com dados de transação dos raw results
+    // Mapear ofertas compradas com dados de transação dos raw results
     const lotesComprados = lotesCompradosResult.entities.map((offer, index) => {
       const raw = lotesCompradosResult.raw[index];
       return {
@@ -939,6 +939,9 @@ export class OfferService {
     });
 
     return {
+      offersVendidos: lotesVendidos,
+      offersComprados: lotesComprados,
+      // Legacy aliases for backward compatibility
       lotesVendidos,
       lotesComprados,
       pagination: {

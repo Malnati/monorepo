@@ -2,7 +2,7 @@
 FROM node:20-alpine AS builder
 
 LABEL org.opencontainers.image.title="api" \
-      org.opencontainers.image.description="API NestJS para protótipo MVP de marketplace de resíduos" \
+      org.opencontainers.image.description="API NestJS para protótipo MVP de marketplace de produtos" \
       org.opencontainers.image.source="https://github.com/milleniumbrasil/app" \
       org.opencontainers.image.licenses="MIT"
 

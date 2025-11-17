@@ -299,7 +299,7 @@ export class GmailService implements OnModuleInit {
               </p>
               <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
                 <strong>APP</strong> - Template Corporation<br>
-                Conectando resíduos recicláveis a novas oportunidades.
+                Conectando produtos e serviços a novas oportunidades.
               </p>
             </td>
           </tr>

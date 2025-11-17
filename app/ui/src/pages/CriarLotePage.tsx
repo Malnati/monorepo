@@ -811,7 +811,12 @@ export default function CriarLotePage() {
       }
 
         console.log('Payload enviado:', JSON.stringify(payload, null, 2));
-        await api.post('/app/api/lotes', payload);
+        // Compatibilidade: tentar /offers primeiro, fallback para /lotes
+        try {
+          await api.post('/app/api/offers', payload);
+        } catch {
+          await api.post('/app/api/lotes', payload);
+        }
         console.log('[CriarLotePage] Chamando showToast (sucesso)', {
           showToastType: typeof showToast,
           showToastValue: showToast,

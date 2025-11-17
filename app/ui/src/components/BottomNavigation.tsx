@@ -17,8 +17,8 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { path: '/home', icon: 'inventory', label: NAV_ITEMS_TEXT.HOME, key: 'home' },
-  { path: '/lotes', icon: 'catalog', label: NAV_ITEMS_TEXT.CATALOG, key: 'catalog' },
-  { path: '/lotes/novo', icon: 'create', label: NAV_ITEMS_TEXT.CREATE, key: 'create' },
+  { path: '/offers', icon: 'catalog', label: NAV_ITEMS_TEXT.CATALOG, key: 'catalog' },
+  { path: '/offers/novo', icon: 'create', label: NAV_ITEMS_TEXT.CREATE, key: 'create' },
 ];
 
 export default function BottomNavigation() {

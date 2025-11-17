@@ -370,7 +370,7 @@ APP - Template Corporation
                                 <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 600; color: #1C1D22;">O que fazer agora:</h2>
                                 <ul style="margin: 0; padding-left: 20px; color: #1C1D22;">
                                     <li style="margin-bottom: 8px;">Revise sua publicação e remova informações pessoais (telefone, e-mail, endereço completo)</li>
-                                    <li style="margin-bottom: 8px;">Use apenas informações comerciais permitidas (nome do fornecedor, tipo de resíduo, quantidade, preço)</li>
+                                    <li style="margin-bottom: 8px;">Use apenas informações comerciais permitidas (nome do fornecedor, tipo de produto, quantidade, preço)</li>
                                     <li style="margin-bottom: 8px;">Tente publicar novamente após fazer as correções</li>
                                 </ul>
                             </div>
@@ -431,7 +431,7 @@ ${reason}
 
     text += `O que fazer agora:\n`;
     text += `- Revise sua publicação e remova informações pessoais (telefone, e-mail, endereço completo)\n`;
-    text += `- Use apenas informações comerciais permitidas (nome do fornecedor, tipo de resíduo, quantidade, preço)\n`;
+    text += `- Use apenas informações comerciais permitidas (nome do fornecedor, tipo de produto, quantidade, preço)\n`;
     text += `- Tente publicar novamente após fazer as correções\n\n`;
 
     text += `Precisa de ajuda? Entre em contato com nosso suporte.\n\n`;
