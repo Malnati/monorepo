@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-tokens-identidade.md -->
+
 ---
 name: UX - Tokens de Identidade
 description: Garante uso correto de tokens de paleta, tipografia e integração IndexedDB

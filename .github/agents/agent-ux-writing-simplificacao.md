@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-writing-simplificacao.md -->
+
 ---
 name: UX - Writing e Simplificação
 description: Garante clareza, concisão e linguagem acionável em textos de interface

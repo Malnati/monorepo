@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-side-panel.md -->
+
 ---
 name: UX - Side Panel
 description: Garante conformidade com layout, microinterações e componentes do side panel

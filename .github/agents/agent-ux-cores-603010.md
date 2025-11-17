@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-cores-603010.md -->
+
 ---
 name: UX - Regra de Cores 60-30-10
 description: Garante aplicação da regra 60-30-10 de distribuição cromática em interfaces

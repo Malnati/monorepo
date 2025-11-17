@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-governanca-requisitos-gerais.md -->
+
 ---
 name: Governança - Requisitos Gerais
 description: Valida conformidade com requisitos gerais e responsabilidades do projeto

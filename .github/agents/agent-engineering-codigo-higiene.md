@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-codigo-higiene.md -->
+
 ---
 name: Engenharia - Higiene de Código
 description: Garante remoção de código morto e limpeza após refatorações conforme Clean Code

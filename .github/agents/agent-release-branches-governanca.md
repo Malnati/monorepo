@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-release-branches-governanca.md -->
+
 ---
 name: Release - Branches e Governança
 description: Garante convenções de branches e processo de aprovação obrigatória

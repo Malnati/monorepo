@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-governanca-estrutura-diretorios.md -->
+
 ---
 name: Governança - Estrutura de Diretórios
 description: Valida e preserva a estrutura de diretórios e convenções de configuração do repositório

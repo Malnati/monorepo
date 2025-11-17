@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-tipografia-4x2.md -->
+
 ---
 name: UX - Tipografia 4x2
 description: Garante hierarquia tipográfica com 4 tamanhos e 2 pesos máximos

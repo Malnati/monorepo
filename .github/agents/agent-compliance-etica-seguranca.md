@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-compliance-etica-seguranca.md -->
+
 ---
 name: Compliance - Ética e Segurança
 description: Garante conformidade com padrões éticos, LGPD e políticas de segurança

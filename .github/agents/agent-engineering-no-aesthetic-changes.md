@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-no-aesthetic-changes.md -->
+
 ---
 name: Engenharia - Proibição de Alterações Estéticas
 description: Impede alterações puramente estéticas não solicitadas, delegando formatação a ferramentas

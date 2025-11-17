@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-imports-tsjs.md -->
+
 ---
 name: Engenharia - Convenções de Importação TS/JS
 description: Garante conformidade com convenções de importação TypeScript/JavaScript

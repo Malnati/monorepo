@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-revisao-603010.md -->
+
 ---
 name: UX - Auditoria 60-30-10
 description: Auditoria de conformidade quantitativa e perceptiva com regra 60-30-10

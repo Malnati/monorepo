@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-reuso-dry.md -->
+
 ---
 name: Engenharia - Reutilização (DRY)
 description: Garante conformidade com princípio DRY evitando duplicação de código

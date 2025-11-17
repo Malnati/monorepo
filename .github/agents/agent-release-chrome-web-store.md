@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-release-chrome-web-store.md -->
+
 ---
 name: Release - Chrome Web Store
 description: Garante processo completo de submissão à Chrome Web Store

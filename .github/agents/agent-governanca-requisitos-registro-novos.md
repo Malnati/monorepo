@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-governanca-requisitos-registro-novos.md -->
+
 ---
 name: Governança - Registro de Novos Requisitos
 description: Orienta o registro adequado de novos requisitos nas fases RUP apropriadas

@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-makefile-boas-praticas.md -->
+
 ---
 name: Engenharia - Makefile Boas Práticas
 description: Garante conformidade com convenções Makefile e indentação obrigatória com TAB

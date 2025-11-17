@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-branding-diretrizes.md -->
+
 ---
 name: UX - Diretrizes de Branding
 description: Consolida todas as diretrizes UX e branding em checklist unificado

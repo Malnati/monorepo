@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-ux-simplicidade-visual.md -->
+
 ---
 name: UX - Simplicidade Visual
 description: Garante princípio "Simplicity Over Flashiness" em elementos visuais

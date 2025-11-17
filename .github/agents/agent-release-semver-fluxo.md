@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-release-semver-fluxo.md -->
+
 ---
 name: Release - SemVer e Fluxo
 description: Garante versionamento semântico e fluxo completo de release

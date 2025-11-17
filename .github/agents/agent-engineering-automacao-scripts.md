@@ -1,3 +1,5 @@
+<!-- .github/agents/agent-engineering-automacao-scripts.md -->
+
 ---
 name: Engenharia - Automação e Scripts
 description: Garante conformidade com política de scripts e automações via Makefile
