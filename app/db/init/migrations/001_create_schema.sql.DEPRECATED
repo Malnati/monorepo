@@ -1,0 +1,72 @@
+-- app/db/nit/migrations/001_create_schema.sql
+
+CREATE TABLE tb_tipo (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE tb_unidade (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE tb_fornecedor (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    whatsapp VARCHAR(20),
+    avatar BYTEA,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tb_comprador (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    whatsapp VARCHAR(20),
+    avatar BYTEA,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tb_lote_residuo (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    preco NUMERIC(12,2),
+    quantidade NUMERIC(12,2),
+    quantidade_vendida NUMERIC(12,2) DEFAULT 0,
+    localizacao VARCHAR(255),
+    tipo_id INT REFERENCES tb_tipo(id) ON DELETE SET NULL,
+    unidade_id INT REFERENCES tb_unidade(id) ON DELETE SET NULL,
+    fornecedor_id INT REFERENCES tb_fornecedor(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tb_fotos (
+    id SERIAL PRIMARY KEY,
+    lote_residuo_id INT NOT NULL REFERENCES tb_lote_residuo(id) ON DELETE CASCADE,
+    imagem BYTEA NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tb_transacao (
+    id SERIAL PRIMARY KEY,
+    fornecedor_id INT NOT NULL REFERENCES tb_fornecedor(id) ON DELETE CASCADE,
+    comprador_id INT NOT NULL REFERENCES tb_comprador(id) ON DELETE CASCADE,
+    lote_residuo_id INT NOT NULL REFERENCES tb_lote_residuo(id) ON DELETE CASCADE,
+    quantidade NUMERIC(12,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO tb_tipo (nome) VALUES
+('Orgânico'), ('Reciclável'), ('Perigoso'), ('Eletrônico'), ('Hospitalar'), ('Construção');
+
+INSERT INTO tb_unidade (nome) VALUES
+('Toneladas'), ('m2');
+
+-- Fornecedor padrão para criação de lotes
+INSERT INTO tb_fornecedor (id, nome, whatsapp, created_at, updated_at) 
+VALUES (1, 'Fornecedor Padrão', '11999999999', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+ON CONFLICT (id) DO NOTHING;

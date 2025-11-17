@@ -1,0 +1,22 @@
+// app/api/src/constants/index.ts
+
+export const MAX_FOTOS_PER_LOTE = 5;
+export const MAX_FOTOS_PER_OFFER = 5; // Same as MAX_FOTOS_PER_LOTE for backward compatibility
+export const MAX_FOTO_SIZE_MB = 10;
+export const MAX_FOTO_SIZE_BYTES = MAX_FOTO_SIZE_MB * 1024 * 1024;
+
+export const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+} as const;
+
+export const ERROR_CODES = {
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  NOT_FOUND: 'NOT_FOUND',
+  INSUFFICIENT_QUANTITY: 'INSUFFICIENT_QUANTITY',
+  OWN_LOT_PURCHASE: 'OWN_LOT_PURCHASE',
+  LOT_ALREADY_SOLD: 'LOT_ALREADY_SOLD',
+} as const;

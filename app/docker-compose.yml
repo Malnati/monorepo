@@ -1,0 +1,169 @@
+# docker-compose.yml
+# App - CLImate INvestment Docker Compose
+
+services:
+
+  db:
+    build:
+      context: ./app/db
+      dockerfile: Dockerfile
+    image: "${APP_DB_IMAGE_NAME:-db}"
+    container_name: "${APP_DB_CONTAINER_NAME:-db}"
+    environment:
+      POSTGRES_DB: "${APP_DB_NAME:-db}"
+      POSTGRES_USER: "${APP_DB_USER:-postgres}"
+      POSTGRES_PASSWORD: "${APP_DB_PASSWORD:-postgres}"
+      PGTZ: "${APP_DB_TZ:-Etc/UTC}"
+      LANG: "${APP_DB_LANG:-C.UTF-8}"
+      LC_ALL: "${APP_DB_LC_ALL:-C.UTF-8}"
+    ports:
+      - "${APP_DB_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data 
+      - ./app/db/init/migrations:/docker-entrypoint-initdb.d:ro
+    command: ["postgres"]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${APP_DB_USER:-postgres} -d ${APP_DB_NAME:-db}",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./app/api
+      dockerfile: Dockerfile
+    image: "${APP_API_IMAGE_NAME:-api}"
+    container_name: "${APP_API_CONTAINER_NAME:-api}"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: "${APP_API_NODE_ENV:-development}"
+      PORT: "${APP_API_PORT:-3001}"
+      HOST: "${APP_API_HOST:-0.0.0.0}"
+      CORS_ORIGIN: "${APP_API_CORS_ORIGIN:-*}"
+      DATABASE_HOST: "${APP_DB_HOST:-db}"
+      DATABASE_PORT: "5432"
+      DATABASE_USER: "${APP_DB_USER:-postgres}"
+      DATABASE_PASSWORD: "${APP_DB_PASSWORD:-postgres}"
+      DATABASE_NAME: "${APP_DB_NAME:-db}"
+      GOOGLE_MAPS_SERVER_KEY: "${GOOGLE_MAPS_SERVER_KEY:-}"
+      GOOGLE_CLIENT_ID: "${APP_GOOGLE_CLIENT_ID:-}"
+      GOOGLE_CLIENT_SECRET: "${APP_GOOGLE_CLIENT_SECRET:-}"
+      JWT_SECRET: "${APP_JWT_SECRET:-}"
+      JWT_EXPIRES_IN: "${APP_JWT_EXPIRES_IN:-24h}"
+      GMAIL_CLIENT_ID: "${GMAIL_CLIENT_ID:-}"
+      GMAIL_CLIENT_SECRET: "${GMAIL_CLIENT_SECRET:-}"
+      GMAIL_REFRESH_TOKEN: "${GMAIL_REFRESH_TOKEN:-}"
+      GMAIL_SENDER: "${GMAIL_SENDER:-noreply@dominio.com.br}"
+      APP_BASE_URL: "${APP_BASE_URL:-http://localhost:5174}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+      OPENROUTER_BASE_URL: "${OPENROUTER_BASE_URL:-https://openrouter.ai/app/apiv1/chat/completions}"
+      OPENROUTER_MODEL: "${OPENROUTER_MODEL:-anthropic/claude-3.5-sonnet}"
+      OPENROUTER_HTTP_REFERER: "${OPENROUTER_HTTP_REFERER:-}"
+      OPENROUTER_APP_TITLE: "${OPENROUTER_APP_TITLE:-APP}"
+      APP_JOB_SERVICE_TOKEN: "${APP_JOB_SERVICE_TOKEN:-default-service-token}"
+      API_HEALTHCHECK_URL: "${APP_API_HEALTHCHECK_URL:-http://localhost:3001/app/apihealth}"
+    ports:
+      - "${APP_API_PORT:-3001}:3001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "response=$$(curl -sf $${API_HEALTHCHECK_URL:-http://localhost:3001/app/apihealth}) && echo \"$$response\" | grep -q '\"status\":\"ok\"' && echo \"$$response\" | grep -q '\"database\":\"connected\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  ui:
+    build:
+      context: .
+      dockerfile: ./app/ui/Dockerfile
+      args:
+        # Variáveis VITE_* são necessárias apenas em build-time
+        # Seguindo a cadeia: .env → docker-compose.yml → Dockerfile ARG
+        VITE_GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY:-}"
+        VITE_API_BASE_URL: "${APP_UI_VITE_API_BASE_URL:-http://localhost:3001}"
+        VITE_GOOGLE_CLIENT_ID: "${APP_UI_VITE_GOOGLE_CLIENT_ID:-}"
+    image: "${APP_UI_IMAGE_NAME:-ui}"
+    container_name: "${APP_UI_CONTAINER_NAME:-ui}"
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      NODE_ENV: "${APP_UI_NODE_ENV:-production}"
+      # Nota: Variáveis VITE_* não são necessárias em runtime (apenas build-time)
+      # Elas são "embutidas" no bundle JavaScript durante o build
+    ports:
+      - "${APP_UI_PORT:-5174}:80"
+    restart: unless-stopped
+
+  job:
+    build:
+      context: ./app/job
+      dockerfile: Dockerfile
+    image: "${APP_JOB_IMAGE_NAME:-job}"
+    container_name: "${APP_JOB_CONTAINER_NAME:-job}"
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      NODE_ENV: "${APP_JOB_NODE_ENV:-development}"
+      PORT: "${APP_JOB_PORT:-3002}"
+      APP_JOB_INBOX: "${APP_JOB_INBOX:-/var/data/inbox}"
+      APP_JOB_PROCESSED: "${APP_JOB_PROCESSED:-/var/data/processed}"
+      APP_JOB_FAILED: "${APP_JOB_FAILED:-/var/data/failed}"
+      APP_API_BASE_URL: "${APP_API_BASE_URL:-http://api:3001}"
+      APP_API_TOKEN: "${APP_JOB_SERVICE_TOKEN:-default-service-token}"
+      APP_JOB_POLL_INTERVAL: "${APP_JOB_POLL_INTERVAL:-60000}"
+      APP_JOB_BATCH_SIZE: "${APP_JOB_BATCH_SIZE:-100}"
+      APP_JOB_MAX_RETRIES: "${APP_JOB_MAX_RETRIES:-3}"
+      LOG_LEVEL: "${APP_JOB_LOG_LEVEL:-info}"
+    ports:
+      - "${APP_JOB_PORT:-3002}:3002"
+    volumes:
+      - job_inbox:/var/data/inbox
+      - job_processed:/var/data/processed
+      - job_failed:/var/data/failed
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  caddy:
+    build:
+      context: ./app/caddy
+      dockerfile: Dockerfile
+    image: "${APP_CADDY_IMAGE_NAME:-caddy}"
+    container_name: "${APP_CADDY_CONTAINER_NAME:-caddy}"
+    ports:
+      - "${APP_CADDY_HTTP_PORT:-80}:80"
+      - "${APP_CADDY_HTTPS_PORT:-443}:443"
+      - "${APP_CADDY_HTTP_PORT:-80}:80/udp"
+      - "${APP_CADDY_HTTPS_PORT:-443}:443/udp"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      CADDY_DOMAIN: "${APP_CADDY_DOMAIN:-app.dominio.com.br}"
+      CADDY_EMAIL: "${APP_CADDY_EMAIL:-admin@dominio.com.br}"
+    depends_on:
+      - ui
+      - api
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  caddy_data:
+  caddy_config:
+  job_inbox:
+  job_processed:
+  job_failed:

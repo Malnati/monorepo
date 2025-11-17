@@ -1,0 +1,31 @@
+-- app/db/init/migrations/015_seed_activation_users_comments.sql
+
+-- Este arquivo documenta os seeds de teste para o fluxo de ativação de usuários.
+-- Os dados inseridos cobrem três cenários principais:
+--
+-- 1. Usuário pendente (pendente@test.com):
+--    - Status: pendente
+--    - Token de ativação: hash de exemplo válido
+--    - Expiração: 24h a partir do momento da seed
+--    - Uso: testar fluxo completo de ativação via e-mail
+--
+-- 2. Usuário expirado (expirado@test.com):
+--    - Status: expirado
+--    - Token: NULL (já expirou)
+--    - Criado há 25h, expirou há 1h
+--    - Uso: testar mensagem de token expirado e fluxo de reenvio
+--
+-- 3. Usuário ativado (ativado@test.com):
+--    - Status: ativado
+--    - Ativado há 2 dias
+--    - Uso: testar proteção contra reativação e validações
+--
+-- Auditoria:
+-- - Todos os usuários têm entrada de 'registro' na auditoria
+-- - Usuário ativado tem entrada adicional de 'ativacao'
+-- - Usuário expirado tem entrada adicional de 'expiracao'
+--
+-- LGPD e Segurança:
+-- - IPs e User-Agents são fictícios para ambiente de desenvolvimento
+-- - Em produção, dados reais devem ser pseudonimizados conforme política LGPD
+-- - Tokens são hashes, nunca texto plano
