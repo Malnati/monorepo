@@ -2,7 +2,7 @@
 FROM node:20-alpine AS base
 
 LABEL org.opencontainers.image.title="ui" \
-      org.opencontainers.image.description="Interface React para protótipo MVP de marketplace de resíduos" \
+      org.opencontainers.image.description="Interface React para protótipo MVP de marketplace de produtos" \
       org.opencontainers.image.source="https://github.com/milleniumbrasil/app" \
       org.opencontainers.image.licenses="MIT"
 

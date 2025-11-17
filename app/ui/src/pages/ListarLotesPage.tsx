@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
-import { LoteResiduo } from '../types';
+import { Offer } from '../types';
 import MapWithMarkers from '../components/MapWithMarkers';
 import { MIN_LATITUDE, MAX_LATITUDE, MIN_LONGITUDE, MAX_LONGITUDE } from '../constants/coordinates';
 import BottomNavigation from '../components/BottomNavigation';
@@ -17,7 +17,7 @@ const LOGOUT_TEXT = 'Sair';
 export default function ListarLotesPage() {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const [lotes, setLotes] = useState<LoteResiduo[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [showMap, setShowMap] = useState(true);
@@ -43,11 +43,11 @@ export default function ListarLotesPage() {
       if (mapBounds) {
         params.bounds = mapBounds;
       }
-      const response = await api.get('/app/api/lotes', { params });
-      // A API já retorna apenas lotes sem transação (disponíveis para venda)
-      setLotes(response.data.data || []);
+      const response = await api.get('/app/api/offers', { params });
+      // A API já retorna apenas ofertas sem transação (disponíveis para venda)
+      setOffers(response.data.data || []);
     } catch (error) {
-      console.error('Erro ao carregar lotes:', error);
+      console.error('Erro ao carregar ofertas:', error);
     } finally {
       setLoading(false);
     }
@@ -65,13 +65,13 @@ export default function ListarLotesPage() {
   }, [showMap]);
 
   const handleMarkerClick = useCallback((markerId: number) => {
-    navigate(`/lotes/${markerId}`);
+    navigate(`/offers/${markerId}`);
   }, [navigate]);
 
-  const validMarkers = lotes
-    .filter((lote) => {
+  const validMarkers = offers
+    .filter((offer) => {
       // Exibir apenas localização aproximada (neighborhood ou city, NUNCA real)
-      const locationLayer = lote.locationLayers?.neighborhood || lote.locationLayers?.city;
+      const locationLayer = offer.locationLayers?.neighborhood || offer.locationLayers?.city;
       const hasLocationLayer = locationLayer?.latitude && locationLayer?.longitude;
       
       if (hasLocationLayer) {
@@ -80,28 +80,29 @@ export default function ListarLotesPage() {
 
       return false;
     })
-    .map((lote) => {
+    .map((offer) => {
       // Exibir apenas localização aproximada (neighborhood ou city, NUNCA real)
-      const locationLayer = lote.locationLayers?.neighborhood || lote.locationLayers?.city;
+      const locationLayer = offer.locationLayers?.neighborhood || offer.locationLayers?.city;
       const latitude = locationLayer?.latitude;
       const longitude = locationLayer?.longitude;
       
       // Construir label com bairro e cidade quando disponível
-      let label = lote.titulo;
-      if (lote.locationLayers?.neighborhood?.label && lote.locationLayers?.city?.label) {
-        label = `${lote.locationLayers.neighborhood.label}, ${lote.locationLayers.city.label}`;
-      } else if (lote.locationLayers?.city?.label) {
-        label = `${lote.locationLayers.city.label}`;
+      const title = offer.title || (offer as any).titulo || '';
+      let label = title;
+      if (offer.locationLayers?.neighborhood?.label && offer.locationLayers?.city?.label) {
+        label = `${offer.locationLayers.neighborhood.label}, ${offer.locationLayers.city.label}`;
+      } else if (offer.locationLayers?.city?.label) {
+        label = `${offer.locationLayers.city.label}`;
       }
       
       return {
-        id: lote.id,
+        id: offer.id,
         latitude: latitude!,
         longitude: longitude!,
-        nome: lote.titulo,
+        nome: title,
         label,
-        preco: lote.preco,
-        quantidade: lote.quantidade,
+        preco: offer.preco,
+        quantidade: offer.quantidade,
       };
     });
 
@@ -126,7 +127,7 @@ export default function ListarLotesPage() {
             </div>
             <input
               className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light-primary dark:text-text-dark-primary focus:outline-0 focus:ring-0 border-none bg-chip-light dark:bg-chip-dark focus:border-none h-full placeholder:text-text-light-secondary dark:placeholder:text-text-dark-secondary px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal"
-              placeholder="Busque por material ou palavra-chave"
+              placeholder="Busque por produto ou palavra-chave"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -145,7 +146,7 @@ export default function ListarLotesPage() {
         <div className="px-4">
           <div className="flex justify-between items-center py-2">
             <p className="text-sm font-semibold text-text-light-primary dark:text-text-dark-primary">
-              Mostrando {lotes.length} resultados
+              Mostrando {offers.length} resultados
             </p>
             <button
               onClick={() => setShowMap(!showMap)}
@@ -158,8 +159,8 @@ export default function ListarLotesPage() {
             <p className="text-center py-8 text-text-light-secondary">Carregando...</p>
           ) : (
             <div className="flex flex-col gap-4 pb-6">
-              {lotes.map((lote) => (
-                <OfferCard key={lote.id} lote={lote} />
+              {offers.map((offer) => (
+                <OfferCard key={offer.id} offer={offer} />
               ))}
             </div>
           )}

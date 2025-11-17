@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { LoteResiduo, CreateTransacaoDto } from '../types';
+import { Offer, CreateTransacaoDto } from '../types';
 import StaticMap from '../components/StaticMap';
 import { useAuth } from '../contexts/AuthContext';
 import { useFeedback } from '../hooks/useFeedback';
@@ -52,32 +52,38 @@ export default function DetalhesLotePage() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { showToast, showDialog } = useFeedback();
-  const [lote, setLote] = useState<LoteResiduo | null>(null);
+  const [offer, setOffer] = useState<Offer | null>(null);
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
-      loadLote(parseInt(id, 10));
+      loadOffer(parseInt(id, 10));
     }
   }, [id, user?.id]); // Recarregar quando o ID mudar ou quando o usuário mudar
 
-  const loadLote = async (loteId: number) => {
+  const loadOffer = async (offerId: number) => {
     try {
       setLoading(true);
-      const response = await api.get(`/app/api/lotes/${loteId}`);
-      setLote(response.data);
+      // Compatibilidade: tentar /offers primeiro, fallback para /lotes
+      try {
+        const response = await api.get(`/app/api/offers/${offerId}`);
+        setOffer(response.data);
+      } catch {
+        const response = await api.get(`/app/api/lotes/${offerId}`);
+        setOffer(response.data);
+      }
     } catch (error) {
-      console.error('Erro ao carregar lote:', error);
+      console.error('Erro ao carregar oferta:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleComprar = async () => {
-    if (!lote || !lote.fornecedor) {
-      setError('Dados do lote incompletos');
+    if (!offer || !offer.fornecedor) {
+      setError('Dados da oferta incompletos');
       return;
     }
 
@@ -86,15 +92,15 @@ export default function DetalhesLotePage() {
       setCreating(true);
 
       // Calcular quantidade disponível
-      const quantidadeDisponivel = Number(lote.quantidade) - Number(lote.quantidade_vendida || 0);
+      const quantidadeDisponivel = Number(offer.quantidade) - Number(offer.quantidade_vendida || 0);
       
       if (quantidadeDisponivel <= 0) {
         showDialog({
           title: 'Quantidade indisponível',
-          description: 'Não há quantidade disponível para este lote',
+          description: 'Não há quantidade disponível para este produto',
           primaryAction: {
-            label: 'Voltar para lotes',
-            onClick: () => navigate('/lotes'),
+            label: 'Voltar para ofertas',
+            onClick: () => navigate('/offers'),
           },
         });
         setCreating(false);
@@ -118,9 +124,9 @@ export default function DetalhesLotePage() {
       const compradorId = user.compradores[0].id;
 
       const createTransacaoDto: CreateTransacaoDto = {
-        fornecedor_id: lote.fornecedor.id,
+        fornecedor_id: offer.fornecedor.id,
         comprador_id: compradorId,
-        lote_residuo_id: lote.id,
+        offer_id: offer.id,
         quantidade: quantidadeDisponivel, // Usar toda a quantidade disponível
       };
 
@@ -149,10 +155,10 @@ export default function DetalhesLotePage() {
       // Mensagens amigáveis baseadas nos códigos de erro
       let friendlyMessage = errorMessage;
       
-      if (errorCode === 'OWN_LOT_PURCHASE') {
-        friendlyMessage = 'Você não pode comprar seu próprio lote. Este lote foi cadastrado por você como fornecedor.';
-      } else if (errorCode === 'LOT_ALREADY_SOLD') {
-        friendlyMessage = 'Este lote já foi vendido para outro comprador e não está mais disponível.';
+      if (errorCode === 'OWN_LOT_PURCHASE' || errorCode === 'OWN_OFFER_PURCHASE') {
+        friendlyMessage = 'Você não pode comprar seu próprio produto. Este produto foi cadastrado por você como fornecedor.';
+      } else if (errorCode === 'LOT_ALREADY_SOLD' || errorCode === 'OFFER_ALREADY_SOLD') {
+        friendlyMessage = 'Este produto já foi vendido para outro comprador e não está mais disponível.';
       } else if (errorCode === 'INSUFFICIENT_QUANTITY') {
         friendlyMessage = 'A quantidade solicitada não está mais disponível. Tente novamente com uma quantidade menor.';
       }
@@ -161,8 +167,8 @@ export default function DetalhesLotePage() {
         title: 'Não foi possível completar a compra',
         description: friendlyMessage,
         primaryAction: {
-          label: 'Voltar para lotes',
-          onClick: () => navigate('/lotes'),
+          label: 'Voltar para ofertas',
+          onClick: () => navigate('/offers'),
         },
       });
       
@@ -176,20 +182,24 @@ export default function DetalhesLotePage() {
     return <div className="p-4 text-center">Carregando...</div>;
   }
 
-  if (!lote) {
-    return <div className="p-4 text-center">Lote não encontrado</div>;
+  if (!offer) {
+    return <div className="p-4 text-center">Produto não encontrado</div>;
   }
 
+  // Compatibilidade com tipo legacy
+  const title = offer.title || (offer as any).titulo || 'Produto';
+  const description = offer.description || (offer as any).descricao || '';
+
   // Usar informações do backend (mais confiáveis e atualizadas)
-  // O backend verifica diretamente no banco de dados se o usuário é fornecedor do lote
-  // e se o lote já tem transações
-  const isUserFornecedor = lote.is_user_fornecedor ?? false;
-  const isLoteVendido = lote.has_transacao ?? false;
+  // O backend verifica diretamente no banco de dados se o usuário é fornecedor da oferta
+  // e se a oferta já tem transações
+  const isUserFornecedor = offer.is_user_fornecedor ?? false;
+  const isOfferVendido = offer.has_transacao ?? false;
   
   // O botão deve estar habilitado apenas quando:
-  // - O lote está disponível (sem transação: !isLoteVendido)
-  // - E o usuário logado é diferente do fornecedor que cadastrou o lote (!isUserFornecedor)
-  // O botão está desabilitado quando: creating || !lote || !lote.fornecedor || isUserFornecedor || isLoteVendido
+  // - A oferta está disponível (sem transação: !isOfferVendido)
+  // - E o usuário logado é diferente do fornecedor que cadastrou a oferta (!isUserFornecedor)
+  // O botão está desabilitado quando: creating || !offer || !offer.fornecedor || isUserFornecedor || isOfferVendido
 
   return (
     <div className="font-display bg-background-light dark:bg-background-dark min-h-screen">
@@ -197,7 +207,7 @@ export default function DetalhesLotePage() {
         <button onClick={() => navigate(-1)} className="flex h-12 w-12 shrink-0 items-center justify-start text-text-light-primary dark:text-text-dark-primary">
           <ICON_MAP.back className="h-6 w-6" aria-hidden="true" />
         </button>
-        <h1 className="flex-1 text-center text-sm font-bold leading-tight tracking-[-0.015em] text-text-light-primary dark:text-text-dark-primary">{lote.titulo}</h1>
+        <h1 className="flex-1 text-center text-sm font-bold leading-tight tracking-[-0.015em] text-text-light-primary dark:text-text-dark-primary">{title}</h1>
         <TextButton
           onClick={logout}
           icon={<ICON_MAP.logout className="h-5 w-5" aria-hidden="true" />}
@@ -218,10 +228,10 @@ export default function DetalhesLotePage() {
             />
           </div>
         )}
-        {lote.fotos && lote.fotos.length > 0 && (
+        {offer.fotos && offer.fotos.length > 0 && (
           <div className="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-stretch gap-3 p-4">
-              {lote.fotos.map((foto) => (
+              {offer.fotos.map((foto) => (
                 <div key={foto.id} className="flex h-full min-w-[80vw] flex-1 flex-col gap-4 rounded-xl">
                   <AuthenticatedPhoto url={foto.url} />
                 </div>
@@ -230,7 +240,7 @@ export default function DetalhesLotePage() {
           </div>
         )}
         <div className="px-4">
-          <OfferCard lote={lote} showLink={false} showPhoto={false} />
+          <OfferCard offer={offer} showLink={false} showPhoto={false} />
         </div>
         <div className="space-y-4 px-4 py-4">
           <h3 className="text-sm font-bold text-text-light-primary dark:text-text-dark-primary">Detalhes principais</h3>
@@ -238,7 +248,7 @@ export default function DetalhesLotePage() {
             <div className="flex justify-between">
               <span className="text-text-light-secondary dark:text-text-dark-secondary">Listado em</span>
               <span className="font-medium text-text-light-primary dark:text-text-dark-primary">
-                {new Date(lote.created_at).toLocaleDateString('pt-BR')}
+                {new Date(offer.created_at).toLocaleDateString('pt-BR')}
               </span>
             </div>
           </div>
@@ -246,14 +256,14 @@ export default function DetalhesLotePage() {
         {(() => {
           // Na tela de detalhamento: usar localização sugerida (ponto de referência)
           // Priorizar approxLocationLayers, depois locationLayers (neighborhood/city), depois fallback
-          const suggestedLocation = lote.approxLocationLayers?.neighborhood || lote.approxLocationLayers?.city;
-          const fallbackLocation = lote.locationLayers?.neighborhood || lote.locationLayers?.city;
+          const suggestedLocation = offer.approxLocationLayers?.neighborhood || offer.approxLocationLayers?.city;
+          const fallbackLocation = offer.locationLayers?.neighborhood || offer.locationLayers?.city;
           const mapLocation = suggestedLocation || fallbackLocation;
           const mapLat = mapLocation?.latitude || 0;
           const mapLng = mapLocation?.longitude || 0;
           const hasLocation = mapLat !== 0 && mapLng !== 0;
 
-          if (!hasLocation && !lote.approx_formatted_address && !lote.address?.formattedAddress && !lote.localizacao) {
+          if (!hasLocation && !offer.approx_formatted_address && !offer.address?.formattedAddress && !offer.localizacao) {
             return null;
           }
 
@@ -264,19 +274,19 @@ export default function DetalhesLotePage() {
                 <StaticMap
                   latitude={mapLat}
                   longitude={mapLng}
-                  label={lote.titulo}
+                  label={title}
                 />
               )}
               <div className="mt-4">
                 {/* Exibir endereço da localização sugerida (ponto de referência) */}
-                {lote.approx_formatted_address ? (
+                {offer.approx_formatted_address ? (
                   <>
                     <p className="text-sm font-semibold text-text-light-primary dark:text-text-dark-primary mb-2">
-                      {lote.approx_formatted_address}
+                      {offer.approx_formatted_address}
                     </p>
-                    {lote.approxLocationLayers?.city?.label && (
+                    {offer.approxLocationLayers?.city?.label && (
                       <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
-                        {lote.approxLocationLayers.city.label}
+                        {offer.approxLocationLayers.city.label}
                       </p>
                     )}
                     {hasLocation && (
@@ -298,9 +308,9 @@ export default function DetalhesLotePage() {
                         {suggestedLocation.label}
                       </p>
                     )}
-                    {lote.approxLocationLayers?.city?.label && suggestedLocation.label !== lote.approxLocationLayers.city.label && (
+                    {offer.approxLocationLayers?.city?.label && suggestedLocation.label !== offer.approxLocationLayers.city.label && (
                       <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
-                        {lote.approxLocationLayers.city.label}
+                        {offer.approxLocationLayers.city.label}
                       </p>
                     )}
                     {hasLocation && (
@@ -322,9 +332,9 @@ export default function DetalhesLotePage() {
                         {fallbackLocation.label}
                       </p>
                     )}
-                    {lote.locationLayers?.city?.label && fallbackLocation.label !== lote.locationLayers.city.label && (
+                    {offer.locationLayers?.city?.label && fallbackLocation.label !== offer.locationLayers.city.label && (
                       <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
-                        {lote.locationLayers.city.label}
+                        {offer.locationLayers.city.label}
                       </p>
                     )}
                     {hasLocation && (
@@ -339,10 +349,10 @@ export default function DetalhesLotePage() {
                       </a>
                     )}
                   </>
-                ) : lote.address?.formattedAddress ? (
+                ) : offer.address?.formattedAddress ? (
                   <>
                     <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-2">
-                      {lote.address.formattedAddress}
+                      {offer.address.formattedAddress}
                     </p>
                     {hasLocation && (
                       <a
@@ -361,18 +371,18 @@ export default function DetalhesLotePage() {
             </div>
           );
         })()}
-        {lote.fornecedor && (
+        {offer.fornecedor && (
           <div className="px-4 py-2">
             <h3 className="mb-4 text-sm font-bold text-text-light-primary dark:text-text-dark-primary">Fornecedor</h3>
             <div className="flex items-center justify-between rounded-xl border border-background-light p-4 dark:border-background-dark">
               <div className="flex items-center gap-4">
                 <AuthenticatedAvatar 
-                  url={lote.fornecedor.avatar_url} 
-                  alt={lote.fornecedor.nome}
+                  url={offer.fornecedor.avatar_url} 
+                  alt={offer.fornecedor.nome}
                   className="h-12 w-12 rounded-full object-cover"
                 />
                 <div>
-                  <p className="font-bold text-text-light-primary dark:text-text-dark-primary">{lote.fornecedor.nome}</p>
+                  <p className="font-bold text-text-light-primary dark:text-text-dark-primary">{offer.fornecedor.nome}</p>
                 </div>
               </div>
             </div>
@@ -380,11 +390,11 @@ export default function DetalhesLotePage() {
         )}
         
         {/* Formas de pagamento aceitas */}
-        {lote.payment_methods && lote.payment_methods.filter(forma => FORMAS_PAGAMENTO_PERMITIDAS.includes(forma.nome)).length > 0 && (
+        {offer.payment_methods && offer.payment_methods.filter(forma => FORMAS_PAGAMENTO_PERMITIDAS.includes(forma.nome)).length > 0 && (
           <div className="px-4 py-4">
             <h3 className="mb-4 text-sm font-bold text-text-light-primary dark:text-text-dark-primary">Formas de pagamento aceitas</h3>
             <div className="space-y-2">
-              {lote.payment_methods
+              {offer.payment_methods
                 .filter(forma => FORMAS_PAGAMENTO_PERMITIDAS.includes(forma.nome))
                 .map((forma) => (
                 <div
@@ -404,9 +414,9 @@ export default function DetalhesLotePage() {
         {/* Componente de pagamento demonstrativo */}
         <div className="px-4 py-4">
           <FakePaymentOptions
-            total={Number(lote.preco)}
-            quantidade={Number(lote.quantidade) - Number(lote.quantidade_vendida || 0)}
-            disabled={isUserFornecedor || isLoteVendido}
+            total={Number(offer.preco)}
+            quantidade={Number(offer.quantidade) - Number(offer.quantidade_vendida || 0)}
+            disabled={isUserFornecedor || isOfferVendido}
             onConfirm={() => {
               showToast({
                 variant: 'success',
@@ -420,7 +430,7 @@ export default function DetalhesLotePage() {
       <footer className="fixed bottom-0 left-0 z-10 w-full bg-background-light/80 p-4 backdrop-blur-sm dark:bg-background-dark/80">
         <ContainedButton
           onClick={handleComprar}
-          disabled={creating || !lote || !lote.fornecedor || isUserFornecedor || isLoteVendido}
+          disabled={creating || !offer || !offer.fornecedor || isUserFornecedor || isOfferVendido}
           fullWidth
           size="large"
           variant="primary"

@@ -31,10 +31,10 @@ BEGIN
 END $$;
 
 -- =====================================
--- OFFERS DE RESÍDUOS
+-- OFFERS DE PRODUTOS
 -- =====================================
 
--- Offer 1: Garrafas PET
+-- Offer 1: Produto Genérico A
 WITH offer_insert AS (
     INSERT INTO tb_offer (
         title, 
@@ -52,8 +52,8 @@ WITH offer_insert AS (
         updated_at
     )
     VALUES (
-        'Garrafas PET Incolor - Lote Premium',
-        'Garrafas PET incolores de alta qualidade, ideal para reciclagem. Material limpo e prensado.',
+        'Produto Premium - Categoria A',
+        'Produto de alta qualidade, ideal para comercialização. Material em excelente estado.',
         '-15.7894,-47.8822',
         'Asa Norte',
         'Shopping Conjunto Nacional, Asa Norte, Brasília - DF, 70710-100',
@@ -76,7 +76,7 @@ SELECT
     CURRENT_TIMESTAMP
 FROM offer_insert;
 
--- Offer 2: Vidros de Cerveja
+-- Offer 2: Produto Genérico B
 WITH offer_insert AS (
     INSERT INTO tb_offer (
         title, 
@@ -94,8 +94,8 @@ WITH offer_insert AS (
         updated_at
     )
     VALUES (
-        'Vidros Marrons - Garrafas de Cerveja',
-        'Garrafas de vidro marrom tipo long neck. Ideal para indústria de vidro.',
+        'Produto Categoria B - Variedade',
+        'Produto de qualidade intermediária, adequado para diversos usos.',
         '-15.7983,-47.8908',
         'Asa Sul',
         'Park Shopping, Asa Sul, Brasília - DF, 70390-900',
@@ -118,7 +118,7 @@ SELECT
     CURRENT_TIMESTAMP
 FROM offer_insert;
 
--- Offer 3: Plásticos Mistos
+-- Offer 3: Produto Genérico C
 WITH offer_insert AS (
     INSERT INTO tb_offer (
         title, 
@@ -136,8 +136,8 @@ WITH offer_insert AS (
         updated_at
     )
     VALUES (
-        'Plásticos Mistos - Embalagens Diversas',
-        'Mix de plásticos limpos incluindo copos, tampas e embalagens.',
+        'Produto Categoria C - Mix',
+        'Mix de produtos diversos, adequado para comercialização em lote.',
         '-15.7892,-47.8753',
         'Asa Norte',
         'Universidade de Brasília, Asa Norte, Brasília - DF, 70910-900',

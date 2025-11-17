@@ -71,7 +71,7 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 | ID | Descrição | Impacto | Prob. | Mitigação | Rastreio | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | RISK-016 | Indisponibilidade das APIs de parceiros logísticos ou financeiros durante operações críticas. | 🟥 Alto | Média | Implementar retries, circuit breaker e fallback de status offline. | [REQ-003](requisitos-spec.md#req-003), [REQ-004](requisitos-spec.md#req-004) | Ativo |
-| RISK-017 | Alterações não anunciadas nas APIs internas do marketplace climático. | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`) e testes de contrato. | [REQ-003](requisitos-spec.md#req-003), [REQ-046](requisitos-spec.md#req-046) | Ativo |
+| RISK-017 | Alterações não anunciadas nas APIs internas do marketplace. | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`) e testes de contrato. | [REQ-003](requisitos-spec.md#req-003), [REQ-046](requisitos-spec.md#req-046) | Ativo |
 | RISK-018 | Incompatibilidade com provedores de modelos IA devido a mudanças de versão. | 🟧 Médio | Alta | Registrar versões de modelo em [`../../AGENTS.md`](../../AGENTS.md) e prever rollback rápido. | Ativo |
 | RISK-019 | Falhas de autenticação com o provedor SSO federado. | 🟥 Alto | Baixa | Exibir erro informativo e reautenticação automática. | [REQ-101](requisitos-spec.md#req-101) | Ativo |
 

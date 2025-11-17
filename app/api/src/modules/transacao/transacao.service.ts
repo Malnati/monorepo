@@ -35,7 +35,7 @@ export class TransacaoService {
     if (offer.has_transacao) {
       logger.warn(`create - User: ${userId || 'anonymous'} - Attempt to purchase already sold offer: ${createDto.offer_id}`);
       throw new BadRequestException({
-        code: ERROR_CODES.LOT_ALREADY_SOLD,
+        code: ERROR_CODES.OFFER_ALREADY_SOLD,
         message: 'Esta oferta já foi vendida e não está mais disponível para compra',
         details: {
           offer_id: createDto.offer_id,
@@ -62,7 +62,7 @@ export class TransacaoService {
         if (isUserFornecedor > 0) {
           logger.warn(`create - User: ${userId} - Attempt to purchase own offer: ${createDto.offer_id}`);
           throw new BadRequestException({
-            code: ERROR_CODES.OWN_LOT_PURCHASE,
+            code: ERROR_CODES.OWN_OFFER_PURCHASE,
             message: 'Você não pode comprar sua própria oferta',
             details: {
               offer_id: createDto.offer_id,

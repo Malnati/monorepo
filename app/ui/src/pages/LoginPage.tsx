@@ -19,10 +19,10 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Redirecionar para /lotes se já estiver autenticado
+  // Redirecionar para /offers se já estiver autenticado
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      navigate('/lotes', { replace: true });
+      navigate('/offers', { replace: true });
     }
   }, [isAuthenticated, isLoading, navigate]);
 
@@ -38,7 +38,7 @@ export default function LoginPage() {
     try {
       const response = await googleLogin(credentialResponse.credential);
       login(response.accessToken, response.user);
-      navigate('/lotes', { replace: true });
+      navigate('/offers', { replace: true });
     } catch (err: any) {
       console.error('Login error:', err);
       

@@ -25,9 +25,9 @@ export default defineConfig({
         'offline.html'
       ],
       manifest: {
-        name: 'APP Mercado de Resíduos',
+        name: 'APP Marketplace',
         short_name: 'APP',
-        description: 'Plataforma de negociação de resíduos recicláveis',
+        description: 'Plataforma de negociação de produtos e serviços',
         theme_color: '#28a745',
         background_color: '#f6f8f6',
         display: 'standalone',
@@ -100,10 +100,10 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/api\/lotes/i,
+            urlPattern: /\/api\/offers/i,
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'lotes-api-cache',
+              cacheName: 'offers-api-cache',
               expiration: {
                 maxEntries: 50,
                 maxAgeSeconds: 60 * 5, // 5 minutos

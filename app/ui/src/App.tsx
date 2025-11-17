@@ -42,7 +42,7 @@ function App() {
             element={<Navigate to="/login" replace />}
           />
           <Route
-            path="/lotes"
+            path="/offers"
             element={
               <ProtectedRoute>
                 <ListarLotesPage />
@@ -50,12 +50,37 @@ function App() {
             }
           />
           <Route
-            path="/lotes/novo"
+            path="/offers/novo"
             element={
               <ProtectedRoute>
                 <ErrorBoundary>
                   <CriarLotePage />
                 </ErrorBoundary>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/offers/:id"
+            element={
+              <ProtectedRoute>
+                <DetalhesLotePage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Rotas legacy para compatibilidade */}
+          <Route
+            path="/lotes"
+            element={
+              <ProtectedRoute>
+                <Navigate to="/offers" replace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/lotes/novo"
+            element={
+              <ProtectedRoute>
+                <Navigate to="/offers/novo" replace />
               </ProtectedRoute>
             }
           />

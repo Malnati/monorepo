@@ -13,7 +13,7 @@ Bem-vindo à documentação oficial do **Template de Projeto Multiplataforma**, 
 
 O Template combina aplicativos web e mobile, APIs seguras, motores de avaliação de negócio e integrações com diversos sistemas corporativos. A plataforma captura dados de processos de negócio, calcula indicadores de performance, monetiza os resultados em carteiras digitais e liquida transações com remuneração justa para todos os stakeholders envolvidos.
 
-Os componentes centrais abrangem canais digitais para clientes e agentes de campo, serviços de onboarding e KYC verde, motor de elegibilidade para financiamentos climáticos, módulo de tokenização de resíduos, camadas de relatório regulatório (BACEN e órgãos ambientais) e painéis de impacto para investidores ESG. Esta documentação serve como guia completo — da visão inicial à manutenção evolutiva — e está alinhada aos agentes e pipelines definidos em `AGENTS.md` e `PIPELINE.md`.
+Os componentes centrais abrangem canais digitais para clientes e agentes de campo, serviços de onboarding e KYC, motor de elegibilidade para financiamentos, módulo de tokenização de ativos, camadas de relatório regulatório e painéis de impacto para investidores. Esta documentação serve como guia completo — da visão inicial à manutenção evolutiva — e está alinhada aos agentes e pipelines definidos em `AGENTS.md`.
 
 ---
 

@@ -204,11 +204,11 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 
 ## Requisitos de Geolocalização (serviço de mapas corporativo)
 
-### REQ-406: Cadastro de localização geográfica em resíduos
+### REQ-406: Cadastro de localização geográfica em produtos
 **Tipo:** Funcional  
 **Prioridade:** Alta  
 **Status:** ✅ Implementado (backend)  
-**Descrição:** Usuários devem poder cadastrar a localização geográfica ao publicar resíduos, utilizando serviço de mapas corporativo para validação de endereços.
+**Descrição:** Usuários devem poder cadastrar a localização geográfica ao publicar produtos, utilizando serviço de mapas corporativo para validação de endereços.
 **Critérios de aceite:**
 - Campo de endereço com autocomplete integrado ao catálogo de lugares da plataforma de mapas
 - Validação server-side de coordenadas via API de geocodificação homologada
@@ -216,26 +216,26 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 - Compatibilidade retroativa com campo `localizacao` existente  
 **Relacionado:** `CHANGELOG/20251105142535.md` · `app/db/init/migrations/004_add_geospatial_fields.sql`
 
-### REQ-407: Filtros geoespaciais em listagem de resíduos
+### REQ-407: Filtros geoespaciais em listagem de produtos
 **Tipo:** Funcional  
 **Prioridade:** Alta  
 **Status:** ✅ Implementado (backend)  
 **Descrição:** Sistema deve suportar filtros por bounds (viewport do mapa) e busca radial (near + radius) para queries eficientes de localização.  
 **Critérios de aceite:**
-- Endpoint `GET /lotes?bounds=swLat,swLng,neLat,neLng` filtrando por bounding box
-- Endpoint `GET /lotes?near=lat,lng&radius=5000` filtrando por proximidade em metros
+- Endpoint `GET /offers?bounds=swLat,swLng,neLat,neLng` filtrando por bounding box
+- Endpoint `GET /offers?near=lat,lng&radius=5000` filtrando por proximidade em metros
 - Performance < 100ms para 10k registros com índices GIST
 - Queries usando PostGIS (`ST_MakeEnvelope`, `ST_DWithin`)  
 **Relacionado:** `app/apisrc/modules/lote-residuo/lote-residuo.service.ts`
 
-### REQ-408: Mapa interativo com markers de resíduos
+### REQ-408: Mapa interativo com markers de produtos
 **Tipo:** Funcional  
 **Prioridade:** Alta  
 **Status:** ⏳ Pendente (frontend)  
-**Descrição:** Interface deve exibir mapa interativo com markers dos resíduos disponíveis, permitindo visualização e seleção direta pelo mapa.  
+**Descrição:** Interface deve exibir mapa interativo com markers dos produtos disponíveis, permitindo visualização e seleção direta pelo mapa.  
 **Critérios de aceite:**
 - Integração com SDK JavaScript do serviço de mapas
-- Markers clicáveis abrindo detalhes do resíduo
+- Markers clicáveis abrindo detalhes do produto
 - Sincronização entre lista e mapa (hover destaca marker)
 - Layout responsivo (mapa fixo desktop, colapsável mobile)
 - Conformidade com regras UX (603010, 4x2, 8pt Grid)  
@@ -245,7 +245,7 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 **Tipo:** Funcional  
 **Prioridade:** Média  
 **Status:** ⏳ Pendente (frontend)  
-**Descrição:** Seleção de resíduo pelo mapa deve disparar o mesmo fluxo de compra da listagem, mantendo consistência de estado global.  
+**Descrição:** Seleção de produto pelo mapa deve disparar o mesmo fluxo de compra da listagem, mantendo consistência de estado global.  
 **Critérios de aceite:**
 - Click em marker abre modal ou card lateral com detalhes
 - Botão "Comprar" segue mesmo fluxo da listagem

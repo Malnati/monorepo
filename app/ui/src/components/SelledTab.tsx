@@ -1,21 +1,21 @@
 // app/uisrc/components/SelledTab.tsx
 import { useEffect, useState } from 'react';
 import api from '../services/api';
-import { LoteResiduo } from '../types';
+import { Offer } from '../types';
 import OfferCard from './OfferCard';
 import LoteCardSkeleton from './LoteCardSkeleton';
 import EmptyState from './EmptyState';
 import { ICON_MAP, ICON_SOLID_MAP } from '../utils/icons';
 
-const EMPTY_TITLE = 'Nenhum lote encontrado';
-const EMPTY_DESCRIPTION = 'Você ainda não possui lotes vendidos.';
-const ERROR_TITLE = 'Erro ao carregar lotes';
-const ERROR_DESCRIPTION = 'Não foi possível carregar seus lotes. Verifique sua conexão e tente novamente.';
+const EMPTY_TITLE = 'Nenhum produto encontrado';
+const EMPTY_DESCRIPTION = 'Você ainda não possui produtos vendidos.';
+const ERROR_TITLE = 'Erro ao carregar produtos';
+const ERROR_DESCRIPTION = 'Não foi possível carregar seus produtos. Verifique sua conexão e tente novamente.';
 const ERROR_BUTTON_TEXT = 'Tentar novamente';
 
-interface MeusLotesResponse {
-  lotesVendidos: LoteResiduo[];
-  lotesComprados: LoteResiduo[];
+interface MeusOffersResponse {
+  offersVendidos: Offer[];
+  offersComprados: Offer[];
   pagination: {
     page: number;
     pageSize: number;
@@ -25,18 +25,25 @@ interface MeusLotesResponse {
 }
 
 export default function SelledTab() {
-  const [lotesVendidos, setLotesVendidos] = useState<LoteResiduo[]>([]);
+  const [offersVendidos, setOffersVendidos] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadMeusLotes = async () => {
+  const loadMeusOffers = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.get<MeusLotesResponse>('/app/api/lotes/meus');
-      setLotesVendidos(response.data.lotesVendidos || []);
+      // Compatibilidade: tentar /offers/meus primeiro, fallback para /lotes/meus
+      try {
+        const response = await api.get<MeusOffersResponse>('/app/api/offers/meus');
+        setOffersVendidos(response.data.offersVendidos || []);
+      } catch {
+        const response = await api.get<any>('/app/api/lotes/meus');
+        // Mapear resposta legacy para novo formato
+        setOffersVendidos(response.data.lotesVendidos || []);
+      }
     } catch (err) {
-      console.error('Erro ao carregar lotes:', err);
+      console.error('Erro ao carregar produtos:', err);
       setError(ERROR_DESCRIPTION);
     } finally {
       setLoading(false);
@@ -44,10 +51,10 @@ export default function SelledTab() {
   };
 
   useEffect(() => {
-    loadMeusLotes();
+    loadMeusOffers();
   }, []);
 
-  const isEmpty = !loading && lotesVendidos.length === 0;
+  const isEmpty = !loading && offersVendidos.length === 0;
 
   return (
     <>
@@ -66,7 +73,7 @@ export default function SelledTab() {
           description={error}
           action={{
             label: ERROR_BUTTON_TEXT,
-            onClick: loadMeusLotes,
+            onClick: loadMeusOffers,
           }}
         />
       )}
@@ -79,10 +86,10 @@ export default function SelledTab() {
         />
       )}
 
-      {!loading && !error && lotesVendidos.length > 0 && (
+      {!loading && !error && offersVendidos.length > 0 && (
         <div className="flex flex-col gap-4 pb-6 pt-4" role="list">
-          {lotesVendidos.map((lote) => (
-            <OfferCard key={lote.id} lote={lote} />
+          {offersVendidos.map((offer) => (
+            <OfferCard key={offer.id} offer={offer} />
           ))}
         </div>
       )}
