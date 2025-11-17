@@ -2,7 +2,7 @@
 # Plano de Limpeza do Projeto para Template
 
 ## Propósito
-Remover vestígios do projeto anterior, padronizar requisitos e deixar o repositório pronto para novos aplicativos da empresa.
+Remover vestígios do projeto anterior, padronizar requisitos e deixar o repositório pronto para novos aplicativos da qualquer empresa, deixando o repositorio agnostico a empresa anterior e ao aplicativo inicialmente consrtruido nesta estrutura.
 
 ## Premissas
 - Preservar a estrutura RUP e os cabeçalhos de caminho em todos os arquivos.
