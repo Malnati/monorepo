@@ -4,27 +4,32 @@
 
 {
 	# Configuração global
-	email admin@example.com
+	email admin@cranio.dev
 	# HTTPS automático via Let's Encrypt está habilitado por padrão
 }
 
 # Redirecionamento HTTP para HTTPS (produção)
-:80 {
+# Escutar especificamente no IPv6 2a02:c207:2288:9919::10
+[2a02:c207:2288:9919::10]:80 {
 	@production {
-		host app.example.com
+		host template-monorepo.cranio.dev
 	}
 	handle @production {
-		redir https://app.dominio.com.br{uri} permanent
+		redir https://template-monorepo.cranio.dev{uri} permanent
 	}
 	
 	# Para desenvolvimento local, não redireciona
 	handle {
-		reverse_proxy ui:80
+		reverse_proxy localhost:5174
 	}
 }
 
 # Configuração HTTPS (produção)
-app.dominio.com.br {
+# Escutar especificamente no IPv6 2a02:c207:2288:9919::10
+# Usar o domínio como label para permitir certificado SSL automático
+template-monorepo.cranio.dev {
+	# Escutar no IPv6 específico
+	bind [2a02:c207:2288:9919::10]
 	# HTTPS automático via Let's Encrypt (padrão do Caddy)
 	# O Caddy automaticamente obtém e renova certificados SSL
 
@@ -47,7 +52,7 @@ app.dominio.com.br {
 
 	# Proxy reverso para API (deve vir antes do handler genérico)
 	handle /app/api* {
-		reverse_proxy api:3001 {
+		reverse_proxy localhost:3001 {
 			header_up Host {host}
 			header_up X-Real-IP {remote}
 			header_up X-Forwarded-For {remote}
@@ -57,7 +62,7 @@ app.dominio.com.br {
 
 	# Proxy reverso para frontend (todos os outros requests, incluindo assets)
 	handle {
-		reverse_proxy ui:80 {
+		reverse_proxy localhost:5174 {
 			header_up Host {host}
 			header_up X-Real-IP {remote}
 			header_up X-Forwarded-For {remote}
@@ -77,4 +82,3 @@ app.dominio.com.br {
 		format console
 	}
 }
-

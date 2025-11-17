@@ -143,13 +143,12 @@ export default defineConfig({
     strictPort: false,
     // Configuração dinâmica de hosts permitidos
     // Strings começando com '.' são tratadas como wildcards de domínio
-    // Permite qualquer subdomínio de dominio.com.br, dominio.com e dominio.com.br
+    // Permite qualquer subdomínio de cranio.dev
     allowedHosts: [
       'localhost',
       '127.0.0.1',
-      '.dominio.com.br',
-      '.dominio.com',
-      '.dominio.com.br',
+      '.cranio.dev',
+      'template-monorepo.cranio.dev',
     ],
   },
 });

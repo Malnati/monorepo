@@ -202,7 +202,7 @@ export default function FakePaymentOptions({
                     Chave Pix (exemplo)
                   </p>
                   <div className="p-3 rounded bg-card-light dark:bg-card-dark font-mono text-xs text-text-light-primary dark:text-text-dark-primary">
-                    pagamento@dominio.com.br
+                    pagamento@cranio.dev
                   </div>
                   <div className="flex justify-center p-4 bg-white rounded">
                     <div className="h-32 w-32 bg-gray-200 rounded flex items-center justify-center">
