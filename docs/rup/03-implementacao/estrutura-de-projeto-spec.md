@@ -46,10 +46,12 @@ Esta especificação descreve a organização de diretórios, módulos e contrat
 ## Serviços de domínio (`services/`) - Atualizados M1
 
 ### `services/auth` ([REQ-110](../02-planejamento/requisitos-spec.md#req-110))
-- **Autenticação avançada:** MFA (SMS/E-mail/App), SSO Google/Microsoft/Azure AD, gestão sessões OIDC
+- **Autenticação avançada:** MFA (SMS/E-mail/App), SSO com provedores corporativos (OIDC/SAML), gestão sessões OIDC
 - **Módulos NestJS:** `AuthController`, `SSOService`, `MFAService`, `SessionManager`
 - **Endpoints:** `/auth/login`, `/auth/sso/{provider}`, `/auth/mfa/verify`, `/auth/logout`
-- **Integrações:** Azure AD, Google OAuth, Microsoft Graph, JWT/OIDC libs
+- **Integrações:** provedores de identidade corporativos, discovery OIDC e bibliotecas JWT/OIDC
+
+> Microcopy padronizada para remover marcas legadas e reforçar neutralidade de manual de marca.
 
 ### `services/cadastros` ([REQ-111](../02-planejamento/requisitos-spec.md#req-111) a [REQ-115](../02-planejamento/requisitos-spec.md#req-115))
 - **Usuários:** CPF, KYC automatizado, perfil múltiplo, consentimento LGPD
@@ -69,7 +71,7 @@ Esta especificação descreve a organização de diretórios, módulos e contrat
 
 ### `services/finance` ([REQ-117](../02-planejamento/requisitos-spec.md#req-117), [REQ-118](../02-planejamento/requisitos-spec.md#req-118))
 - **Escrow avançado:** custódia por transação, liberação pós-entrega, split configurável
-- **Múltiplos gateways:** Pagar.me, Stone, Mercado Pago, PIX, contas virtuais
+- **Múltiplos gateways:** provedores homologados de pagamento, PIX, contas virtuais
 - **Conciliação automática:** webhooks, reconciliação bancária, relatórios financeiros
 - **Módulos NestJS:** `EscrowModule`, `PaymentGatewayModule`, `ReconciliationModule`, `SplitService`
 - **Endpoints:** `/finance/escrow`, `/finance/gateways`, `/finance/payments`, `/finance/reconciliation`

@@ -34,13 +34,13 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 | Técnico | Riscos relacionados a arquitetura, código, tecnologia e compatibilidade. |
 | Operacional | Falhas humanas, processos ou infraestrutura. |
 | Legal / Conformidade | Violação de LGPD, políticas do Chrome ou obrigações contratuais. |
-| Externo / Dependência | Dependência de serviços externos (APIs, OpenRouter, Codex, Google). |
+| Externo / Dependência | Dependência de serviços externos (APIs e provedores SaaS de identidade/mapas). |
 
 ### Riscos Técnicos
 
 | ID | Descrição | Impacto | Prob. | Mitigação | Rastreio | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| RISK-001 | Falha de autenticação SSO Google em ambientes restritos (rede corporativa). | 🟧 Médio | Média | Implementar fallback de autenticação com mensagem orientativa. | [REQ-001](requisitos-spec.md#req-001), [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
+| RISK-001 | Falha de autenticação SSO com provedor corporativo em ambientes restritos (rede interna). | 🟧 Médio | Média | Implementar fallback de autenticação com mensagem orientativa. | [REQ-001](requisitos-spec.md#req-001), [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
 | RISK-002 | Quebra de compatibilidade com futuras versões do Chrome Manifest V3. | 🟥 Alto | Alta | Revisar Manifest a cada release e validar via `audit.yml`. | [REQ-018](requisitos-spec.md#req-018), [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
 | RISK-003 | Corrupção de dados no IndexedDB por fechamento abrupto do navegador. | 🟨 Baixo | Média | Sincronizar transações e utilizar IndexedDB Promises. | [REQ-011](requisitos-spec.md#req-011), [`../03-implementacao/testes.md`](../03-implementacao/testes-spec.md) | Ativo |
 | RISK-004 | Falha de interceptação de downloads devido a políticas CORS. | 🟥 Alto | Média | Validar permissões `downloads` e `host_permissions`. | [REQ-020](requisitos-spec.md#req-020) | Ativo |
@@ -73,7 +73,9 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 | RISK-016 | Indisponibilidade da API dominio.com.br. | 🟥 Alto | Média | Implementar retries e fallback de status offline. | [REQ-003](requisitos-spec.md#req-003), [REQ-005](requisitos-spec.md#req-005) | Ativo |
 | RISK-017 | Alterações não anunciadas na API MBRA (versão RESTful). | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`). | [REQ-003](requisitos-spec.md#req-003), [REQ-005](requisitos-spec.md#req-005) | Ativo |
 | RISK-018 | Incompatibilidade com OpenRouter ou Codex devido a mudanças de modelo. | 🟧 Médio | Alta | Registrar versões de modelo em [`../../AGENTS.md`](../../AGENTS.md). | Ativo |
-| RISK-019 | Falhas de autenticação com Google OAuth. | 🟥 Alto | Baixa | Exibir erro informativo e reautenticação automática. | [REQ-001](requisitos-spec.md#req-001) | Ativo |
+| RISK-019 | Falhas de autenticação com o provedor SSO federado. | 🟥 Alto | Baixa | Exibir erro informativo e reautenticação automática. | [REQ-001](requisitos-spec.md#req-001) | Ativo |
+
+> Textos neutralizados para remover marcas legadas e manter vocabulário padrão de risco.
 | RISK-020 | Bloqueio temporário de execução IA por uso excessivo. | 🟨 Baixo | Média | Aplicar rate limit inteligente nos pipelines. | [`../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia.md`](../06-governanca-tecnica-e-controle-de-qualidade/revisoes-com-ia-spec.md) | Ativo |
 | RISK-021 | Indisponibilidade do serviço de e-mail (Gmail API) impedindo envio de ativação. | 🟧 Médio | Baixa | Implementar retry com backoff exponencial, logs detalhados de falhas, monitoramento de quotas Gmail API e sistema de fila para reenvio automático após restauração do serviço. Exibir mensagem clara ao usuário sobre o status do e-mail. | [REQ-124](requisitos-spec.md#req-124), [`../99-anexos/MVP/plano-onboarding-email.md`](../99-anexos/MVP/plano-onboarding-email.md), [`CHANGELOG/20251109142100.md`](/CHANGELOG/20251109142100.md) | Ativo |
 

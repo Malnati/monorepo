@@ -85,7 +85,7 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 | <a id="req-033"></a>REQ-033 | Interface colaborativa com checklists auditáveis, comentários e anexos para revisão humana. | Construção | [`capacidade-diagnostico-colaborativo.md`](capacidade-diagnostico-colaborativo-spec.md#fluxo-colaborativo-proposto) | Proposto |
 | <a id="req-034"></a>REQ-034 | Dashboard de governança mostrando SLA IA vs. humanos, pendências e métricas de impacto colaborativo. | Transição | [`../02-design/componentes.md`](../02-design/componentes-spec.md#dashboards-de-impacto) · [`capacidade-diagnostico-colaborativo.md`](capacidade-diagnostico-colaborativo-spec.md#metricas-de-sucesso) | Proposto |
 | <a id="req-035"></a>REQ-035 | Integração com órgãos reguladores e parceiros (BACEN, SINIR, certificadoras) com trilha completa de auditoria. | Transição | [`../01-arquitetura/integracoes-com-apis.md`](../01-arquitetura/integracoes-com-apis-spec.md) · [`capacidade-diagnostico-colaborativo.md`](capacidade-diagnostico-colaborativo-spec.md#dependencias-e-riscos) | Proposto |
-| <a id="req-101"></a>REQ-101 | Onboarding multicanal com login/senha, SSO (Google/Microsoft), MFA opcional e aprovação administrativa. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e1--autenticação-e-acesso) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
+| <a id="req-101"></a>REQ-101 | Onboarding multicanal com login/senha, SSO (provedor corporativo), MFA opcional e aprovação administrativa. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e1--autenticação-e-acesso) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-102"></a>REQ-102 | Cadastros completos de usuários, organizações, unidades, veículos, certificados e investidores com validação documental. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e2--cadastros) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-103"></a>REQ-103 | Marketplace climático com cadastro de lotes, busca geolocalizada, chat de negociação e passaporte digital. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e3--marketplace) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-104"></a>REQ-104 | Orquestração logística com ordens de transporte, telemetria, seguros e integração com parceiros TMS/IoT. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e5--logística-esg-e-fiscal) · [`requisitos-banco-digital.md`](requisitos-banco-digital-spec.md#d-veículo--logística--transportador-para-integração-tms) | Planejado |
@@ -184,7 +184,7 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 | <a id="req-053"></a>REQ-053 | Conformidade fiscal com emissão integrada de NF-e/NFS-e, cálculo de tributos, extratos auditáveis e exportação SPED/EFD. | Construção | Legislação tributária brasileira · SEFAZ · ISS municipal | Planejado |
 | <a id="req-054"></a>REQ-054 | Auditoria contínua de transações financeiras com detecção de fraudes e análise comportamental. | Construção | [`../06-governanca-tecnica-e-controle-de-qualidade/auditoria-e-rastreabilidade-spec.md`](../06-governanca-tecnica-e-controle-de-qualidade/auditoria-e-rastreabilidade-spec.md) | Planejado |
 | <a id="req-055"></a>REQ-055 | Integração com sistemas legados bancários (Core Banking, Swift, TEF) mantendo compatibilidade. | Construção | [`../01-arquitetura/integracoes-com-apis-spec.md`](../01-arquitetura/integracoes-com-apis-spec.md) | Planejado |
-| <a id="req-110"></a>REQ-110 | Autenticação multifatorial opcional (SMS/E-mail/App), SSO com Google/Microsoft/Azure AD, gestão de sessões OIDC, logout automático por inatividade. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e1--autenticação-e-acesso) · [`../99-anexos/inventario-requisitos-m1.md`](../99-anexos/inventario-requisitos-m1.md#32-épico-e2---cadastros) | Em elaboração |
+| <a id="req-110"></a>REQ-110 | Autenticação multifatorial opcional (SMS/E-mail/App), SSO com provedor de identidade corporativo (OIDC/SAML), gestão de sessões OIDC, logout automático por inatividade. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e1--autenticação-e-acesso) · [`../99-anexos/inventario-requisitos-m1.md`](../99-anexos/inventario-requisitos-m1.md#32-épico-e2---cadastros) | Em elaboração |
 | <a id="req-111"></a>REQ-111 | Cadastro completo de usuários com CPF, nome, telefone, perfil múltiplo, consentimento LGPD, validação documental e KYC automatizado. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-cadastro-de-usuário) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-112"></a>REQ-112 | Cadastro de empresas/organizações com CNPJ, razão social, CNAE, regime tributário, endereço fiscal, conta bancária, classificação por subtipo. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-cadastro-de-empresa) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-113"></a>REQ-113 | Cadastro de unidades operacionais com endereço completo, coordenadas GPS obrigatórias, capacidade armazenagem, horário operação, tipologias manipuladas. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-unidade-operacional) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
@@ -192,7 +192,7 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 | <a id="req-115"></a>REQ-115 | Cadastro de parceiros e investidores com parceiros logísticos, cooperativas, investidores cadastrados/interessados, formulário de contato, verificação KYB. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-parceiros) · [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-investidores) | Em elaboração |
 | <a id="req-116"></a>REQ-116 | Engine de precificação dinâmica com algoritmo baseado em oferta/demanda, localização (raio 200km), qualidade, certificação, histórico de preços. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e3--marketplace) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-117"></a>REQ-117 | Sistema de escrow avançado com conta de custódia por transação, liberação automatizada pós-entrega, split de comissões configurável, conciliação bancária. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e4--pagamentos-e-escrow) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
-| <a id="req-118"></a>REQ-118 | Integração com múltiplos gateways de pagamento (Pagar.me, Stone, Mercado Pago), PIX, cartão, boleto, contas virtuais por usuário, webhooks de status. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e4--pagamentos-e-escrow) · [`../99-anexos/inventario-requisitos-m1.md`](../99-anexos/inventario-requisitos-m1.md#34-épico-e4---pagamentos-e-escrow) | Em elaboração |
+| <a id="req-118"></a>REQ-118 | Integração com múltiplos gateways de pagamento homologados, PIX, cartão, boleto, contas virtuais por usuário, webhooks de status. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e4--pagamentos-e-escrow) · [`../99-anexos/inventario-requisitos-m1.md`](../99-anexos/inventario-requisitos-m1.md#34-épico-e4---pagamentos-e-escrow) | Em elaboração |
 | <a id="req-119"></a>REQ-119 | Rastreamento GPS e logística com rastreamento em tempo real, telemetria de veículos, atualizações a cada 30min, comprovantes de entrega, integração TMS. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#-e5--logística-esg-e-fiscal) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
 | <a id="req-120"></a>REQ-120 | Emissão fiscal automática com integração SEFAZ, emissão NF-e/NFS-e automática, cálculo de tributos, exportação XML, status SEFAZ em tempo real. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#fiscal) · [`../99-anexos/inventario-requisitos-m1.md`](../99-anexos/inventario-requisitos-m1.md#35-épico-e5---logística-esg-e-fiscal) | Em elaboração |
 | <a id="req-121"></a>REQ-121 | Cálculos ESG e CO₂ com metodologias padrão (IPCC, GHG Protocol), cálculo automático tCO₂ evitado, relatórios de impacto socioambiental, exportação assinada. | Construção | [`../99-anexos/PRD_Plataforma_App_Completo.md`](../99-anexos/PRD_Plataforma_App_Completo.md#esg) · [`../99-anexos/Requisitos_Banco_Digital.txt`](../99-anexos/Requisitos_Banco_Digital.txt) | Em elaboração |
@@ -202,16 +202,16 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 
 ---
 
-## Requisitos de Geolocalização (Google Maps)
+## Requisitos de Geolocalização (serviço de mapas corporativo)
 
 ### REQ-406: Cadastro de localização geográfica em resíduos
 **Tipo:** Funcional  
 **Prioridade:** Alta  
 **Status:** ✅ Implementado (backend)  
-**Descrição:** Usuários devem poder cadastrar a localização geográfica ao publicar resíduos, utilizando Google Maps para validação de endereços.  
+**Descrição:** Usuários devem poder cadastrar a localização geográfica ao publicar resíduos, utilizando serviço de mapas corporativo para validação de endereços.
 **Critérios de aceite:**
-- Campo de endereço com autocomplete integrado ao Google Places API
-- Validação server-side de coordenadas via Google Geocoding API
+- Campo de endereço com autocomplete integrado ao catálogo de lugares da plataforma de mapas
+- Validação server-side de coordenadas via API de geocodificação homologada
 - Armazenamento de `formatted_address`, `place_id`, `latitude`, `longitude` e `geocoding_accuracy`
 - Compatibilidade retroativa com campo `localizacao` existente  
 **Relacionado:** `CHANGELOG/20251105142535.md` · `app/db/init/migrations/004_add_geospatial_fields.sql`
@@ -234,7 +234,7 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 **Status:** ⏳ Pendente (frontend)  
 **Descrição:** Interface deve exibir mapa interativo com markers dos resíduos disponíveis, permitindo visualização e seleção direta pelo mapa.  
 **Critérios de aceite:**
-- Integração com Google Maps JavaScript API
+- Integração com SDK JavaScript do serviço de mapas
 - Markers clicáveis abrindo detalhes do resíduo
 - Sincronização entre lista e mapa (hover destaca marker)
 - Layout responsivo (mapa fixo desktop, colapsável mobile)
@@ -260,7 +260,9 @@ A especificação completa de contexto, personas e fluxos permanece documentada 
 **Descrição:** Sistema deve armazenar `place_id`, `formatted_address` e `geocoding_accuracy` para auditoria e validação futura.  
 **Critérios de aceite:**
 - Todos os campos geoespaciais persistidos no banco
-- Rastreabilidade de fonte dos dados (Google Geocoding API)
+- Rastreabilidade de fonte dos dados (API de geocodificação corporativa)
+
+> Nomenclatura neutralizada para eliminar marcas legadas e manter linguagem genérica aprovada pelo manual de marca.
 - Políticas LGPD para dados de localização documentadas
 - Trigger automático para popular `location_geog` a partir de `localizacao`  
 **Relacionado:** `docs/rup/00-visao/lgpd.md` (pendente atualização)

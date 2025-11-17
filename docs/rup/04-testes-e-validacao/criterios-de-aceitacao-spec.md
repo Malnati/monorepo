@@ -18,7 +18,9 @@ Estabelecer critérios mensuráveis para homologar entregas do App antes de cada
 
 ### E1 - Autenticação e Acesso ([REQ-110](../02-planejamento/requisitos-spec.md#req-110))
 - **MFA condicional:** sistema detecta operações sensíveis e solicita segundo fator automaticamente
-- **SSO funcional:** login com Google/Microsoft/Azure AD completa em <5s sem erros
+- **SSO funcional:** login com provedor corporativo (OIDC/SAML) completa em <5s sem erros
+
+> Critérios ajustados para remover marcas legadas e manter microcopy objetiva.
 - **Sessão OIDC:** tokens refresh automáticos, logout por inatividade funciona
 - **Perfis múltiplos:** usuário alterna entre organizações mantendo permissões específicas
 - **Auditoria:** todos os logins registram IP, timestamp, método usado, resultado

@@ -38,18 +38,18 @@ Documentar parâmetros de implantação, variáveis sensíveis e políticas de p
 ## Variáveis críticas - Atualizadas M1
 
 ### Autenticação e SSO ([REQ-110](../02-planejamento/requisitos-spec.md#req-110))
-- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — OAuth Google para SSO
-- `MICROSOFT_CLIENT_ID` / `MICROSOFT_CLIENT_SECRET` — Azure AD/Microsoft OAuth
-- `MFA_SMS_PROVIDER` — Provedor SMS para MFA (Twilio, AWS SNS)
-- `JWT_SECRET` / `JWT_REFRESH_SECRET` — Chaves para tokens JWT/OIDC
-- `SESSION_TIMEOUT` — Tempo logout automático (padrão: 30min)
+- `SSO_CLIENT_ID` / `SSO_CLIENT_SECRET` — credenciais do provedor de identidade corporativo (OIDC/SAML)
+- `IDP_DISCOVERY_URL` — endpoint de descoberta OpenID Connect autorizado
+- `MFA_SMS_PROVIDER` — provedor SMS homologado para MFA
+- `JWT_SECRET` / `JWT_REFRESH_SECRET` — chaves para tokens JWT/OIDC
+- `SESSION_TIMEOUT` — tempo de logout automático (padrão: 30min)
 
 ### Cadastros e Geolocalização ([REQ-111](../02-planejamento/requisitos-spec.md#req-111) a [REQ-115](../02-planejamento/requisitos-spec.md#req-115))
-- `KYC_PROVIDER_URL` — Serviço KYC automatizado (Serasa, SPC)
-- `GEOLOCATION_API_KEY` — Google Maps/Leaflet para coordenadas GPS
+- `KYC_PROVIDER_URL` — serviço KYC automatizado homologado
+- `GEOLOCATION_API_KEY` — serviço corporativo de mapas/geocodificação
 - `CNPJ_VALIDATION_URL` — API Receita Federal para validação CNPJ
-- `CEP_LOOKUP_URL` — ViaCEP ou similar para endereços
-- `DOCUMENT_STORAGE_BUCKET` — S3/Storage para documentos anexados
+- `CEP_LOOKUP_URL` — provedor de CEP aprovado
+- `DOCUMENT_STORAGE_BUCKET` — bucket de armazenamento para documentos anexados
 
 ### Marketplace e Precificação ([REQ-116](../02-planejamento/requisitos-spec.md#req-116))
 - `PRICING_ENGINE_URL` — Microserviço de precificação dinâmica
@@ -59,18 +59,20 @@ Documentar parâmetros de implantação, variáveis sensíveis e políticas de p
 - `CONTRACT_TEMPLATE_PATH` — Templates contratos digitais
 
 ### Pagamentos e Escrow ([REQ-117](../02-planejamento/requisitos-spec.md#req-117), [REQ-118](../02-planejamento/requisitos-spec.md#req-118))
-- `PAGARME_API_KEY` / `STONE_API_KEY` / `MERCADOPAGO_ACCESS_TOKEN` — Gateways múltiplos
+- `PAYMENT_GATEWAY_KEY` — credencial do gateway de pagamento homologado
 - `PIX_KEY_DICT_URL` — SPI/BACEN para chaves PIX
-- `ESCROW_BANK_ACCOUNT` — Conta bancária para custódia
+- `ESCROW_BANK_ACCOUNT` — conta bancária para custódia
 - `SPLIT_PLATFORM_FEE` — % taxa plataforma (padrão: 2.5%)
-- `VIRTUAL_ACCOUNT_PROVIDER` — Provedor contas virtuais
+- `VIRTUAL_ACCOUNT_PROVIDER` — provedor contas virtuais
 
 ### Logística GPS ([REQ-119](../02-planejamento/requisitos-spec.md#req-119))
-- `GPS_TRACKING_INTERVAL` — Intervalo telemetria (padrão: 30min)
-- `TMS_INTEGRATION_URL` — Sistema TMS logístico
-- `ROUTE_OPTIMIZATION_API` — Google Directions/OpenRoute
-- `DELIVERY_WEBHOOK_URL` — Webhook comprovante entrega
-- `VEHICLE_TRACKING_TOKEN` — Token rastreamento veículos
+- `GPS_TRACKING_INTERVAL` — intervalo telemetria (padrão: 30min)
+- `TMS_INTEGRATION_URL` — sistema TMS logístico
+- `ROUTE_OPTIMIZATION_API` — serviço de rotas e direções aprovado
+- `DELIVERY_WEBHOOK_URL` — webhook comprovante entrega
+- `VEHICLE_TRACKING_TOKEN` — token rastreamento veículos
+
+> Variáveis e descrições ajustadas para remover marcas legadas e manter vocabulário neutro do manual de marca.
 
 ### Fiscal e ESG ([REQ-120](../02-planejamento/requisitos-spec.md#req-120), [REQ-121](../02-planejamento/requisitos-spec.md#req-121))
 - `SEFAZ_CERTIFICATE_PATH` — Certificado A1/A3 SEFAZ
