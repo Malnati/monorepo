@@ -63,6 +63,12 @@ A documentação e os ativos técnicos estão organizados em diretórios especia
 - Critérios e planos de teste derivados de novos requisitos devem ser refletidos em [`docs/rup/04-testes-e-validacao/`](./docs/rup/04-testes-e-validacao/), garantindo cobertura desde estratégia geral até cenários ponta a ponta e validação de marcos.
 - Sempre que o requisito implicar em processos de entrega, governança ou UX, vincule atualizações adicionais nos diretórios correspondentes ([`docs/rup/05-entrega-e-implantacao`](./docs/rup/05-entrega-e-implantacao/), [`docs/rup/06-governanca-tecnica-e-controle-de-qualidade`](./docs/rup/06-governanca-tecnica-e-controle-de-qualidade/), [`docs/rup/06-ux-brand`](./docs/rup/06-ux-brand/)) para manter a rastreabilidade completa do ciclo de vida.
 
+## Orientação para o plano de limpeza
+
+- Siga o roteiro em [`docs/rup/99-anexos/MVP/plano-limpeza.md`](./docs/rup/99-anexos/MVP/plano-limpeza.md) para remover referências legadas e padronizar requisitos e riscos.
+- Registre inventários, substituições e reclassificações nos artefatos indicados pelo plano, mantendo os cabeçalhos de caminho intactos em cada arquivo atualizado.
+- Ao concluir cada etapa, documente evidências no changelog e sincronize o `README.md` com orientações de uso para o time, garantindo que novos membros encontrem rapidamente o processo de limpeza e governança vigente.
+
 ## Governança e contribuição
 
 Todos os artefatos devem seguir as políticas descritas em [`AGENTS.md`](./AGENTS.md). Para sugestões ou ajustes, consulte as diretrizes na [seção de contribuição](./docs/rup/07-contribuicao/README.md) antes de abrir mudanças. Lembre-se de atualizar o [`CHANGELOG`](./CHANGELOG) e, quando aplicável, os checklists em [`docs/checklists/`](./docs/checklists/) para refletir alterações aprovadas.
