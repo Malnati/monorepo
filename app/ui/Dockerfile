@@ -16,15 +16,14 @@ ARG VITE_API_BASE_URL
 ARG VITE_GOOGLE_CLIENT_ID
 
 # Instalar dependências
-COPY app/ui/package*.json ./
-# Usar npm ci se package-lock.json existir, caso contrário usar npm install
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi && npm cache clean --force
-
-# Copiar shared-constants primeiro (necessário para o build)
-COPY shared-constants ./shared-constants
+COPY package*.json ./
+# Limpar cache e instalar dependências com retry
+RUN npm cache clean --force && \
+    npm install --no-audit --no-fund || \
+    (npm cache clean --force && npm install --no-audit --no-fund)
 
 # Copiar código fonte do UI
-COPY app/ui .
+COPY . .
 
 # Build da aplicação
 # Variáveis VITE_* são necessárias em build-time (não runtime)

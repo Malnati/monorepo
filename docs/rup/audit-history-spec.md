@@ -1,10 +1,10 @@
 <!-- docs/rup/audit-history.md -->
-# 🧾 Histórico de Auditoria da rup — App — CLImate INvestment
+# 🧾 Histórico de Auditoria da rup — Template de Projeto Multiplataforma
 
 > Base: [./audit-history.md](./audit-history.md)
 
 
-Este registro consolida todos os ciclos de revisão, validação e auditoria executados no diretório `docs/rup/` do App. Cada entrada indica o contexto auditado, o agente responsável e o status da revisão, garantindo rastreabilidade integral com relatórios e issues correspondentes.
+Este registro consolida todos os ciclos de revisão, validação e auditoria executados no diretório `docs/rup/` do Template. Cada entrada indica o contexto auditado, o agente responsável e o status da revisão, garantindo rastreabilidade integral com relatórios e issues correspondentes.
 
 ---
 
@@ -12,7 +12,7 @@ Este registro consolida todos os ciclos de revisão, validação e auditoria exe
 
 | Data | Commit/Entrega | Issue | Agente | Status |
 |------|----------------|-------|--------|--------|
-| 2025-10-20 | Migração dos artefatos RUP para o App (commit pendente de SHA) | Aguardando registro em issue governança | gpt-5-codex (OpenAI) | 🚧 Em andamento |
+| 2025-10-20 | Migração dos artefatos RUP para o Template (commit pendente de SHA) | Aguardando registro em issue governança | gpt-5-codex (OpenAI) | 🚧 Em andamento |
 
 ---
 

@@ -2,9 +2,9 @@
 # Checklist de Visão Estratégica e Escopo
 
 ## Visão do Produto
-- [ ] Confirmar que a extensão Chrome intercepta downloads de laudos PDF, envia às APIs MBRA e distribui tokens de diagnóstico com relatórios PDF e áudio.
+- [ ] Confirmar que a extensão Chrome intercepta downloads de documentos, envia às APIs da organização e distribui tokens de diagnóstico com relatórios PDF e áudio.
 - [ ] Garantir que benefícios estratégicos (redução de análise manual, distribuição omnicanal, rastreabilidade completa) estejam evidenciados na solução entregue.
-- [ ] Validar premissas: APIs MBRA disponíveis, modelos de IA governados, permissões Chrome homologadas e catálogo de destinatários mantido pela MBRA.
+- [ ] Validar premissas: APIs da organização disponíveis, modelos de IA governados, permissões Chrome homologadas e catálogo de destinatários mantido pela organização.
 - [ ] Verificar limitações respeitadas: somente Google Chrome Manifest V3, modelos de IA sujeitos a validação clínica, canais homologados e análise prévia para novos formatos/portais.
 
 ## Escopo e Entregáveis
@@ -14,13 +14,13 @@
 - [ ] Validar critérios de sucesso: interceptação automática, geração de relatórios com token único, notificações confirmadas e cumprimento da LGPD.
 
 ## Stakeholders e Responsabilidades
-- [ ] Garantir que governança MBRA esteja ativa como controladora e mantenedora do produto.
+- [ ] Garantir que governança da organização esteja ativa como controladora e mantenedora do produto.
 - [ ] Validar que laboratórios/hospitais possam configurar destinatários, consentimentos e revisar diagnósticos.
 - [ ] Confirmar que operadores da extensão recebem instruções claras para habilitar interceptação e apoiar usuários finais.
 - [ ] Assegurar que destinatários notificados (médicos, pacientes, integrações) possuem fluxo para consumir tokens e confirmar recebimento.
 
 ## Diretrizes de LGPD
-- [ ] Checar base legal aplicada (legítimo interesse e execução contratual) e identificação da controladora (MBRA).
+- [ ] Checar base legal aplicada (legítimo interesse e execução contratual) e identificação da controladora (organização).
 - [ ] Validar que dados tratados limitam-se a JWT, identificadores de sessão e contatos fornecidos voluntariamente.
 - [ ] Confirmar finalidade restrita (autenticação, upload e notificação sem armazenamento externo) e armazenamento apenas local (IndexedDB).
 - [ ] Verificar que consentimento é exibido antes do login, versionado e reapresentado a cada atualização de política.
@@ -28,4 +28,4 @@
 - [ ] Certificar que domínio operacional permanece `https://dominio.com.br` (com equivalentes DEV/HML/PRD).
 
 ## Comunicação Estratégica
-- [ ] Registrar revisão periódica da política LGPD pela MBRA e comunicação contínua com stakeholders conforme cronograma interno.
+- [ ] Registrar revisão periódica da política LGPD pela organização e comunicação contínua com stakeholders conforme cronograma interno.

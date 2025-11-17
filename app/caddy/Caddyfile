@@ -4,14 +4,14 @@
 
 {
 	# Configuração global
-	email admin@dominio.com.br
+	email admin@example.com
 	# HTTPS automático via Let's Encrypt está habilitado por padrão
 }
 
 # Redirecionamento HTTP para HTTPS (produção)
 :80 {
 	@production {
-		host app.dominio.com.br
+		host app.example.com
 	}
 	handle @production {
 		redir https://app.dominio.com.br{uri} permanent

@@ -4,11 +4,11 @@
 > Base: [./especificacao-de-requisitos.md](./especificacao-de-requisitos.md)
 
 
-**Projeto:** App — CLImate INvestment (plataforma bancária climática digital)
-**Organização:** Millennium Brasil (MBRA)
+**Projeto:** Template de Projeto Multiplataforma (plataforma digital corporativa)
+**Organização:** Template Corporation
 
 Esta página consolida todos os requisitos do projeto conforme a metodologia **Rational Unified Process (RUP)**.
-Cada requisito é identificado, classificado e vinculado às fases subsequentes do ciclo de desenvolvimento (Arquitetura, Design, Testes e Governança), garantindo rastreabilidade com a matriz de riscos, relatórios socioambientais e indicadores de impacto climático do App.
+Cada requisito é identificado, classificado e vinculado às fases subsequentes do ciclo de desenvolvimento (Arquitetura, Design, Testes e Governança), garantindo rastreabilidade com a matriz de riscos e indicadores de qualidade da aplicação.
 
 ---
 
@@ -16,10 +16,10 @@ Cada requisito é identificado, classificado e vinculado às fases subsequentes 
 
 Os requisitos estão organizados nas seguintes categorias:
 
-1. **Requisitos Funcionais (RF)** — descrevem o comportamento esperado da plataforma App nos canais digitais, APIs e integrações climáticas.
+1. **Requisitos Funcionais (RF)** — descrevem o comportamento esperado da plataforma nos canais digitais, APIs e integrações de negócio.
 2. **Requisitos Não Funcionais (RNF)** — abrangem desempenho, segurança e restrições.
 3. **Requisitos Técnicos (RT)** — tratam da arquitetura, compatibilidade e integração.
-4. **Requisitos Legais e de Conformidade (RL)** — garantem aderência à LGPD, regulação do Banco Central (BACEN), políticas socioambientais e padrões corporativos MBRA.
+4. **Requisitos Legais e de Conformidade (RL)** — garantem aderência à LGPD, regulações aplicáveis, políticas de segurança e padrões corporativos.
 
 ---
 
@@ -70,7 +70,7 @@ Obrigações LGPD, diretrizes do BACEN, políticas de sustentabilidade e demais 
 
 ## 8. Responsabilidade técnica
 
-**Responsável:** Ricardo Malnati — Engenheiro de Software
-**Organização:** Millennium Brasil (MBRA)
+**Responsável:** Equipe de Engenharia — Desenvolvedores Sênior
+**Organização:** Template Corporation
 **Documento:** Especificação e Rastreabilidade de Requisitos
 **Status:** Ativo e sob revisão contínua

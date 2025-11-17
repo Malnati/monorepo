@@ -295,10 +295,10 @@ export class GmailService implements OnModuleInit {
                 Este é um e-mail automático da plataforma APP.
               </p>
               <p style="margin: 0 0 16px 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
-                Para dúvidas ou suporte, acesse: <a href="https://dominio.com.br" style="color: #00B5B8; text-decoration: none;">https://dominio.com.br</a>
+                Para dúvidas ou suporte, acesse: <a href="https://example.com" style="color: #00B5B8; text-decoration: none;">https://example.com</a>
               </p>
               <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
-                <strong>APP</strong> - CLImate INvestment<br>
+                <strong>APP</strong> - Template Corporation<br>
                 Conectando resíduos recicláveis a novas oportunidades.
               </p>
             </td>

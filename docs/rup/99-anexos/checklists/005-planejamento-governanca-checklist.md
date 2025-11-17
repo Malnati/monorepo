@@ -16,7 +16,7 @@
 ## Governança e Capacidade Colaborativa
 - [ ] Garantir que o plano de governança descreve ritos, papéis e decisões (comitês, aprovação clínica, auditoria técnica).
 - [ ] Verificar aderência à capacidade de diagnóstico colaborativo (`REQ-031` a `REQ-045`), incluindo sincronização com riscos e relatórios.
-- [ ] Confirmar que fluxos de aprovação, onboarding e auditoria refletem as diretrizes corporativas da MBRA.
+- [ ] Confirmar que fluxos de aprovação, onboarding e auditoria refletem as diretrizes corporativas da organização.
 
 ## Riscos e Mitigações
 - [ ] Revisar matriz `riscos-e-mitigacoes.md`, garantindo que cada risco possui ID `RISK-###`, descrição, probabilidade, impacto, plano de mitigação e responsável.

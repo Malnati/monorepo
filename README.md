@@ -1,7 +1,7 @@
 <!-- README.md -->
-# App — CLImate INvestment
+# Template de Projeto Multiplataforma
 
-O **App — CLImate INvestment** é uma iniciativa da **Millennium Brasil (MBRA)** para estruturar um App focado em impacto climático, reciclagem em larga escala e financiamento verde. Este repositório concentra os artefatos oficiais do ciclo RUP (Rational Unified Process), assegurando rastreabilidade, governança técnica e conformidade regulatória.
+O **Template de Projeto Multiplataforma** é uma estrutura base para desenvolvimento de aplicações corporativas, seguindo as melhores práticas de engenharia de software. Este repositório concentra os artefatos oficiais do ciclo RUP (Rational Unified Process), assegurando rastreabilidade, governança técnica e conformidade regulatória.
 
 ## Panorama geral
 
@@ -51,7 +51,7 @@ A documentação e os ativos técnicos estão organizados em diretórios especia
 
 - [`docs/checklists/`](./docs/checklists/) – checklists operacionais e de QA que devem ser referenciados nos planos de auditoria, mantendo rastreabilidade direta com as diretrizes de governança descritas em [`AGENTS.md`](./AGENTS.md).
 - [`landing/`](./landing/) – front-end de divulgação e experimentação, documentado em [`landing/README.md`](./landing/README.md).
-- [`holding-page/`](./holding-page/) – página estática temporária exibindo a mensagem oficial de lançamento no domínio público dominio.com.br`.
+- [`holding-page/`](./holding-page/) – página estática temporária exibindo a mensagem oficial de lançamento no domínio público example.com`.
 - [`CHANGELOG`](./CHANGELOG) – registro resumido das alterações efetuadas.
 - [`prompt-codex-app.md`](./prompt-codex-app.md) – instruções para agentes automatizados.
 
@@ -63,11 +63,33 @@ A documentação e os ativos técnicos estão organizados em diretórios especia
 - Critérios e planos de teste derivados de novos requisitos devem ser refletidos em [`docs/rup/04-testes-e-validacao/`](./docs/rup/04-testes-e-validacao/), garantindo cobertura desde estratégia geral até cenários ponta a ponta e validação de marcos.
 - Sempre que o requisito implicar em processos de entrega, governança ou UX, vincule atualizações adicionais nos diretórios correspondentes ([`docs/rup/05-entrega-e-implantacao`](./docs/rup/05-entrega-e-implantacao/), [`docs/rup/06-governanca-tecnica-e-controle-de-qualidade`](./docs/rup/06-governanca-tecnica-e-controle-de-qualidade/), [`docs/rup/06-ux-brand`](./docs/rup/06-ux-brand/)) para manter a rastreabilidade completa do ciclo de vida.
 
-## Orientação para o plano de limpeza
+## Plano de Limpeza Executado
 
-- Siga o roteiro em [`docs/rup/99-anexos/MVP/plano-limpeza.md`](./docs/rup/99-anexos/MVP/plano-limpeza.md) para remover referências legadas e padronizar requisitos e riscos.
-- Registre inventários, substituições e reclassificações nos artefatos indicados pelo plano, mantendo os cabeçalhos de caminho intactos em cada arquivo atualizado.
-- Ao concluir cada etapa, documente evidências no changelog e sincronize o `README.md` com orientações de uso para o time, garantindo que novos membros encontrem rapidamente o processo de limpeza e governança vigente.
+**Status:** ✅ Concluído em 2025-11-17
+
+### O que foi limpo
+- **Nomes legados:** "App — CLImate INvestment" → "Template de Projeto Multiplataforma"
+- **Organização:** "Millennium Brasil (MBRA)" → "Template Corporation"  
+- **Domínios:** "dominio.com.br" → "example.com"
+- **Termos específicos:** "marketplace de resíduos", "créditos de carbono", "plataforma bancária climática" → descrições genéricas
+
+### Arquivos principais atualizados
+- Documentação: README.md, docs/rup/README*.md, especificações de requisitos
+- Configuração: docker-compose.yml, arquivos .env.example
+- Código: serviços de e-mail, agentes de IA, templates de comunicação
+- Checklists: referências corporativas e de governança
+
+### Como usar este template
+1. **Clone o repositório** para seu novo projeto
+2. **Substitua "Template Corporation"** pelo nome da sua organização
+3. **Atualize "example.com"** para seus domínios reais
+4. **Adapte os requisitos genéricos** (REQ-###) para seu caso de uso específico
+5. **Configure as variáveis de ambiente** conforme sua infraestrutura
+
+### Para novos times
+- Consulte o changelog completo: [`CHANGELOG/20251117204729.md`](./CHANGELOG/20251117204729.md)
+- Siga as diretrizes em [`AGENTS.md`](./AGENTS.md) para desenvolvimento
+- Use os checklists em [`docs/rup/99-anexos/checklists/`](./docs/rup/99-anexos/checklists/) para validação
 
 ## Governança e contribuição
 
@@ -75,4 +97,4 @@ Todos os artefatos devem seguir as políticas descritas em [`AGENTS.md`](./AGENT
 
 ---
 
-© Millennium Brasil (MBRA) — uso corporativo restrito. A documentação deve ser mantida atualizada conforme auditorias e revisões periódicas do programa App.
+© Template Corporation — uso corporativo restrito. A documentação deve ser mantida atualizada conforme auditorias e revisões periódicas do programa.

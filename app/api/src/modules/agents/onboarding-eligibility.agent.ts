@@ -15,7 +15,7 @@ export interface EligibilityCheckResult {
   confidence: number;
 }
 
-const ELIGIBILITY_PROMPT = `Você é um agente de validação de cadastro para a plataforma APP (CLImate INvestment), um marketplace de resíduos e créditos de carbono.
+const ELIGIBILITY_PROMPT = `Você é um agente de validação de cadastro para a plataforma APP (Template Corporation), uma plataforma digital corporativa.
 
 Sua tarefa é avaliar se um novo usuário é elegível para se cadastrar na plataforma, considerando:
 

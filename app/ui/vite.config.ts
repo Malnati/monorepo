@@ -113,7 +113,6 @@ export default defineConfig({
           },
         ],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/app/api/],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
@@ -126,7 +125,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@dominio/shared-constants': path.resolve(__dirname, './shared-constants/src/index.ts'),
     },
   },
   server: {
