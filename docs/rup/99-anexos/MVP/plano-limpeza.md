@@ -6,7 +6,7 @@ Remover vestígios do projeto anterior, padronizar requisitos e deixar o reposit
 
 ## Premissas
 - Preservar a estrutura RUP e os cabeçalhos de caminho em todos os arquivos.
-- Sincronizar referências com `docs/rup/02-planejamento/especificacao-de-requisitos.md` e `docs/rup/02-planejamento/riscos-e-mitigacoes-spec.md`.
+- Sincronizar referências com [`especificacao-de-requisitos.md`](../../02-planejamento/especificacao-de-requisitos.md) e [`riscos-e-mitigacoes-spec.md`](../../02-planejamento/riscos-e-mitigacoes-spec.md).
 - Documentar mudanças textuais e justificar simplificações nas revisões.
 
 ## Sequência de Ações
