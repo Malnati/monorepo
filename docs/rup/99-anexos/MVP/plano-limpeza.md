@@ -16,6 +16,7 @@ Remover vestígios do projeto anterior, padronizar requisitos e deixar o reposit
 4. **Atualização de anexos e checklists:** alinhar referências e IDs (`REQ-###`, `RISK-###`) para refletir o estado de template.
 5. **Validação de conformidade:** confirmar cabeçalhos de caminho, estrutura `docs/rup/` e consistência com auditorias de IA.
 6. **Registro e governança:** resumir alterações no changelog e citar impactos em auditorias automáticas.
+7. **Orientação do time no README:** atualizar o `README.md` da raiz com instruções claras sobre o plano de limpeza, destacando como executar as tarefas e onde registrar evidências.
 
 ## Saídas Esperadas
 - Repositório sem menções ao projeto anterior.
