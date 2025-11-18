@@ -1,0 +1,41 @@
+# .github/workflows/prettier.yml
+name: Prettier Formatting
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  run-prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          fetch-depth: 0
+
+      - name: Run Prettier action
+        uses: creyD/prettier_action@v4.6
+        with:
+          dry: false
+          no_commit: false
+          prettier_version: latest
+          working_directory: .
+          prettier_options: "--ignore-path .github/workflows/.prettierignore --write ui/ api/ extension/"
+          commit_message: "chore: format code with Prettier"
+          commit_description: "Automated code formatting using Prettier action."
+          same_commit: false
+          clean_node_folder: true
+          git_identity: actions
+          allow_other_plugins: false
+          only_changed: false
+          only_changed_pr: false
+          commit_options: ""
+          push_options: ""
+          file_pattern: "*"
+          prettier_plugins: ""
+          github_token: ${{ secrets.COPILOT_PAT }}
