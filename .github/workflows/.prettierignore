@@ -73,3 +73,7 @@ docker-compose*.yaml
 
 # CI/CD files
 .github/
+
+# GitHub Workflows - arquivos de documentação e logs
+.github/workflows/*.md
+.github/workflows/*.log
