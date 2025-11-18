@@ -42,5 +42,10 @@ format-prettier:
 	fi
 
 install-hooks:
-	@echo "📝 Instalando git hooks..."
-	@bash scripts/install-git-hooks.sh
+	@if command -v bash >/dev/null 2>&1; then \
+		echo "📝 Instalando git hooks..."; \
+		bash scripts/install-git-hooks.sh; \
+	else \
+		echo "❌ Erro: bash não encontrado. Execute diretamente: bash scripts/install-git-hooks.sh"; \
+		exit 1; \
+	fi

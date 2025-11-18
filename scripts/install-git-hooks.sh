@@ -108,5 +108,12 @@ HOOK_EOF
 chmod +x "$PRE_PUSH_HOOK"
 
 echo -e "${GREEN}✅ Git hook pre-push instalado com sucesso!${NC}"
+echo ""
 echo -e "${BLUE}💡 O hook será executado automaticamente antes de cada push.${NC}"
 echo -e "${BLUE}💡 Para desabilitar temporariamente: chmod -x $PRE_PUSH_HOOK${NC}"
+echo -e "${BLUE}💡 Para reabilitar: chmod +x $PRE_PUSH_HOOK${NC}"
+echo ""
+echo -e "${GREEN}📚 Formas de executar este script:${NC}"
+echo -e "   ${YELLOW}1.${NC} Diretamente: ${BLUE}bash scripts/install-git-hooks.sh${NC}"
+echo -e "   ${YELLOW}2.${NC} Via wrapper: ${BLUE}./install-hooks.sh${NC}"
+echo -e "   ${YELLOW}3.${NC} Via Makefile: ${BLUE}make install-hooks${NC} (se make estiver instalado)"
