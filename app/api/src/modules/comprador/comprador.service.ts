@@ -1,8 +1,8 @@
 // app/api/src/modules/comprador/comprador.service.ts
-import { Injectable, NotFoundException, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CompradorEntity } from './comprador.entity';
+import { Injectable, NotFoundException, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CompradorEntity } from "./comprador.entity";
 
 @Injectable()
 export class CompradorService {
@@ -14,23 +14,43 @@ export class CompradorService {
   ) {}
 
   async findOne(id: number, userId: number | null): Promise<CompradorEntity> {
-    this.logger.log(`findOne - User: ${userId || 'anonymous'} - Comprador ID: ${id}`);
+    this.logger.log(
+      `findOne - User: ${userId || "anonymous"} - Comprador ID: ${id}`,
+    );
     const comprador = await this.compradorRepository.findOne({ where: { id } });
     if (!comprador) {
-      this.logger.warn(`findOne - User: ${userId || 'anonymous'} - Comprador ID: ${id} not found`);
+      this.logger.warn(
+        `findOne - User: ${userId || "anonymous"} - Comprador ID: ${id} not found`,
+      );
       throw new NotFoundException(`Comprador com ID ${id} não encontrado`);
     }
-    this.logger.log(`findOne - User: ${userId || 'anonymous'} - Comprador ID: ${id} found`);
+    this.logger.log(
+      `findOne - User: ${userId || "anonymous"} - Comprador ID: ${id} found`,
+    );
     return comprador;
   }
 
-  async create(nome: string, email?: string, avatar?: Buffer | null): Promise<CompradorEntity> {
-    const comprador = this.compradorRepository.create({ nome, email, avatar: avatar || undefined });
+  async create(
+    nome: string,
+    email?: string,
+    avatar?: Buffer | null,
+  ): Promise<CompradorEntity> {
+    const comprador = this.compradorRepository.create({
+      nome,
+      email,
+      avatar: avatar || undefined,
+    });
     return await this.compradorRepository.save(comprador);
   }
 
-  async findOrCreate(nome: string, email?: string, avatar?: Buffer | null): Promise<CompradorEntity> {
-    const existing = await this.compradorRepository.findOne({ where: { nome } });
+  async findOrCreate(
+    nome: string,
+    email?: string,
+    avatar?: Buffer | null,
+  ): Promise<CompradorEntity> {
+    const existing = await this.compradorRepository.findOne({
+      where: { nome },
+    });
     if (existing) {
       // Atualizar email e avatar se não existirem mas estiverem disponíveis
       let needsUpdate = false;

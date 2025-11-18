@@ -1,16 +1,16 @@
 // app/job/src/main.ts
 
-import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger } from '@nestjs/common';
-import { AppModule } from './app.module';
+import { NestFactory } from "@nestjs/core";
+import { ValidationPipe, Logger } from "@nestjs/common";
+import { AppModule } from "./app.module";
 
 const DEFAULT_PORT = 3002;
 
 async function bootstrap() {
-  const logger = new Logger('Bootstrap');
-  
+  const logger = new Logger("Bootstrap");
+
   const app = await NestFactory.create(AppModule, {
-    logger: ['log', 'error', 'warn', 'debug', 'verbose'],
+    logger: ["log", "error", "warn", "debug", "verbose"],
   });
 
   app.useGlobalPipes(

@@ -1,14 +1,14 @@
 // app/job/src/app.service.ts
 
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class AppService {
   getHealth() {
     return {
-      status: 'ok',
+      status: "ok",
       timestamp: new Date().toISOString(),
-      service: 'job',
+      service: "job",
     };
   }
 }

@@ -1,13 +1,13 @@
 // app/ui/src/components/StaticMap.tsx
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { GoogleMap } from '@react-google-maps/api';
-import { useGoogleMaps } from '../contexts/GoogleMapsContext';
-import { useAdvancedMarker } from '../hooks/useAdvancedMarker';
-import { createMarkerContent } from './MarkerIcon';
+import { useEffect, useRef, useState, useCallback } from "react";
+import { GoogleMap } from "@react-google-maps/api";
+import { useGoogleMaps } from "../contexts/GoogleMapsContext";
+import { useAdvancedMarker } from "../hooks/useAdvancedMarker";
+import { createMarkerContent } from "./MarkerIcon";
 
 const MAP_CONTAINER_STYLE = {
-  width: '100%',
-  height: '300px',
+  width: "100%",
+  height: "300px",
 };
 
 interface StaticMapProps {
@@ -16,11 +16,18 @@ interface StaticMapProps {
   label?: string;
 }
 
-export default function StaticMap({ latitude, longitude, label }: StaticMapProps) {
+export default function StaticMap({
+  latitude,
+  longitude,
+  label,
+}: StaticMapProps) {
   const { isLoaded } = useGoogleMaps();
-  const { markerLibrary, loading: markerLibraryLoading } = useAdvancedMarker(isLoaded);
+  const { markerLibrary, loading: markerLibraryLoading } =
+    useAdvancedMarker(isLoaded);
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(
+    null,
+  );
 
   const onMapLoad = useCallback((mapInstance: google.maps.Map) => {
     setMap(mapInstance);
@@ -40,7 +47,7 @@ export default function StaticMap({ latitude, longitude, label }: StaticMapProps
     // Validar coordenadas válidas (latitude e longitude devem estar entre -90 e 90, e -180 e 180 respectivamente)
     const isValidLat = latitude >= -90 && latitude <= 90 && latitude !== 0;
     const isValidLng = longitude >= -180 && longitude <= 180 && longitude !== 0;
-    
+
     if (!isValidLat || !isValidLng) {
       return;
     }
@@ -49,16 +56,16 @@ export default function StaticMap({ latitude, longitude, label }: StaticMapProps
 
     // Criar novo marcador
     const content = createMarkerContent({
-      color: '#28a745',
+      color: "#28a745",
       scale: 1,
-      ariaLabel: label || 'Localização',
+      ariaLabel: label || "Localização",
     });
 
     const marker = new markerLibrary.AdvancedMarkerElement({
       map,
       position: center,
       content,
-      title: label || 'Localização',
+      title: label || "Localização",
     });
 
     markerRef.current = marker;
@@ -94,7 +101,7 @@ export default function StaticMap({ latitude, longitude, label }: StaticMapProps
   // Validar coordenadas válidas (latitude e longitude devem estar entre -90 e 90, e -180 e 180 respectivamente)
   const isValidLat = latitude >= -90 && latitude <= 90 && latitude !== 0;
   const isValidLng = longitude >= -180 && longitude <= 180 && longitude !== 0;
-  
+
   if (!isValidLat || !isValidLng) {
     return (
       <div className="w-full h-72 flex items-center justify-center rounded-lg border border-background-light dark:border-background-dark bg-card-light dark:bg-card-dark">
@@ -110,19 +117,18 @@ export default function StaticMap({ latitude, longitude, label }: StaticMapProps
   return (
     <div className="w-full rounded-lg overflow-hidden border border-background-light dark:border-background-dark">
       <GoogleMap
-          mapContainerStyle={MAP_CONTAINER_STYLE}
-          center={center}
-          zoom={15}
-          onLoad={onMapLoad}
-          options={{
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
-            zoomControl: true,
-            mapId: 'DEMO_MAP_ID',
-          }}
-        />
+        mapContainerStyle={MAP_CONTAINER_STYLE}
+        center={center}
+        zoom={15}
+        onLoad={onMapLoad}
+        options={{
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false,
+          zoomControl: true,
+          mapId: "DEMO_MAP_ID",
+        }}
+      />
     </div>
   );
 }
-

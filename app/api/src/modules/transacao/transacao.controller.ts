@@ -1,10 +1,21 @@
 // app/api/src/modules/transacao/transacao.controller.ts
-import { Controller, Get, Post, Body, Param, HttpCode, HttpStatus, BadRequestException, UseGuards, Request } from '@nestjs/common';
-import { TransacaoService } from './transacao.service';
-import { CreateTransacaoDto } from './transacao.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  HttpCode,
+  HttpStatus,
+  BadRequestException,
+  UseGuards,
+  Request,
+} from "@nestjs/common";
+import { TransacaoService } from "./transacao.service";
+import { CreateTransacaoDto } from "./transacao.dto";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
-@Controller('transacoes')
+@Controller("transacoes")
 export class TransacaoController {
   constructor(private readonly transacaoService: TransacaoService) {}
 
@@ -23,12 +34,14 @@ export class TransacaoController {
     return this.transacaoService.findAllByUserId(userId);
   }
 
-  @Get(':id')
+  @Get(":id")
   @UseGuards(JwtAuthGuard)
-  findOne(@Param('id') id: string, @Request() req: any) {
+  findOne(@Param("id") id: string, @Request() req: any) {
     const parsedId = parseInt(id, 10);
     if (isNaN(parsedId) || parsedId <= 0) {
-      throw new BadRequestException(`ID inválido: ${id}. Deve ser um número inteiro positivo.`);
+      throw new BadRequestException(
+        `ID inválido: ${id}. Deve ser um número inteiro positivo.`,
+      );
     }
     const userId = req.user?.sub || req.user?.id || null;
     return this.transacaoService.findOne(parsedId, userId);

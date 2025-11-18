@@ -1,7 +1,7 @@
 // app/ui/src/components/LoteCardSkeleton.tsx
 export default function LoteCardSkeleton() {
   return (
-    <div 
+    <div
       className="flex flex-col gap-4 rounded-xl bg-card-light dark:bg-card-dark p-4 shadow-sm animate-pulse"
       role="status"
       aria-label="Carregando lote"

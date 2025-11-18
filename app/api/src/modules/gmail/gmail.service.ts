@@ -1,13 +1,13 @@
 // app/api/src/modules/gmail/gmail.service.ts
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { google } from 'googleapis';
-import { 
-  GMAIL_CLIENT_ID, 
-  GMAIL_CLIENT_SECRET, 
-  GMAIL_REFRESH_TOKEN, 
+import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { google } from "googleapis";
+import {
+  GMAIL_CLIENT_ID,
+  GMAIL_CLIENT_SECRET,
+  GMAIL_REFRESH_TOKEN,
   GMAIL_SENDER,
-  validateGmailConfig
-} from '../../config/email.config';
+  validateGmailConfig,
+} from "../../config/email.config";
 
 interface TransactionEmailPayload {
   fornecedor: {
@@ -40,8 +40,11 @@ export class GmailService implements OnModuleInit {
     try {
       validateGmailConfig();
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.logger.warn('Gmail configuration incomplete - email notifications will be disabled');
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      this.logger.warn(
+        "Gmail configuration incomplete - email notifications will be disabled",
+      );
       this.logger.warn(errorMessage);
     }
   }
@@ -55,16 +58,16 @@ export class GmailService implements OnModuleInit {
       this.oauth2Client = new google.auth.OAuth2(
         GMAIL_CLIENT_ID,
         GMAIL_CLIENT_SECRET,
-        'urn:ietf:wg:oauth:2.0:oob'
+        "urn:ietf:wg:oauth:2.0:oob",
       );
 
       this.oauth2Client.setCredentials({
         refresh_token: GMAIL_REFRESH_TOKEN,
       });
 
-      this.logger.log('OAuth2 client initialized successfully');
+      this.logger.log("OAuth2 client initialized successfully");
     } catch (error) {
-      this.logger.error('Failed to initialize OAuth2 client', error);
+      this.logger.error("Failed to initialize OAuth2 client", error);
       throw error;
     }
   }
@@ -77,17 +80,21 @@ export class GmailService implements OnModuleInit {
    */
   async sendTransactionSuccessEmail(
     payload: TransactionEmailPayload,
-    recipient: 'fornecedor' | 'comprador'
+    recipient: "fornecedor" | "comprador",
   ): Promise<{ success: boolean; messageId?: string; error?: string }> {
-    const recipientData = recipient === 'fornecedor' ? payload.fornecedor : payload.comprador;
-    const otherParty = recipient === 'fornecedor' ? payload.comprador : payload.fornecedor;
-    const otherPartyLabel = recipient === 'fornecedor' ? 'Comprador' : 'Fornecedor';
-    const recipientEmail = recipientData.email || '';
+    const recipientData =
+      recipient === "fornecedor" ? payload.fornecedor : payload.comprador;
+    const otherParty =
+      recipient === "fornecedor" ? payload.comprador : payload.fornecedor;
+    const otherPartyLabel =
+      recipient === "fornecedor" ? "Comprador" : "Fornecedor";
+    const recipientEmail = recipientData.email || "";
 
     try {
-
       if (!recipientData.email) {
-        this.logger.warn(`No email found for ${recipient} in transaction ${payload.transacao_id}`);
+        this.logger.warn(
+          `No email found for ${recipient} in transaction ${payload.transacao_id}`,
+        );
         return {
           success: false,
           error: `Email não cadastrado para ${recipient}`,
@@ -95,18 +102,23 @@ export class GmailService implements OnModuleInit {
       }
 
       const subject = `Confirmação de Transação #${payload.transacao_id} - APP`;
-      const emailBody = this.buildEmailBody(payload, recipient, otherParty, otherPartyLabel);
+      const emailBody = this.buildEmailBody(
+        payload,
+        recipient,
+        otherParty,
+        otherPartyLabel,
+      );
 
-      const gmail = google.gmail({ version: 'v1', auth: this.oauth2Client });
+      const gmail = google.gmail({ version: "v1", auth: this.oauth2Client });
 
       const rawMessage = this.createRawMessage(
         recipientData.email,
         subject,
-        emailBody
+        emailBody,
       );
 
       this.logger.log({
-        event: 'gmail.send.attempt',
+        event: "gmail.send.attempt",
         transacao_id: payload.transacao_id,
         recipient_type: recipient,
         recipient_email: recipientData.email,
@@ -114,7 +126,7 @@ export class GmailService implements OnModuleInit {
       });
 
       const response = await gmail.users.messages.send({
-        userId: 'me',
+        userId: "me",
         requestBody: {
           raw: rawMessage,
         },
@@ -123,7 +135,7 @@ export class GmailService implements OnModuleInit {
       const messageId = response.data.id || undefined;
 
       this.logger.log({
-        event: 'gmail.send',
+        event: "gmail.send",
         success: true,
         transacao_id: payload.transacao_id,
         recipient_type: recipient,
@@ -137,14 +149,16 @@ export class GmailService implements OnModuleInit {
         messageId,
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       const errorStack = error instanceof Error ? error.stack : undefined;
-      const errorDetails = error instanceof Error && 'response' in error 
-        ? (error as any).response?.data 
-        : undefined;
+      const errorDetails =
+        error instanceof Error && "response" in error
+          ? (error as any).response?.data
+          : undefined;
 
       this.logger.error({
-        event: 'gmail.send',
+        event: "gmail.send",
         success: false,
         transacao_id: payload.transacao_id,
         recipient_type: recipient,
@@ -168,42 +182,44 @@ export class GmailService implements OnModuleInit {
    */
   private buildEmailBody(
     payload: TransactionEmailPayload,
-    recipient: 'fornecedor' | 'comprador',
+    recipient: "fornecedor" | "comprador",
     otherParty: { nome: string; email: string; whatsapp?: string },
-    otherPartyLabel: string
+    otherPartyLabel: string,
   ): string {
-    const isSupplier = recipient === 'fornecedor';
-    const action = isSupplier ? 'vendeu' : 'comprou';
+    const isSupplier = recipient === "fornecedor";
+    const action = isSupplier ? "vendeu" : "comprou";
 
     // Sanitizar nomes para prevenir injeção de conteúdo
     const sanitizeName = (name: string): string => {
-      return name.replace(/[<>]/g, '').substring(0, 255);
+      return name.replace(/[<>]/g, "").substring(0, 255);
     };
 
-    const recipientName = sanitizeName(isSupplier ? payload.fornecedor.nome : payload.comprador.nome);
+    const recipientName = sanitizeName(
+      isSupplier ? payload.fornecedor.nome : payload.comprador.nome,
+    );
     const otherPartyName = sanitizeName(otherParty.nome);
     const loteName = sanitizeName(payload.lote.titulo);
 
     // Função para escapar HTML e prevenir XSS
     const escapeHtml = (text: string): string => {
       return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     };
 
     const nextSteps = isSupplier
       ? [
-          'Entre em contato com o comprador para combinar a entrega',
-          'Confirme os detalhes de pagamento',
-          'Acompanhe o status na plataforma APP',
+          "Entre em contato com o comprador para combinar a entrega",
+          "Confirme os detalhes de pagamento",
+          "Acompanhe o status na plataforma APP",
         ]
       : [
-          'Entre em contato com o fornecedor para combinar a retirada',
-          'Providencie o pagamento conforme acordado',
-          'Acompanhe o status na plataforma APP',
+          "Entre em contato com o fornecedor para combinar a retirada",
+          "Providencie o pagamento conforme acordado",
+          "Acompanhe o status na plataforma APP",
         ];
 
     return `
@@ -264,7 +280,7 @@ export class GmailService implements OnModuleInit {
                   <ul style="margin: 0; padding-left: 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">
                     <li style="margin-bottom: 8px;">Nome: ${escapeHtml(otherPartyName)}</li>
                     <li style="margin-bottom: 8px;">E-mail: <a href="mailto:${escapeHtml(otherParty.email)}" style="color: #00B5B8; text-decoration: none;">${escapeHtml(otherParty.email)}</a></li>
-                    ${otherParty.whatsapp ? `<li style="margin-bottom: 8px;">WhatsApp: <a href="https://wa.me/${otherParty.whatsapp.replace(/\D/g, '')}" style="color: #00B5B8; text-decoration: none;">${escapeHtml(otherParty.whatsapp)}</a></li>` : ''}
+                    ${otherParty.whatsapp ? `<li style="margin-bottom: 8px;">WhatsApp: <a href="https://wa.me/${otherParty.whatsapp.replace(/\D/g, "")}" style="color: #00B5B8; text-decoration: none;">${escapeHtml(otherParty.whatsapp)}</a></li>` : ""}
                   </ul>
                 </div>
               </div>
@@ -275,7 +291,7 @@ export class GmailService implements OnModuleInit {
                   Próximos Passos
                 </h2>
                 <ol style="margin: 0; padding-left: 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">
-                  ${nextSteps.map((step, index) => `<li style="margin-bottom: ${index < nextSteps.length - 1 ? '8px' : '0'};">${escapeHtml(step)}</li>`).join('')}
+                  ${nextSteps.map((step, index) => `<li style="margin-bottom: ${index < nextSteps.length - 1 ? "8px" : "0"};">${escapeHtml(step)}</li>`).join("")}
                 </ol>
               </div>
               
@@ -295,7 +311,7 @@ export class GmailService implements OnModuleInit {
                 Este é um e-mail automático da plataforma APP.
               </p>
               <p style="margin: 0 0 16px 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
-                Para dúvidas ou suporte, acesse: <a href="${process.env.APP_BASE_URL || 'https://template-monorepo.cranio.dev'}" style="color: #00B5B8; text-decoration: none;">${process.env.APP_BASE_URL || 'https://template-monorepo.cranio.dev'}</a>
+                Para dúvidas ou suporte, acesse: <a href="${process.env.APP_BASE_URL || "https://template-monorepo.cranio.dev"}" style="color: #00B5B8; text-decoration: none;">${process.env.APP_BASE_URL || "https://template-monorepo.cranio.dev"}</a>
               </p>
               <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
                 <strong>APP</strong> - Template Corporation<br>
@@ -318,13 +334,13 @@ export class GmailService implements OnModuleInit {
   private encodeSubject(subject: string): string {
     // Verificar se contém caracteres não-ASCII
     const hasNonAscii = /[^\x00-\x7F]/.test(subject);
-    
+
     if (!hasNonAscii) {
       return subject;
     }
 
     // Codificar em base64 com prefixo RFC 2047
-    const encoded = Buffer.from(subject, 'utf-8').toString('base64');
+    const encoded = Buffer.from(subject, "utf-8").toString("base64");
     return `=?UTF-8?B?${encoded}?=`;
   }
 
@@ -334,21 +350,21 @@ export class GmailService implements OnModuleInit {
    */
   private createRawMessage(to: string, subject: string, body: string): string {
     const encodedSubject = this.encodeSubject(subject);
-    
+
     const message = [
       `From: APP <${GMAIL_SENDER}>`,
       `To: ${to}`,
       `Subject: ${encodedSubject}`,
-      'Content-Type: text/html; charset=utf-8',
-      '',
+      "Content-Type: text/html; charset=utf-8",
+      "",
       body,
-    ].join('\n');
+    ].join("\n");
 
-    const encodedMessage = Buffer.from(message, 'utf-8')
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
+    const encodedMessage = Buffer.from(message, "utf-8")
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
 
     return encodedMessage;
   }

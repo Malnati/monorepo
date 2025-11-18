@@ -1,10 +1,16 @@
 // app/ui/src/contexts/AuthContext.tsx
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { jwtDecode } from 'jwt-decode';
-import { getMe } from '../services/auth.service';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { jwtDecode } from "jwt-decode";
+import { getMe } from "../services/auth.service";
 
-const TOKEN_KEY = 'accessToken';
-const USER_KEY = 'user';
+const TOKEN_KEY = "accessToken";
+const USER_KEY = "user";
 
 interface User {
   id: number;
@@ -98,7 +104,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, accessToken, login, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, accessToken, login, logout, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -107,7 +115,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

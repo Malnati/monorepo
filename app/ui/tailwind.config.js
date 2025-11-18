@@ -1,15 +1,12 @@
 // app/ui/tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
       colors: {
-        "primary": "rgb(40 167 69 / var(--tw-bg-opacity, 1))",
+        primary: "rgb(40 167 69 / var(--tw-bg-opacity, 1))",
         "background-light": "#f6f8f6",
         "background-dark": "#102210",
         "green-accent": "rgb(40 167 69 / var(--tw-bg-opacity, 1))",
@@ -31,15 +28,15 @@ export default {
         "feedback-error": "#dc2626",
       },
       fontFamily: {
-        "display": ["Manrope", "sans-serif"]
+        display: ["Manrope", "sans-serif"],
       },
       borderRadius: {
-        "DEFAULT": "0.5rem",
-        "lg": "0.75rem",
-        "xl": "1rem",
-        "full": "9999px"
+        DEFAULT: "0.5rem",
+        lg: "0.75rem",
+        xl: "1rem",
+        full: "9999px",
       },
     },
   },
   plugins: [],
-}
+};

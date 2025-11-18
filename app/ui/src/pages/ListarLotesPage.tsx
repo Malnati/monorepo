@@ -1,29 +1,37 @@
 // app/uisrc/pages/ListarLotesPage.tsx
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import api from '../services/api';
-import { Offer } from '../types';
-import MapWithMarkers from '../components/MapWithMarkers';
-import { MIN_LATITUDE, MAX_LATITUDE, MIN_LONGITUDE, MAX_LONGITUDE } from '../constants/coordinates';
-import BottomNavigation from '../components/BottomNavigation';
-import OfflineBanner from '../components/OfflineBanner';
-import OfferCard from '../components/OfferCard';
-import { ICON_MAP } from '../utils/icons';
+import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../services/api";
+import { Offer } from "../types";
+import MapWithMarkers from "../components/MapWithMarkers";
+import {
+  MIN_LATITUDE,
+  MAX_LATITUDE,
+  MIN_LONGITUDE,
+  MAX_LONGITUDE,
+} from "../constants/coordinates";
+import BottomNavigation from "../components/BottomNavigation";
+import OfflineBanner from "../components/OfflineBanner";
+import OfferCard from "../components/OfferCard";
+import { ICON_MAP } from "../utils/icons";
 
-const TITLE_TEXT = 'Ofertas';
-const LOGOUT_TEXT = 'Sair';
+const TITLE_TEXT = "Ofertas";
+const LOGOUT_TEXT = "Sair";
 
 export default function ListarLotesPage() {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [showMap, setShowMap] = useState(true);
   const [mapBounds, setMapBounds] = useState<string | null>(null);
 
-  const validateCoordinates = (latitude: number, longitude: number): boolean => {
+  const validateCoordinates = (
+    latitude: number,
+    longitude: number,
+  ): boolean => {
     return (
       !isNaN(latitude) &&
       !isNaN(longitude) &&
@@ -43,11 +51,11 @@ export default function ListarLotesPage() {
       if (mapBounds) {
         params.bounds = mapBounds;
       }
-      const response = await api.get('/app/api/offers', { params });
+      const response = await api.get("/app/api/offers", { params });
       // A API já retorna apenas ofertas sem transação (disponíveis para venda)
       setOffers(response.data.data || []);
     } catch (error) {
-      console.error('Erro ao carregar ofertas:', error);
+      console.error("Erro ao carregar ofertas:", error);
     } finally {
       setLoading(false);
     }
@@ -64,37 +72,49 @@ export default function ListarLotesPage() {
     }
   }, [showMap]);
 
-  const handleMarkerClick = useCallback((markerId: number) => {
-    navigate(`/offers/${markerId}`);
-  }, [navigate]);
+  const handleMarkerClick = useCallback(
+    (markerId: number) => {
+      navigate(`/offers/${markerId}`);
+    },
+    [navigate],
+  );
 
   const validMarkers = offers
     .filter((offer) => {
       // Exibir apenas localização aproximada (neighborhood ou city, NUNCA real)
-      const locationLayer = offer.locationLayers?.neighborhood || offer.locationLayers?.city;
-      const hasLocationLayer = locationLayer?.latitude && locationLayer?.longitude;
-      
+      const locationLayer =
+        offer.locationLayers?.neighborhood || offer.locationLayers?.city;
+      const hasLocationLayer =
+        locationLayer?.latitude && locationLayer?.longitude;
+
       if (hasLocationLayer) {
-        return validateCoordinates(locationLayer.latitude, locationLayer.longitude);
+        return validateCoordinates(
+          locationLayer.latitude,
+          locationLayer.longitude,
+        );
       }
 
       return false;
     })
     .map((offer) => {
       // Exibir apenas localização aproximada (neighborhood ou city, NUNCA real)
-      const locationLayer = offer.locationLayers?.neighborhood || offer.locationLayers?.city;
+      const locationLayer =
+        offer.locationLayers?.neighborhood || offer.locationLayers?.city;
       const latitude = locationLayer?.latitude;
       const longitude = locationLayer?.longitude;
-      
+
       // Construir label com bairro e cidade quando disponível
-      const title = offer.title || (offer as any).titulo || '';
+      const title = offer.title || (offer as any).titulo || "";
       let label = title;
-      if (offer.locationLayers?.neighborhood?.label && offer.locationLayers?.city?.label) {
+      if (
+        offer.locationLayers?.neighborhood?.label &&
+        offer.locationLayers?.city?.label
+      ) {
         label = `${offer.locationLayers.neighborhood.label}, ${offer.locationLayers.city.label}`;
       } else if (offer.locationLayers?.city?.label) {
         label = `${offer.locationLayers.city.label}`;
       }
-      
+
       return {
         id: offer.id,
         latitude: latitude!,
@@ -110,7 +130,9 @@ export default function ListarLotesPage() {
     <div className="font-display bg-background-light dark:bg-background-dark min-h-screen flex flex-col">
       <header className="sticky top-0 z-10 bg-background-light dark:bg-background-dark/80 backdrop-blur-sm">
         <div className="flex items-center p-4 pb-2 justify-between">
-          <h1 className="text-sm font-bold leading-tight tracking-[-0.015em] flex-1 text-center text-text-light-primary dark:text-text-dark-primary">{TITLE_TEXT}</h1>
+          <h1 className="text-sm font-bold leading-tight tracking-[-0.015em] flex-1 text-center text-text-light-primary dark:text-text-dark-primary">
+            {TITLE_TEXT}
+          </h1>
           <button
             onClick={logout}
             className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary hover:bg-chip-light dark:hover:bg-chip-dark transition-colors"
@@ -152,11 +174,13 @@ export default function ListarLotesPage() {
               onClick={() => setShowMap(!showMap)}
               className="text-sm text-text-light-secondary dark:text-text-dark-secondary px-3 py-1 rounded-lg bg-chip-light dark:bg-chip-dark"
             >
-              {showMap ? 'Ocultar mapa' : 'Mostrar mapa'}
+              {showMap ? "Ocultar mapa" : "Mostrar mapa"}
             </button>
           </div>
           {loading ? (
-            <p className="text-center py-8 text-text-light-secondary">Carregando...</p>
+            <p className="text-center py-8 text-text-light-secondary">
+              Carregando...
+            </p>
           ) : (
             <div className="flex flex-col gap-4 pb-6">
               {offers.map((offer) => (

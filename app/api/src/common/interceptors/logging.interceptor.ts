@@ -5,9 +5,9 @@ import {
   ExecutionContext,
   CallHandler,
   Logger,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+} from "@nestjs/common";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -17,8 +17,8 @@ export class LoggingInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest();
     const { method, url, query, params } = request;
     const user = request.user;
-    const userId = user?.sub || user?.id || 'anonymous';
-    const userEmail = user?.email || 'unknown';
+    const userId = user?.sub || user?.id || "anonymous";
+    const userEmail = user?.email || "unknown";
 
     const startTime = Date.now();
 
@@ -45,4 +45,3 @@ export class LoggingInterceptor implements NestInterceptor {
     );
   }
 }
-

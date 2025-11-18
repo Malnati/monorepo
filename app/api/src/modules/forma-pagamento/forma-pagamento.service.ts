@@ -1,8 +1,8 @@
 // app/api/src/modules/forma-pagamento/forma-pagamento.service.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
-import { FormaPagamentoEntity } from './forma-pagamento.entity';
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository, In } from "typeorm";
+import { FormaPagamentoEntity } from "./forma-pagamento.entity";
 
 @Injectable()
 export class FormaPagamentoService {
@@ -14,12 +14,14 @@ export class FormaPagamentoService {
   ) {}
 
   async findAll(): Promise<{ data: FormaPagamentoEntity[] }> {
-    this.logger.log('findAll - Buscando formas de pagamento ativas');
+    this.logger.log("findAll - Buscando formas de pagamento ativas");
     const formasPagamento = await this.formaPagamentoRepository.find({
       where: { ativo: true },
-      order: { nome: 'ASC' },
+      order: { nome: "ASC" },
     });
-    this.logger.log(`findAll - Found ${formasPagamento.length} formas de pagamento`);
+    this.logger.log(
+      `findAll - Found ${formasPagamento.length} formas de pagamento`,
+    );
     return { data: formasPagamento };
   }
 
@@ -29,7 +31,7 @@ export class FormaPagamentoService {
     }
     return this.formaPagamentoRepository.find({
       where: { id: In(ids) },
-      order: { nome: 'ASC' },
+      order: { nome: "ASC" },
     });
   }
 }

@@ -1,21 +1,23 @@
 // app/ui/src/components/InstallPrompt.tsx
-import { useState, useEffect } from 'react';
-import { ICON_MAP } from '../utils/icons';
+import { useState, useEffect } from "react";
+import { ICON_MAP } from "../utils/icons";
 
-const PROMPT_TITLE = 'Instalar aplicativo';
-const PROMPT_DESCRIPTION = 'Adicione APP à sua tela inicial para acesso rápido e experiência completa.';
-const INSTALL_BUTTON_TEXT = 'Instalar';
-const DISMISS_BUTTON_TEXT = 'Agora não';
-const DISMISSED_KEY = 'dominio_install_prompt_dismissed';
+const PROMPT_TITLE = "Instalar aplicativo";
+const PROMPT_DESCRIPTION =
+  "Adicione APP à sua tela inicial para acesso rápido e experiência completa.";
+const INSTALL_BUTTON_TEXT = "Instalar";
+const DISMISS_BUTTON_TEXT = "Agora não";
+const DISMISSED_KEY = "dominio_install_prompt_dismissed";
 const PROMPT_DELAY_MS = 5000;
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
 export default function InstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function InstallPrompt() {
     }
 
     // Verificar se já está instalado
-    if (window.matchMedia('(display-mode: standalone)').matches) {
+    if (window.matchMedia("(display-mode: standalone)").matches) {
       return;
     }
 
@@ -37,10 +39,10 @@ export default function InstallPrompt() {
       setTimeout(() => setShowPrompt(true), PROMPT_DELAY_MS);
     };
 
-    window.addEventListener('beforeinstallprompt', handler);
+    window.addEventListener("beforeinstallprompt", handler);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
+      window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
 
@@ -52,8 +54,8 @@ export default function InstallPrompt() {
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
 
-    if (outcome === 'accepted') {
-      console.log('PWA instalado com sucesso');
+    if (outcome === "accepted") {
+      console.log("PWA instalado com sucesso");
     }
 
     setDeferredPrompt(null);
@@ -61,7 +63,7 @@ export default function InstallPrompt() {
   };
 
   const handleDismiss = () => {
-    localStorage.setItem(DISMISSED_KEY, 'true');
+    localStorage.setItem(DISMISSED_KEY, "true");
     setShowPrompt(false);
   };
 
@@ -84,17 +86,20 @@ export default function InstallPrompt() {
     >
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-          <ICON_MAP.download className="h-6 w-6 text-white" aria-hidden="true" />
+          <ICON_MAP.download
+            className="h-6 w-6 text-white"
+            aria-hidden="true"
+          />
         </div>
-        
+
         <div className="flex-1 min-w-0">
-          <h3 
+          <h3
             id="install-prompt-title"
             className="text-sm font-semibold text-text-light-primary dark:text-text-dark-primary mb-1"
           >
             {PROMPT_TITLE}
           </h3>
-          <p 
+          <p
             id="install-prompt-description"
             className="text-sm text-text-light-secondary dark:text-text-dark-secondary"
           >

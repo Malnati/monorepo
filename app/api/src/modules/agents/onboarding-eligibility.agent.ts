@@ -1,6 +1,6 @@
 // app/api/src/modules/agents/onboarding-eligibility.agent.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { OpenRouterService } from '../openrouter/openrouter.service';
+import { Injectable, Logger } from "@nestjs/common";
+import { OpenRouterService } from "../openrouter/openrouter.service";
 
 export interface EligibilityCheckInput {
   email: string;
@@ -43,12 +43,12 @@ export class OnboardingEligibilityAgent {
   async checkEligibility(
     input: EligibilityCheckInput,
   ): Promise<EligibilityCheckResult> {
-    const method = 'checkEligibility';
+    const method = "checkEligibility";
     try {
       this.logger.log(`${method} ENTER, email=${input.email}`);
 
       const userDataJson = JSON.stringify(input, null, 2);
-      const prompt = ELIGIBILITY_PROMPT.replace('{userDataJson}', userDataJson);
+      const prompt = ELIGIBILITY_PROMPT.replace("{userDataJson}", userDataJson);
 
       const response = await this.openRouterService.prompt(prompt, {
         temperature: 0.3,
@@ -68,7 +68,7 @@ export class OnboardingEligibilityAgent {
       // Em caso de erro, retornar resultado conservador
       return {
         eligible: false,
-        reason: 'Erro na validação automática. Análise manual necessária.',
+        reason: "Erro na validação automática. Análise manual necessária.",
         confidence: 0,
       };
     }
@@ -79,21 +79,21 @@ export class OnboardingEligibilityAgent {
       // Tentar extrair JSON da resposta
       const jsonMatch = response.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
-        throw new Error('Resposta não contém JSON válido');
+        throw new Error("Resposta não contém JSON válido");
       }
 
       const parsed = JSON.parse(jsonMatch[0]);
 
       return {
         eligible: Boolean(parsed.eligible),
-        reason: String(parsed.reason || 'Sem motivo fornecido'),
+        reason: String(parsed.reason || "Sem motivo fornecido"),
         confidence: Number(parsed.confidence) || 0,
       };
     } catch (error) {
-      this.logger.error('Erro ao parsear resposta da IA:', error);
+      this.logger.error("Erro ao parsear resposta da IA:", error);
       return {
         eligible: false,
-        reason: 'Resposta da IA inválida',
+        reason: "Resposta da IA inválida",
         confidence: 0,
       };
     }

@@ -1,8 +1,8 @@
 // app/api/src/modules/openrouter/openrouter.service.ts
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from "@nestjs/common";
 
 interface ChatMessage {
-  role: 'user' | 'assistant' | 'system';
+  role: "user" | "assistant" | "system";
   content: string;
 }
 
@@ -12,8 +12,8 @@ interface ChatOptions {
   maxTokens?: number;
 }
 
-const OPENROUTER_BASE_URL = 'https://openrouter.ai/app/api/v1/chat/completions';
-const DEFAULT_MODEL = 'anthropic/claude-3.5-sonnet';
+const OPENROUTER_BASE_URL = "https://openrouter.ai/app/api/v1/chat/completions";
+const DEFAULT_MODEL = "anthropic/claude-3.5-sonnet";
 const DEFAULT_TEMPERATURE = 0.7;
 const DEFAULT_MAX_TOKENS = 1000;
 const REQUEST_MAX_ATTEMPTS = 3;
@@ -30,13 +30,13 @@ export class OpenRouterService {
 
   constructor() {
     this.baseUrl = process.env.OPENROUTER_BASE_URL || OPENROUTER_BASE_URL;
-    this.apiKey = (process.env.OPENROUTER_API_KEY || '').trim();
-    this.httpReferer = (process.env.OPENROUTER_HTTP_REFERER || '').trim();
-    this.appTitle = (process.env.OPENROUTER_APP_TITLE || 'APP').trim();
+    this.apiKey = (process.env.OPENROUTER_API_KEY || "").trim();
+    this.httpReferer = (process.env.OPENROUTER_HTTP_REFERER || "").trim();
+    this.appTitle = (process.env.OPENROUTER_APP_TITLE || "APP").trim();
     this.defaultModel = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
 
     if (!this.apiKey) {
-      this.logger.warn('OPENROUTER_API_KEY não configurada');
+      this.logger.warn("OPENROUTER_API_KEY não configurada");
     }
   }
 
@@ -47,14 +47,16 @@ export class OpenRouterService {
     messages: ChatMessage[],
     options: ChatOptions = {},
   ): Promise<string> {
-    const method = 'chat';
+    const method = "chat";
     const t0 = Date.now();
 
     try {
-      this.logger.log(`${method} ENTER, model=${options.model || this.defaultModel}`);
+      this.logger.log(
+        `${method} ENTER, model=${options.model || this.defaultModel}`,
+      );
 
       if (!this.apiKey) {
-        throw new Error('OpenRouter API key não configurada');
+        throw new Error("OpenRouter API key não configurada");
       }
 
       const payload = {
@@ -67,7 +69,9 @@ export class OpenRouterService {
       const result = await this.executeRequest(payload);
       const dt = Date.now() - t0;
 
-      this.logger.log(`${method} EXIT, durationMs=${dt}, resultLength=${result.length}`);
+      this.logger.log(
+        `${method} EXIT, durationMs=${dt}, resultLength=${result.length}`,
+      );
       return result;
     } catch (error) {
       const dt = Date.now() - t0;
@@ -82,17 +86,19 @@ export class OpenRouterService {
    * Envia prompt simples (conveniência)
    */
   async prompt(text: string, options: ChatOptions = {}): Promise<string> {
-    return this.chat([{ role: 'user', content: text }], options);
+    return this.chat([{ role: "user", content: text }], options);
   }
 
-  private async executeRequest(payload: Record<string, unknown>): Promise<string> {
+  private async executeRequest(
+    payload: Record<string, unknown>,
+  ): Promise<string> {
     const headers = this.buildHeaders();
     let lastError: Error | undefined;
 
     for (let attempt = 1; attempt <= REQUEST_MAX_ATTEMPTS; attempt++) {
       try {
         const response = await fetch(this.baseUrl, {
-          method: 'POST',
+          method: "POST",
           headers,
           body: JSON.stringify(payload),
         });
@@ -105,15 +111,18 @@ export class OpenRouterService {
         }
 
         const content = data?.choices?.[0]?.message?.content;
-        if (!content || typeof content !== 'string') {
-          throw new Error('Resposta vazia ou inválida do OpenRouter');
+        if (!content || typeof content !== "string") {
+          throw new Error("Resposta vazia ou inválida do OpenRouter");
         }
 
         return content.trim();
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
 
-        if (this.isRetryableError(lastError) && attempt < REQUEST_MAX_ATTEMPTS) {
+        if (
+          this.isRetryableError(lastError) &&
+          attempt < REQUEST_MAX_ATTEMPTS
+        ) {
           this.logger.warn(`Tentativa ${attempt} falhou, retrying...`);
           await this.delay(REQUEST_RETRY_DELAY_MS);
           continue;
@@ -123,21 +132,21 @@ export class OpenRouterService {
       }
     }
 
-    throw lastError || new Error('Falha após múltiplas tentativas');
+    throw lastError || new Error("Falha após múltiplas tentativas");
   }
 
   private buildHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${this.apiKey}`,
     };
 
     if (this.httpReferer) {
-      headers['HTTP-Referer'] = this.httpReferer;
+      headers["HTTP-Referer"] = this.httpReferer;
     }
 
     if (this.appTitle) {
-      headers['X-Title'] = this.appTitle;
+      headers["X-Title"] = this.appTitle;
     }
 
     return headers;
@@ -145,7 +154,7 @@ export class OpenRouterService {
 
   private extractErrorMessage(data: any, status: number): string {
     if (data?.error) {
-      if (typeof data.error === 'string') {
+      if (typeof data.error === "string") {
         return data.error;
       }
       if (data.error.message) {
@@ -158,11 +167,11 @@ export class OpenRouterService {
   private isRetryableError(error: Error): boolean {
     const message = error.message.toLowerCase();
     return (
-      message.includes('network') ||
-      message.includes('timeout') ||
-      message.includes('econnreset') ||
-      message.includes('502') ||
-      message.includes('503')
+      message.includes("network") ||
+      message.includes("timeout") ||
+      message.includes("econnreset") ||
+      message.includes("502") ||
+      message.includes("503")
     );
   }
 

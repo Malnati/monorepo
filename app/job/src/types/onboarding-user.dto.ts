@@ -1,7 +1,14 @@
 // app/job/src/types/onboarding-user.dto.ts
 
-import { IsEmail, IsNotEmpty, IsString, IsBoolean, IsOptional, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsBoolean,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
 
 class AddressDto {
   @IsString()
@@ -52,7 +59,7 @@ export class CreateOnboardingUserDto {
 
   @IsString()
   @IsNotEmpty()
-  userType: 'PF' | 'PJ';
+  userType: "PF" | "PJ";
 
   @ValidateNested()
   @Type(() => ConsentDto)

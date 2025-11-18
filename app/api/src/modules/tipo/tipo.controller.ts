@@ -1,9 +1,9 @@
 // app/api/src/modules/tipo/tipo.controller.ts
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { TipoService } from './tipo.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Controller, Get, UseGuards, Request } from "@nestjs/common";
+import { TipoService } from "./tipo.service";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
-@Controller('tipos')
+@Controller("tipos")
 export class TipoController {
   constructor(private readonly tipoService: TipoService) {}
 

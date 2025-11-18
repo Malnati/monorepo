@@ -1,13 +1,14 @@
 // app/ui/src/components/FakePaymentOptions.tsx
-import { useState } from 'react';
-import { ICON_MAP } from '../utils/icons';
-import ContainedButton from './ContainedButton';
-import { formatCurrency, formatNumber } from '../utils/format';
+import { useState } from "react";
+import { ICON_MAP } from "../utils/icons";
+import ContainedButton from "./ContainedButton";
+import { formatCurrency, formatNumber } from "../utils/format";
 
-const DEMO_MESSAGE = 'Demonstração — nenhum valor será processado';
-const DEMO_NOTICE = 'Este é um fluxo demonstrativo. Nenhum pagamento real será realizado.';
+const DEMO_MESSAGE = "Demonstração — nenhum valor será processado";
+const DEMO_NOTICE =
+  "Este é um fluxo demonstrativo. Nenhum pagamento real será realizado.";
 
-type PaymentMethod = 'crypto' | 'pix' | 'boleto' | 'card';
+type PaymentMethod = "crypto" | "pix" | "boleto" | "card";
 
 interface PaymentMethodOption {
   id: PaymentMethod;
@@ -19,32 +20,32 @@ interface PaymentMethodOption {
 
 const PAYMENT_METHODS: PaymentMethodOption[] = [
   {
-    id: 'crypto',
-    label: 'Criptomoedas',
-    description: 'Envie via carteira digital',
+    id: "crypto",
+    label: "Criptomoedas",
+    description: "Envie via carteira digital",
     icon: ICON_MAP.coin,
-    demoNotice: 'Use qualquer endereço — nada será enviado',
+    demoNotice: "Use qualquer endereço — nada será enviado",
   },
   {
-    id: 'pix',
-    label: 'Pix',
-    description: 'Pagamento instantâneo',
+    id: "pix",
+    label: "Pix",
+    description: "Pagamento instantâneo",
     icon: ICON_MAP.qrCode,
-    demoNotice: 'Use qualquer chave — nada será cobrado',
+    demoNotice: "Use qualquer chave — nada será cobrado",
   },
   {
-    id: 'boleto',
-    label: 'Boleto',
-    description: 'Código de barras bancário',
+    id: "boleto",
+    label: "Boleto",
+    description: "Código de barras bancário",
     icon: ICON_MAP.document,
-    demoNotice: 'Código de exemplo — não realize pagamento',
+    demoNotice: "Código de exemplo — não realize pagamento",
   },
   {
-    id: 'card',
-    label: 'Cartão de Crédito',
-    description: 'Débito ou crédito',
+    id: "card",
+    label: "Cartão de Crédito",
+    description: "Débito ou crédito",
     icon: ICON_MAP.creditCard,
-    demoNotice: 'Use dados fictícios — nenhuma transação será criada',
+    demoNotice: "Use dados fictícios — nenhuma transação será criada",
   },
 ];
 
@@ -62,7 +63,9 @@ export default function FakePaymentOptions({
   onConfirm,
 }: FakePaymentOptionsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(
+    null,
+  );
 
   const handleConfirm = () => {
     if (selectedMethod && !disabled && onConfirm) {
@@ -70,7 +73,9 @@ export default function FakePaymentOptions({
     }
   };
 
-  const selectedMethodData = PAYMENT_METHODS.find((m) => m.id === selectedMethod);
+  const selectedMethodData = PAYMENT_METHODS.find(
+    (m) => m.id === selectedMethod,
+  );
 
   return (
     <div className="rounded-xl border border-background-light dark:border-background-dark bg-card-light dark:bg-card-dark overflow-hidden">
@@ -93,9 +98,15 @@ export default function FakePaymentOptions({
         </div>
         <div className="ml-4">
           {isOpen ? (
-            <ICON_MAP.chevronUp className="h-6 w-6 text-text-light-secondary dark:text-text-dark-secondary" aria-hidden="true" />
+            <ICON_MAP.chevronUp
+              className="h-6 w-6 text-text-light-secondary dark:text-text-dark-secondary"
+              aria-hidden="true"
+            />
           ) : (
-            <ICON_MAP.chevronDown className="h-6 w-6 text-text-light-secondary dark:text-text-dark-secondary" aria-hidden="true" />
+            <ICON_MAP.chevronDown
+              className="h-6 w-6 text-text-light-secondary dark:text-text-dark-secondary"
+              aria-hidden="true"
+            />
           )}
         </div>
       </button>
@@ -106,13 +117,17 @@ export default function FakePaymentOptions({
           {/* Resumo */}
           <div className="rounded-lg bg-background-light dark:bg-background-dark p-4 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-text-light-secondary dark:text-text-dark-secondary">Quantidade</span>
+              <span className="text-text-light-secondary dark:text-text-dark-secondary">
+                Quantidade
+              </span>
               <span className="font-medium text-text-light-primary dark:text-text-dark-primary">
                 {formatNumber(quantidade)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary">Total</span>
+              <span className="text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary">
+                Total
+              </span>
               <span className="text-sm font-bold text-text-light-primary dark:text-text-dark-primary">
                 {formatCurrency(total)}
               </span>
@@ -135,7 +150,7 @@ export default function FakePaymentOptions({
               {PAYMENT_METHODS.map((method) => {
                 const isSelected = selectedMethod === method.id;
                 const Icon = method.icon;
-                
+
                 return (
                   <button
                     key={method.id}
@@ -148,16 +163,22 @@ export default function FakePaymentOptions({
                       disabled:opacity-50 disabled:cursor-not-allowed
                       ${
                         isSelected
-                          ? 'border-primary bg-primary/5'
-                          : 'border-background-light dark:border-background-dark hover:border-primary/50 hover:bg-background-light/50 dark:hover:bg-background-dark/50'
+                          ? "border-primary bg-primary/5"
+                          : "border-background-light dark:border-background-dark hover:border-primary/50 hover:bg-background-light/50 dark:hover:bg-background-dark/50"
                       }
-                    `.trim().replace(/\s+/g, ' ')}
+                    `
+                      .trim()
+                      .replace(/\s+/g, " ")}
                     aria-pressed={isSelected}
                   >
-                    <div className={`
+                    <div
+                      className={`
                       flex items-center justify-center h-12 w-12 rounded-full
-                      ${isSelected ? 'bg-primary text-white' : 'bg-background-light dark:bg-background-dark text-text-light-secondary dark:text-text-dark-secondary'}
-                    `.trim().replace(/\s+/g, ' ')}>
+                      ${isSelected ? "bg-primary text-white" : "bg-background-light dark:bg-background-dark text-text-light-secondary dark:text-text-dark-secondary"}
+                    `
+                        .trim()
+                        .replace(/\s+/g, " ")}
+                    >
                       <Icon className="h-6 w-6" aria-hidden="true" />
                     </div>
                     <div className="flex-1 text-left">
@@ -169,7 +190,10 @@ export default function FakePaymentOptions({
                       </p>
                     </div>
                     {isSelected && (
-                      <ICON_MAP.creditCard className="h-5 w-5 text-primary" aria-hidden="true" />
+                      <ICON_MAP.creditCard
+                        className="h-5 w-5 text-primary"
+                        aria-hidden="true"
+                      />
                     )}
                   </button>
                 );
@@ -183,9 +207,9 @@ export default function FakePaymentOptions({
               <p className="text-sm font-medium text-text-light-primary dark:text-text-dark-primary">
                 {selectedMethodData.label}
               </p>
-              
+
               {/* Conteúdo específico por método */}
-              {selectedMethod === 'crypto' && (
+              {selectedMethod === "crypto" && (
                 <div className="space-y-2">
                   <p className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
                     Endereço da carteira (exemplo)
@@ -195,8 +219,8 @@ export default function FakePaymentOptions({
                   </div>
                 </div>
               )}
-              
-              {selectedMethod === 'pix' && (
+
+              {selectedMethod === "pix" && (
                 <div className="space-y-2">
                   <p className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
                     Chave Pix (exemplo)
@@ -206,13 +230,16 @@ export default function FakePaymentOptions({
                   </div>
                   <div className="flex justify-center p-4 bg-white rounded">
                     <div className="h-32 w-32 bg-gray-200 rounded flex items-center justify-center">
-                      <ICON_MAP.qrCode className="h-16 w-16 text-gray-400" aria-hidden="true" />
+                      <ICON_MAP.qrCode
+                        className="h-16 w-16 text-gray-400"
+                        aria-hidden="true"
+                      />
                     </div>
                   </div>
                 </div>
               )}
-              
-              {selectedMethod === 'boleto' && (
+
+              {selectedMethod === "boleto" && (
                 <div className="space-y-2">
                   <p className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
                     Código de barras (exemplo)
@@ -222,8 +249,8 @@ export default function FakePaymentOptions({
                   </div>
                 </div>
               )}
-              
-              {selectedMethod === 'card' && (
+
+              {selectedMethod === "card" && (
                 <div className="space-y-3">
                   <div className="space-y-1">
                     <label className="text-xs text-text-light-secondary dark:text-text-dark-secondary">
@@ -262,7 +289,7 @@ export default function FakePaymentOptions({
                   </div>
                 </div>
               )}
-              
+
               {/* Aviso específico do método */}
               <div className="pt-2">
                 <p className="text-xs text-text-light-secondary dark:text-text-dark-secondary italic">
@@ -279,7 +306,9 @@ export default function FakePaymentOptions({
             fullWidth
             size="large"
             variant="primary"
-            icon={<ICON_MAP.creditCard className="h-5 w-5" aria-hidden="true" />}
+            icon={
+              <ICON_MAP.creditCard className="h-5 w-5" aria-hidden="true" />
+            }
           >
             Confirmar pagamento
           </ContainedButton>

@@ -1,8 +1,9 @@
 // app/api/src/modules/google-maps/google-maps.service.ts
-import { Injectable, BadRequestException, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable, BadRequestException, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
-const GEOCODING_API_URL = 'https://maps.googleapis.com/maps/app/api/geocode/json';
+const GEOCODING_API_URL =
+  "https://maps.googleapis.com/maps/app/api/geocode/json";
 
 interface GeocodeResult {
   formattedAddress: string;
@@ -37,25 +38,28 @@ export class GoogleMapsService {
   private readonly apiKey: string;
 
   constructor(private readonly configService: ConfigService) {
-    this.apiKey = this.configService.get<string>('GOOGLE_MAPS_SERVER_KEY') || '';
+    this.apiKey =
+      this.configService.get<string>("GOOGLE_MAPS_SERVER_KEY") || "";
     if (!this.apiKey) {
-      this.logger.warn('GOOGLE_MAPS_SERVER_KEY not configured - geocoding validation disabled');
+      this.logger.warn(
+        "GOOGLE_MAPS_SERVER_KEY not configured - geocoding validation disabled",
+      );
     }
   }
 
   async validatePlaceId(placeId: string): Promise<GeocodeResult> {
     // Modo mock para testes de inicialização
-    if (this.apiKey === 'mock-key-for-tests' || !this.apiKey) {
-      this.logger.warn('Using mock Google Maps response for testing');
+    if (this.apiKey === "mock-key-for-tests" || !this.apiKey) {
+      this.logger.warn("Using mock Google Maps response for testing");
       return {
         formattedAddress: `Mock Address for ${placeId}`,
         placeId: placeId,
         latitude: -23.5505,
         longitude: -46.6333,
-        accuracy: 'APPROXIMATE',
+        accuracy: "APPROXIMATE",
         addressComponents: [
-          { long_name: 'São Paulo', short_name: 'SP', types: ['locality'] },
-          { long_name: 'Centro', short_name: 'Centro', types: ['sublocality'] },
+          { long_name: "São Paulo", short_name: "SP", types: ["locality"] },
+          { long_name: "Centro", short_name: "Centro", types: ["sublocality"] },
         ],
       };
     }
@@ -65,7 +69,7 @@ export class GoogleMapsService {
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.status !== 'OK' || !data.results || data.results.length === 0) {
+      if (data.status !== "OK" || !data.results || data.results.length === 0) {
         throw new BadRequestException(`Invalid place_id: ${data.status}`);
       }
 
@@ -77,31 +81,36 @@ export class GoogleMapsService {
         placeId: result.place_id,
         latitude: location.lat,
         longitude: location.lng,
-        accuracy: result.geometry.location_type || 'APPROXIMATE',
+        accuracy: result.geometry.location_type || "APPROXIMATE",
         addressComponents: result.address_components || [],
       };
     } catch (error) {
-      this.logger.error(`Geocoding validation failed for place_id ${placeId}`, error);
+      this.logger.error(
+        `Geocoding validation failed for place_id ${placeId}`,
+        error,
+      );
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException('Failed to validate location with Google Maps API');
+      throw new BadRequestException(
+        "Failed to validate location with Google Maps API",
+      );
     }
   }
 
   async geocodeAddress(address: string): Promise<GeocodeResult> {
     // Modo mock para testes de inicialização
-    if (this.apiKey === 'mock-key-for-tests' || !this.apiKey) {
-      this.logger.warn('Using mock Google Maps response for testing');
+    if (this.apiKey === "mock-key-for-tests" || !this.apiKey) {
+      this.logger.warn("Using mock Google Maps response for testing");
       return {
-        formattedAddress: address || 'Mock Address',
-        placeId: 'mock-place-id',
+        formattedAddress: address || "Mock Address",
+        placeId: "mock-place-id",
         latitude: -23.5505,
         longitude: -46.6333,
-        accuracy: 'APPROXIMATE',
+        accuracy: "APPROXIMATE",
         addressComponents: [
-          { long_name: 'São Paulo', short_name: 'SP', types: ['locality'] },
-          { long_name: 'Centro', short_name: 'Centro', types: ['sublocality'] },
+          { long_name: "São Paulo", short_name: "SP", types: ["locality"] },
+          { long_name: "Centro", short_name: "Centro", types: ["sublocality"] },
         ],
       };
     }
@@ -111,7 +120,7 @@ export class GoogleMapsService {
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.status !== 'OK' || !data.results || data.results.length === 0) {
+      if (data.status !== "OK" || !data.results || data.results.length === 0) {
         throw new BadRequestException(`Geocoding failed: ${data.status}`);
       }
 
@@ -123,7 +132,7 @@ export class GoogleMapsService {
         placeId: result.place_id,
         latitude: location.lat,
         longitude: location.lng,
-        accuracy: result.geometry.location_type || 'APPROXIMATE',
+        accuracy: result.geometry.location_type || "APPROXIMATE",
         addressComponents: result.address_components || [],
       };
     } catch (error) {
@@ -131,7 +140,9 @@ export class GoogleMapsService {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException('Failed to geocode address with Google Maps API');
+      throw new BadRequestException(
+        "Failed to geocode address with Google Maps API",
+      );
     }
   }
 
@@ -154,15 +165,20 @@ export class GoogleMapsService {
     if (geocodeResult.addressComponents) {
       for (const component of geocodeResult.addressComponents) {
         // Cidade: priorizar locality, depois administrative_area_level_2
-        if (component.types.includes('locality') || component.types.includes('administrative_area_level_2')) {
+        if (
+          component.types.includes("locality") ||
+          component.types.includes("administrative_area_level_2")
+        ) {
           if (!cityName) {
             cityName = component.long_name;
           }
         }
         // Bairro: priorizar sublocality, neighborhood
-        if (component.types.includes('sublocality') || 
-            component.types.includes('sublocality_level_1') ||
-            component.types.includes('neighborhood')) {
+        if (
+          component.types.includes("sublocality") ||
+          component.types.includes("sublocality_level_1") ||
+          component.types.includes("neighborhood")
+        ) {
           if (!neighborhoodName) {
             neighborhoodName = component.long_name;
           }
@@ -193,9 +209,11 @@ export class GoogleMapsService {
 
     // Fallback: se não encontrou cidade ou bairro, usar localização real como aproximação
     if (!layers.city && !layers.neighborhood) {
-      this.logger.warn(`No city or neighborhood found for address: ${geocodeResult.formattedAddress}`);
+      this.logger.warn(
+        `No city or neighborhood found for address: ${geocodeResult.formattedAddress}`,
+      );
       // Derivar da formatação do endereço
-      const addressParts = geocodeResult.formattedAddress.split(',');
+      const addressParts = geocodeResult.formattedAddress.split(",");
       if (addressParts.length >= 2) {
         const possibleCity = addressParts[addressParts.length - 2].trim();
         layers.city = {
@@ -216,32 +234,40 @@ export class GoogleMapsService {
    * @param realLng Longitude real
    * @returns Coordenadas aproximadas validadas pelo Google Maps
    */
-  async generateApproximateLocation(realLat: number, realLng: number): Promise<GeocodeResult | null> {
+  async generateApproximateLocation(
+    realLat: number,
+    realLng: number,
+  ): Promise<GeocodeResult | null> {
     try {
       // Calcular deslocamento de ~15km em direção pseudoaleatória
       // 1 grau de latitude ≈ 111 km
       // Deslocamento de 15km ≈ 0.135 graus
       const OFFSET_DEGREES = 0.135;
-      
+
       // Gerar ângulo pseudoaleatório baseado nas coordenadas originais (determinístico)
-      const seed = Math.abs(Math.sin(realLat * 1000) * Math.cos(realLng * 1000));
+      const seed = Math.abs(
+        Math.sin(realLat * 1000) * Math.cos(realLng * 1000),
+      );
       const angle = seed * 2 * Math.PI;
-      
+
       // Calcular novo ponto
-      const approxLat = realLat + (OFFSET_DEGREES * Math.sin(angle));
-      const approxLng = realLng + (OFFSET_DEGREES * Math.cos(angle) / Math.cos(realLat * Math.PI / 180));
-      
+      const approxLat = realLat + OFFSET_DEGREES * Math.sin(angle);
+      const approxLng =
+        realLng +
+        (OFFSET_DEGREES * Math.cos(angle)) /
+          Math.cos((realLat * Math.PI) / 180);
+
       // Modo mock para testes de inicialização
-      if (this.apiKey === 'mock-key-for-tests' || !this.apiKey) {
-        this.logger.warn('Using mock Google Maps response for testing');
+      if (this.apiKey === "mock-key-for-tests" || !this.apiKey) {
+        this.logger.warn("Using mock Google Maps response for testing");
         return {
           formattedAddress: `Aproximadamente ${approxLat.toFixed(4)}, ${approxLng.toFixed(4)}`,
-          placeId: 'mock-place-id-approx',
+          placeId: "mock-place-id-approx",
           latitude: approxLat,
           longitude: approxLng,
-          accuracy: 'APPROXIMATE',
+          accuracy: "APPROXIMATE",
           addressComponents: [
-            { long_name: 'São Paulo', short_name: 'SP', types: ['locality'] },
+            { long_name: "São Paulo", short_name: "SP", types: ["locality"] },
           ],
         };
       }
@@ -251,7 +277,7 @@ export class GoogleMapsService {
       const response = await fetch(url);
       const data = await response.json();
 
-      if (data.status === 'OK' && data.results && data.results.length > 0) {
+      if (data.status === "OK" && data.results && data.results.length > 0) {
         const result = data.results[0];
         const location = result.geometry.location;
 
@@ -260,7 +286,7 @@ export class GoogleMapsService {
           placeId: result.place_id,
           latitude: location.lat,
           longitude: location.lng,
-          accuracy: 'APPROXIMATE',
+          accuracy: "APPROXIMATE",
           addressComponents: result.address_components || [],
         };
       }
@@ -268,10 +294,10 @@ export class GoogleMapsService {
       // Se falhar, retornar coordenadas calculadas
       return {
         formattedAddress: `Aproximadamente ${approxLat.toFixed(4)}, ${approxLng.toFixed(4)}`,
-        placeId: '',
+        placeId: "",
         latitude: approxLat,
         longitude: approxLng,
-        accuracy: 'APPROXIMATE',
+        accuracy: "APPROXIMATE",
       };
     } catch (error) {
       this.logger.error(`Failed to generate approximate location`, error);

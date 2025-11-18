@@ -1,11 +1,11 @@
 // app/ui/src/components/FilledTextField.tsx
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
 
 interface FilledTextFieldProps {
   label: string;
   value: string | number;
   onChange: (value: string) => void;
-  type?: 'text' | 'number' | 'email' | 'password' | 'tel';
+  type?: "text" | "number" | "email" | "password" | "tel";
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -14,7 +14,7 @@ interface FilledTextFieldProps {
   helpText?: string;
   suffixText?: string;
   maxLength?: number;
-  inputMode?: 'text' | 'numeric' | 'decimal' | 'email' | 'tel';
+  inputMode?: "text" | "numeric" | "decimal" | "email" | "tel";
   className?: string;
   onBlur?: () => void;
 }
@@ -23,7 +23,7 @@ export default function FilledTextField({
   label,
   value,
   onChange,
-  type = 'text',
+  type = "text",
   placeholder,
   required = false,
   disabled = false,
@@ -33,7 +33,7 @@ export default function FilledTextField({
   suffixText,
   maxLength,
   inputMode,
-  className = '',
+  className = "",
   onBlur,
 }: FilledTextFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -47,53 +47,54 @@ export default function FilledTextField({
     setIsFocused(false);
   };
 
-  const displayValue = type === 'number' ? (value || '') : String(value || '');
-  const currentLength = String(value || '').length;
-  const showSuffix = suffixText || (maxLength ? `${currentLength}/${maxLength}` : null);
+  const displayValue = type === "number" ? value || "" : String(value || "");
+  const currentLength = String(value || "").length;
+  const showSuffix =
+    suffixText || (maxLength ? `${currentLength}/${maxLength}` : null);
   const showError = error && errorMessage;
   const showHelpText = !showError && helpText;
 
   const labelColor = disabled
-    ? 'text-gray-400 dark:text-gray-600'
+    ? "text-gray-400 dark:text-gray-600"
     : showError
-    ? 'text-red-600 dark:text-red-400'
-    : isFocused
-    ? 'text-primary dark:text-primary'
-    : 'text-gray-700 dark:text-gray-300';
+      ? "text-red-600 dark:text-red-400"
+      : isFocused
+        ? "text-primary dark:text-primary"
+        : "text-gray-700 dark:text-gray-300";
 
   const inputBgColor = disabled
-    ? 'bg-gray-50 dark:bg-gray-800'
+    ? "bg-gray-50 dark:bg-gray-800"
     : showError
-    ? 'bg-red-50 dark:bg-red-900/20'
-    : 'bg-gray-100 dark:bg-gray-700';
+      ? "bg-red-50 dark:bg-red-900/20"
+      : "bg-gray-100 dark:bg-gray-700";
 
   const borderColor = disabled
-    ? 'border-gray-200 dark:border-gray-700'
+    ? "border-gray-200 dark:border-gray-700"
     : showError
-    ? 'border-red-500 dark:border-red-400'
-    : isFocused
-    ? 'border-primary dark:border-primary border-2'
-    : 'border-gray-300 dark:border-gray-600';
+      ? "border-red-500 dark:border-red-400"
+      : isFocused
+        ? "border-primary dark:border-primary border-2"
+        : "border-gray-300 dark:border-gray-600";
 
   const textColor = disabled
-    ? 'text-gray-400 dark:text-gray-600'
+    ? "text-gray-400 dark:text-gray-600"
     : showError
-    ? 'text-red-600 dark:text-red-400'
-    : 'text-gray-900 dark:text-gray-100';
+      ? "text-red-600 dark:text-red-400"
+      : "text-gray-900 dark:text-gray-100";
 
   const suffixColor = disabled
-    ? 'text-gray-300 dark:text-gray-700'
+    ? "text-gray-300 dark:text-gray-700"
     : showError
-    ? 'text-red-500 dark:text-red-400'
-    : 'text-gray-500 dark:text-gray-400';
+      ? "text-red-500 dark:text-red-400"
+      : "text-gray-500 dark:text-gray-400";
 
   const helpTextColor = disabled
-    ? 'text-gray-400 dark:text-gray-600'
+    ? "text-gray-400 dark:text-gray-600"
     : showError
-    ? 'text-red-600 dark:text-red-400'
-    : isFocused
-    ? 'text-primary dark:text-primary'
-    : 'text-gray-500 dark:text-gray-400';
+      ? "text-red-600 dark:text-red-400"
+      : isFocused
+        ? "text-primary dark:text-primary"
+        : "text-gray-500 dark:text-gray-400";
 
   return (
     <div className={`flex flex-col ${className}`}>
@@ -126,12 +127,14 @@ export default function FilledTextField({
             text-sm font-normal
             focus:outline-none focus:ring-0
             transition-colors
-            ${disabled ? 'cursor-not-allowed' : ''}
-            ${suffixText || maxLength ? 'pr-20' : ''}
+            ${disabled ? "cursor-not-allowed" : ""}
+            ${suffixText || maxLength ? "pr-20" : ""}
           `}
         />
         {showSuffix && (
-          <div className={`absolute right-4 top-1/2 -translate-y-1/2 text-sm ${suffixColor}`}>
+          <div
+            className={`absolute right-4 top-1/2 -translate-y-1/2 text-sm ${suffixColor}`}
+          >
             {showSuffix}
           </div>
         )}
@@ -144,4 +147,3 @@ export default function FilledTextField({
     </div>
   );
 }
-

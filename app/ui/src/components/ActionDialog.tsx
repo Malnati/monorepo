@@ -1,7 +1,7 @@
 // app/ui/src/components/ActionDialog.tsx
-import { useEffect } from 'react';
-import ContainedButton from './ContainedButton';
-import OutlinedButton from './OutlinedButton';
+import { useEffect } from "react";
+import ContainedButton from "./ContainedButton";
+import OutlinedButton from "./OutlinedButton";
 
 interface ActionDialogProps {
   isOpen: boolean;
@@ -30,12 +30,12 @@ export default function ActionDialog({
 }: ActionDialogProps) {
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -53,11 +53,9 @@ export default function ActionDialog({
         className="absolute inset-0 bg-black/40 animate-fade-in-up"
         onClick={onClose}
       />
-      
+
       {/* Bottom Sheet */}
-      <div
-        className="relative w-full max-w-lg rounded-t-2xl bg-card-light dark:bg-card-dark p-6 space-y-4 shadow-xl animate-fade-in-up"
-      >
+      <div className="relative w-full max-w-lg rounded-t-2xl bg-card-light dark:bg-card-dark p-6 space-y-4 shadow-xl animate-fade-in-up">
         <div>
           <h2
             id="dialog-title"

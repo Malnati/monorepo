@@ -1,6 +1,16 @@
 // app/api/src/modules/offer/offer.dto.ts
-import { IsString, IsNumber, IsOptional, IsArray, Min, MaxLength, ValidateNested, IsObject, IsEnum } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsArray,
+  Min,
+  MaxLength,
+  ValidateNested,
+  IsObject,
+  IsEnum,
+} from "class-validator";
+import { Type } from "class-transformer";
 
 export class LocationDto {
   @IsNumber()
@@ -16,10 +26,10 @@ export class LocationDto {
 }
 
 export enum GeocodingAccuracy {
-  ROOFTOP = 'ROOFTOP',
-  RANGE_INTERPOLATED = 'RANGE_INTERPOLATED',
-  GEOMETRIC_CENTER = 'GEOMETRIC_CENTER',
-  APPROXIMATE = 'APPROXIMATE',
+  ROOFTOP = "ROOFTOP",
+  RANGE_INTERPOLATED = "RANGE_INTERPOLATED",
+  GEOMETRIC_CENTER = "GEOMETRIC_CENTER",
+  APPROXIMATE = "APPROXIMATE",
 }
 
 export class AddressDto {

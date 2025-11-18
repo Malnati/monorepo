@@ -1,5 +1,5 @@
 // app/ui/src/hooks/useAdvancedMarker.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface AdvancedMarkerLibrary {
   AdvancedMarkerElement: typeof google.maps.marker.AdvancedMarkerElement;
@@ -12,10 +12,11 @@ interface UseAdvancedMarkerResult {
   error: Error | null;
 }
 
-const LIBRARY_NAME = 'marker';
+const LIBRARY_NAME = "marker";
 
 export function useAdvancedMarker(isLoaded: boolean): UseAdvancedMarkerResult {
-  const [markerLibrary, setMarkerLibrary] = useState<AdvancedMarkerLibrary | null>(null);
+  const [markerLibrary, setMarkerLibrary] =
+    useState<AdvancedMarkerLibrary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -30,20 +31,27 @@ export function useAdvancedMarker(isLoaded: boolean): UseAdvancedMarkerResult {
         setError(null);
 
         const lib = await google.maps.importLibrary(LIBRARY_NAME);
-        
-        if ('AdvancedMarkerElement' in lib && 'PinElement' in lib) {
+
+        if ("AdvancedMarkerElement" in lib && "PinElement" in lib) {
           setMarkerLibrary({
-            AdvancedMarkerElement: lib.AdvancedMarkerElement as typeof google.maps.marker.AdvancedMarkerElement,
+            AdvancedMarkerElement:
+              lib.AdvancedMarkerElement as typeof google.maps.marker.AdvancedMarkerElement,
             PinElement: lib.PinElement as typeof google.maps.marker.PinElement,
           });
         } else {
-          throw new Error('AdvancedMarkerElement or PinElement not available in marker library');
+          throw new Error(
+            "AdvancedMarkerElement or PinElement not available in marker library",
+          );
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Failed to load marker library';
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to load marker library";
         const loadError = new Error(errorMessage);
         setError(loadError);
-        console.warn('Advanced Markers not available, will use fallback:', errorMessage);
+        console.warn(
+          "Advanced Markers not available, will use fallback:",
+          errorMessage,
+        );
       } finally {
         setLoading(false);
       }

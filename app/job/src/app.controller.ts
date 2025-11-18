@@ -1,8 +1,8 @@
 // app/job/src/app.controller.ts
 
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { AuditService } from './modules/audit/audit.service';
+import { Controller, Get } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { AuditService } from "./modules/audit/audit.service";
 
 @Controller()
 export class AppController {
@@ -11,17 +11,17 @@ export class AppController {
     private readonly auditService: AuditService,
   ) {}
 
-  @Get('health')
+  @Get("health")
   getHealth() {
     return this.appService.getHealth();
   }
 
-  @Get('metrics')
+  @Get("metrics")
   getMetrics() {
     return this.auditService.getMetrics();
   }
 
-  @Get('metrics/prometheus')
+  @Get("metrics/prometheus")
   getPrometheusMetrics() {
     return this.auditService.exposePrometheusMetrics();
   }

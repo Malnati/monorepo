@@ -1,10 +1,10 @@
 // app/api/src/modules/moderation/moderation.service.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserEntity } from '../user/user.entity';
-import { PublicationSafetyAgent } from '../agents/publication-safety.agent';
-import { CheckPublicationDto } from './dto/check-publication.dto';
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { UserEntity } from "../user/user.entity";
+import { PublicationSafetyAgent } from "../agents/publication-safety.agent";
+import { CheckPublicationDto } from "./dto/check-publication.dto";
 
 @Injectable()
 export class ModerationService {
@@ -29,15 +29,15 @@ export class ModerationService {
     issues: string[];
     suggestions?: string[];
   } | null> {
-    const method = 'checkPublication';
+    const method = "checkPublication";
     try {
       this.logger.log(
-        `${method} ENTER, titulo=${(dto.titulo || dto.title || '')?.substring(0, 50)}, userId=${userId}`,
+        `${method} ENTER, titulo=${(dto.titulo || dto.title || "")?.substring(0, 50)}, userId=${userId}`,
       );
 
       const result = await this.safetyAgent.checkPublication({
-        titulo: dto.titulo || dto.title || '',
-        descricao: dto.descricao || dto.description || '',
+        titulo: dto.titulo || dto.title || "",
+        descricao: dto.descricao || dto.description || "",
         categoria: dto.categoria,
       });
 
@@ -54,13 +54,13 @@ export class ModerationService {
       const suggestions: string[] = [];
 
       result.fields.forEach((field) => {
-        if (field.status === 'sensitive') {
+        if (field.status === "sensitive") {
           issues.push(
-            `Campo "${field.field}": ${field.evidences.join('; ')} [${field.policy_reference}]`,
+            `Campo "${field.field}": ${field.evidences.join("; ")} [${field.policy_reference}]`,
           );
-        } else if (field.status === 'review') {
+        } else if (field.status === "review") {
           suggestions.push(
-            `Campo "${field.field}" precisa revisão: ${field.evidences.join('; ')}`,
+            `Campo "${field.field}" precisa revisão: ${field.evidences.join("; ")}`,
           );
         }
       });
@@ -68,7 +68,7 @@ export class ModerationService {
       // Registrar revisão no banco apenas se houver resultado válido
       try {
         await this.registerPublicationReview(
-          'offer',
+          "offer",
           null,
           userId || null,
           result.status,
@@ -82,7 +82,7 @@ export class ModerationService {
       } catch (reviewError) {
         // Não falhar se registro de revisão falhar
         this.logger.error(
-          'Erro ao registrar revisão (não crítico):',
+          "Erro ao registrar revisão (não crítico):",
           reviewError,
         );
       }
@@ -135,13 +135,15 @@ export class ModerationService {
           reason,
           JSON.stringify(issues),
           suggestions ? JSON.stringify(suggestions) : null,
-          modelId || process.env.OPENROUTER_MODEL || 'anthropic/claude-3.5-sonnet',
-          promptVersion || 'unknown',
-          executionId || 'unknown',
+          modelId ||
+            process.env.OPENROUTER_MODEL ||
+            "anthropic/claude-3.5-sonnet",
+          promptVersion || "unknown",
+          executionId || "unknown",
         ],
       );
     } catch (error) {
-      this.logger.error('Erro ao registrar revisão de publicação:', error);
+      this.logger.error("Erro ao registrar revisão de publicação:", error);
     }
   }
 }

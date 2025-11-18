@@ -1,8 +1,8 @@
 // app/api/src/app.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-const API_NAME = 'Prototype API Mock';
-const API_VERSION = '0.1.0';
+const API_NAME = "Prototype API Mock";
+const API_VERSION = "0.1.0";
 
 @Injectable()
 export class AppService {
