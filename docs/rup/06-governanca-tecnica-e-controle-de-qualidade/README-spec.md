@@ -4,7 +4,7 @@
 > Base: [./README.md](./README.md)
 > Referências correlatas: [Arquitetura — App](../01-arquitetura/README-spec.md) · [Design e UX](../02-design/README-spec.md) · [Planejamento e Requisitos](../02-planejamento/especificacao-de-requisitos-spec.md) · [Testes e Validação](../04-testes-e-validacao/README-spec.md)
 
-A disciplina de governança técnica do **App — CLImate INvestment** acompanha todas as fases do Rational Unified Process (RUP) aplicado ao produto climático digital. Cada incremento do banco precisa manter aderência arquitetural, regulatória, socioambiental e operacional desde a concepção até a sustentação contínua.
+A disciplina de governança técnica do template APP acompanha todas as fases do Rational Unified Process (RUP) aplicado a produtos white-label. Cada incremento precisa manter aderência arquitetural, regulatória e operacional desde a concepção até a sustentação contínua.
 
 Esta etapa consolida políticas, papéis, auditorias e uso coordenado de Inteligência Artificial para garantir rastreabilidade integral entre requisitos (`REQ-001`…`REQ-030` e correlatos do catálogo App), código, dados climáticos e indicadores ESG. A herança metodológica do projeto Yagnostic foi adaptada aos domínios de marketplace de resíduos, crédito verde e tokenização de ativos climáticos.
 

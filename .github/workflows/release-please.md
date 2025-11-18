@@ -1,5 +1,3 @@
-
-
 <img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
 
 # [Release Please](https://github.com/googleapis/release-please)
@@ -48,10 +46,10 @@ Release Please assumes you are using [Conventional Commit messages](https://www.
 
 The most important prefixes you should have in mind are:
 
-* `fix:` which represents bug fixes, and correlates to a [SemVer](https://semver.org/)
+- `fix:` which represents bug fixes, and correlates to a [SemVer](https://semver.org/)
   patch.
-* `feat:` which represents a new feature, and correlates to a SemVer minor.
-* `feat!:`,  or `fix!:`, `refactor!:`, etc., which represent a breaking change
+- `feat:` which represents a new feature, and correlates to a SemVer minor.
+- `feat!:`, or `fix!:`, `refactor!:`, etc., which represent a breaking change
   (indicated by the `!`) and will result in a SemVer major.
 
 ### Linear git commit history (use squash-merge)
@@ -59,17 +57,17 @@ The most important prefixes you should have in mind are:
 We **highly** recommend that you use squash-merges when merging pull requests.
 A linear git history makes it much easier to:
 
-* Follow history - commits are sorted by merge date and are not mixed between
+- Follow history - commits are sorted by merge date and are not mixed between
   pull requests
-* Find and revert bugs - `git bisect` is helpful for tracking down which
+- Find and revert bugs - `git bisect` is helpful for tracking down which
   change introduced a bug
-* Control the release-please changelog - when you merge a PR, you may have
+- Control the release-please changelog - when you merge a PR, you may have
   commit messages that make sense within the scope of the PR, but don't
   make sense when merged in the main branch. For example, you may have
   `feat: introduce feature A` and then `fix: some bugfix introduced in
-  the first commit`. The `fix` commit is actually irrelevant to the release
+the first commit`. The `fix` commit is actually irrelevant to the release
   notes as there was never a bug experienced in the main branch.
-* Keep a clean main branch - if you use something like red/green development
+- Keep a clean main branch - if you use something like red/green development
   (create a failing test in commit A, then fix in commit B) and merge (or
   rebase-merge), then there will be points in time in your main branch where
   tests do not pass.
@@ -98,7 +96,7 @@ The above commit message will contain:
 
 1. an entry for the **"adds v4 UUID to crypto"** feature.
 2. an entry for the fix **"unicode no longer throws exception"**, along with a note
-  that it's a breaking change.
+   that it's a breaking change.
 3. an entry for the feature **"update encode to support unicode"**.
 
 :warning: **Important:** The additional messages must be added to the bottom of the commit.
@@ -182,31 +180,31 @@ Release Please will process the pull request immediately to find releasable unit
 
 Release Please automates releases for the following flavors of repositories:
 
-| release type        | description |
-|---------------------|---------------------------------------------------------|
-| `bazel`             | [A Bazel module, with a MODULE.bazel and a CHANGELOG.md](https://bazel.build/external/module) |
-| `dart`              | A repository with a pubspec.yaml and a CHANGELOG.md |
-| `elixir`            | A repository with a mix.exs and a CHANGELOG.md |
-| `go`                | A repository with a CHANGELOG.md |
-| `helm`              | A repository with a Chart.yaml and a CHANGELOG.md |
-| `java`              | [A strategy that generates SNAPSHOT version after each release](docs/java.md) |
-| `krm-blueprint`     | [A kpt package, with 1 or more KRM files and a CHANGELOG.md](https://github.com/GoogleCloudPlatform/blueprints/tree/main/catalog/project) |
-| `maven`             | [Strategy for Maven projects, generates SNAPSHOT version after each release and updates `pom.xml` automatically](docs/java.md) |
-| `node`              | [A Node.js repository, with a package.json and CHANGELOG.md](https://github.com/yargs/yargs) |
-| `expo`              | [An Expo based React Native repository, with a package.json, app.json and CHANGELOG.md](https://github.com/dmi3y/expo-release-please-example) |
-| `ocaml`             | [An OCaml repository, containing 1 or more opam or esy files and a CHANGELOG.md](https://github.com/grain-lang/binaryen.ml) |
-| `php`               | A repository with a composer.json and a CHANGELOG.md |
-| `python`            | [A Python repository with a pyproject.toml, &lt;project&gt;/\_\_init\_\_.py, CHANGELOG.md or optionally a setup.py, setup.cfg](https://github.com/googleapis/python-storage) |
-| `R`               | A repository with a DESCRIPTION and a NEWS.md |
-| `ruby`              | A repository with a version.rb and a CHANGELOG.md |
-| `rust`              | A Rust repository, with a Cargo.toml (either as a crate or workspace, although note that workspaces require a [manifest driven release](https://github.com/googleapis/release-please/blob/main/docs/manifest-releaser.md) and the "cargo-workspace" plugin) and a CHANGELOG.md |
-| `sfdx`              | A repository with a [sfdx-project.json](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) and a CHANGELOG.md |
-| `simple`            | [A repository with a version.txt and a CHANGELOG.md](https://github.com/googleapis/gapic-generator) |
-| `terraform-module`  | [A terraform module, with a version in the README.md, and a CHANGELOG.md](https://github.com/terraform-google-modules/terraform-google-project-factory) |
+| release type       | description                                                                                                                                                                                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `bazel`            | [A Bazel module, with a MODULE.bazel and a CHANGELOG.md](https://bazel.build/external/module)                                                                                                                                                                                  |
+| `dart`             | A repository with a pubspec.yaml and a CHANGELOG.md                                                                                                                                                                                                                            |
+| `elixir`           | A repository with a mix.exs and a CHANGELOG.md                                                                                                                                                                                                                                 |
+| `go`               | A repository with a CHANGELOG.md                                                                                                                                                                                                                                               |
+| `helm`             | A repository with a Chart.yaml and a CHANGELOG.md                                                                                                                                                                                                                              |
+| `java`             | [A strategy that generates SNAPSHOT version after each release](docs/java.md)                                                                                                                                                                                                  |
+| `krm-blueprint`    | [A kpt package, with 1 or more KRM files and a CHANGELOG.md](https://github.com/GoogleCloudPlatform/blueprints/tree/main/catalog/project)                                                                                                                                      |
+| `maven`            | [Strategy for Maven projects, generates SNAPSHOT version after each release and updates `pom.xml` automatically](docs/java.md)                                                                                                                                                 |
+| `node`             | [A Node.js repository, with a package.json and CHANGELOG.md](https://github.com/yargs/yargs)                                                                                                                                                                                   |
+| `expo`             | [An Expo based React Native repository, with a package.json, app.json and CHANGELOG.md](https://github.com/dmi3y/expo-release-please-example)                                                                                                                                  |
+| `ocaml`            | [An OCaml repository, containing 1 or more opam or esy files and a CHANGELOG.md](https://github.com/grain-lang/binaryen.ml)                                                                                                                                                    |
+| `php`              | A repository with a composer.json and a CHANGELOG.md                                                                                                                                                                                                                           |
+| `python`           | [A Python repository with a pyproject.toml, &lt;project&gt;/\_\_init\_\_.py, CHANGELOG.md or optionally a setup.py, setup.cfg](https://github.com/googleapis/python-storage)                                                                                                   |
+| `R`                | A repository with a DESCRIPTION and a NEWS.md                                                                                                                                                                                                                                  |
+| `ruby`             | A repository with a version.rb and a CHANGELOG.md                                                                                                                                                                                                                              |
+| `rust`             | A Rust repository, with a Cargo.toml (either as a crate or workspace, although note that workspaces require a [manifest driven release](https://github.com/googleapis/release-please/blob/main/docs/manifest-releaser.md) and the "cargo-workspace" plugin) and a CHANGELOG.md |
+| `sfdx`             | A repository with a [sfdx-project.json](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) and a CHANGELOG.md                                                                                                                    |
+| `simple`           | [A repository with a version.txt and a CHANGELOG.md](https://github.com/googleapis/gapic-generator)                                                                                                                                                                            |
+| `terraform-module` | [A terraform module, with a version in the README.md, and a CHANGELOG.md](https://github.com/terraform-google-modules/terraform-google-project-factory)                                                                                                                        |
 
 ## Setting up Release Please
 
-There are a variety of ways you can deploy release-please: 
+There are a variety of ways you can deploy release-please:
 
 ### GitHub Action (recommended)
 
@@ -244,13 +242,13 @@ The dist-tags follow the naming convention `legacy-(version)`.
 
 _Legacy Node.js versions are supported as a best effort:_
 
-* Legacy versions will not be tested in continuous integration.
-* Some security patches may not be able to be backported.
-* Dependencies will not be kept up-to-date, and features will not be backported.
+- Legacy versions will not be tested in continuous integration.
+- Some security patches may not be able to be backported.
+- Dependencies will not be kept up-to-date, and features will not be backported.
 
 #### Legacy tags available
 
-* `legacy-8`: install client libraries from this dist-tag for versions
+- `legacy-8`: install client libraries from this dist-tag for versions
   compatible with Node.js 8.
 
 ## Versioning
@@ -313,7 +311,7 @@ request is merged to your release branch.
 In `release-please` terms, `component` is the name of a releasable unit. This could be a
 library to publish to a package manager or an application that is deployed to a server.
 
-Most commonly, a single GitHub repository contains code for a single `component`. In 
+Most commonly, a single GitHub repository contains code for a single `component`. In
 other cases, a single GitHub repository could be a monorepo that contains code for
 multiple components. `release-please` can handle both of these scenarios.
 
@@ -356,11 +354,15 @@ The general flow for opening a release pull request:
 More in-depth (including monorepo support):
 
 1. Build the manifest config
-  * Fetch and parse the manifest config/versions files OR
-  * Build the manifest in code
+
+- Fetch and parse the manifest config/versions files OR
+- Build the manifest in code
+
 2. Find the SHA of each of the latest released versions for each component
-  * Iterate through the latest GitHub releases (via GitHub GraphQL API)
-  * Fallback: iterate through GitHub tags on the repository
+
+- Iterate through the latest GitHub releases (via GitHub GraphQL API)
+- Fallback: iterate through GitHub tags on the repository
+
 3. Iterate backwards through commits until we've seen all the release SHAs or we hit
    a (configurable) max number of commits. Include fetching files for each of those
    commits
@@ -381,7 +383,7 @@ The general flow for creating a GitHub release:
    version, and release notes.
 3. Create a new GitHub release that tags the SHA of the pull request's merge commit SHA.
    Use the parsed release notes as the GitHub release's body.
-4. Mark the pull request as tagged by adding the tagged label (defaults to 
+4. Mark the pull request as tagged by adding the tagged label (defaults to
    `autorelease: tagged`).
 
 ## Making API calls
@@ -418,11 +420,11 @@ version.
 
 A [`Version`][version] instance contains:
 
-* semver major (number)
-* semver minor (number)
-* semver patch (number)
-* pre-release version (string)
-* build (string)
+- semver major (number)
+- semver minor (number)
+- semver patch (number)
+- pre-release version (string)
+- build (string)
 
 ### Versioning strategy
 
@@ -431,9 +433,9 @@ notion of how to increment a `Version` given a list of commits.
 
 In the default case ([`DefaultVersioningStrategy`][default-versioning-strategy]):
 
-* a breaking change will increment the semver major version
-* a `feat` change will increment the semver minor version
-* a `fix` change will increment the semver patch version
+- a breaking change will increment the semver major version
+- a `feat` change will increment the semver minor version
+- a `fix` change will increment the semver patch version
 
 Note: `VersioningStrategy`s are configurable independently of the language `Strategy` so
 you can mix and match versioning strategies with language support.
@@ -590,8 +592,6 @@ for use as an implementation detail or for testability. An external developer co
 **Contributor note**: Do not make breaking changes to any exported entities from `index.ts`.
 Doing so can break integrations. If the change is necessary, we will need to mark the
 change as breaking and release a new major version.
-
-
 
 [github-class]: /src/github.ts
 [octokit-rest]: https://github.com/octokit/rest.js/

@@ -1,27 +1,33 @@
 <!-- .github/agents/agent-engineering-codigo-higiene.md -->
 
 ---
+
 name: Engenharia - Higiene de Código
 description: Garante remoção de código morto e limpeza após refatorações conforme Clean Code
 version: 1.0.0
+
 ---
 
 # Agente: Engenharia - Higiene de Código
 
 ## Propósito
+
 Este agente assegura a remoção obrigatória de código morto após qualquer refatoração, migração ou alteração, mantendo a base de código limpa e sustentável conforme princípios Clean Code.
 
 ## Itens obrigatórios cobertos
+
 - Limpeza de código e remoção de código morto (AGENTS.md)
 - Verificação recursiva em todo o projeto
 - Princípios de Clean Code aplicados
 
 ## Artefatos base RUP
+
 - `docs/rup/03-implementacao/padroes-de-codigo-spec.md`
 - `docs/rup/04-qualidade-testes/qualidade-e-metricas-spec.md`
 - `AGENTS.md` (seção "Limpeza de código e remoção de código morto")
 
 ## Mandatórios
+
 1. **Escopo de verificação obrigatória:**
    - Código-fonte: funções, métodos, classes, componentes React não utilizados
    - Variáveis, constantes, atributos, hooks customizados não referenciados
@@ -48,6 +54,7 @@ Este agente assegura a remoção obrigatória de código morto após qualquer re
    - Cria risco em deploys automatizados
 
 ## Fluxo de atuação
+
 1. **Identificação:** Detectar alterações recentes que possam ter criado código morto
 2. **Busca recursiva:** Procurar referências em todo o projeto
 3. **Validação:** Confirmar que código é realmente não utilizado
@@ -56,6 +63,7 @@ Este agente assegura a remoção obrigatória de código morto após qualquer re
 6. **Registro:** Documentar limpeza no changelog
 
 ## Saídas esperadas
+
 - Código-fonte sem funções/classes/variáveis não utilizadas
 - Imports limpos (sem não utilizados)
 - Dependências `package.json` apenas necessárias
@@ -63,12 +71,14 @@ Este agente assegura a remoção obrigatória de código morto após qualquer re
 - Changelog documentando limpeza realizada
 
 ## Auditorias e segurança
+
 - Linters automáticos detectam código não utilizado
 - Validação de build e testes após limpeza
 - Conformidade com cobertura de código mantida/melhorada
 - Rastreabilidade de refatorações via changelog
 
 ## Comandos obrigatórios
+
 ```bash
 # Detectar imports não utilizados (TypeScript/JavaScript)
 npx eslint src/ --ext .ts,.tsx,.js,.jsx --rule 'no-unused-vars: error'
@@ -92,6 +102,7 @@ npm test
 ```
 
 ## Checklist de limpeza
+
 - [ ] Funções/métodos/classes não utilizados removidos
 - [ ] Variáveis/constantes/atributos órfãos eliminados
 - [ ] Hooks customizados React não referenciados removidos
@@ -105,6 +116,7 @@ npm test
 ## Exemplos de código morto
 
 ### ❌ Código morto: Função não utilizada
+
 ```typescript
 // Função não referenciada em lugar algum
 function calculateDiscount(price: number): number {
@@ -118,6 +130,7 @@ export function getPrice(): number {
 ```
 
 ### ✅ Após limpeza
+
 ```typescript
 // Função não utilizada removida
 export function getPrice(): number {
@@ -126,6 +139,7 @@ export function getPrice(): number {
 ```
 
 ### ❌ Código morto: Import não utilizado
+
 ```typescript
 import { useState, useEffect, useMemo } from 'react';
 
@@ -137,6 +151,7 @@ export function Component() {
 ```
 
 ### ✅ Após limpeza
+
 ```typescript
 import { useState } from 'react';
 
@@ -147,12 +162,14 @@ export function Component() {
 ```
 
 ## Ferramentas recomendadas
+
 - **ESLint:** detecta variáveis/imports não utilizados
 - **ts-prune:** encontra exports TypeScript não utilizados
 - **depcheck:** identifica dependências npm não utilizadas
 - **TypeScript:** `--noUnusedLocals` e `--noUnusedParameters`
 
 ## Referências
+
 - `AGENTS.md` → seção "Limpeza de código e remoção de código morto"
 - `docs/rup/03-implementacao/padroes-de-codigo-spec.md`
 - `docs/rup/04-qualidade-testes/qualidade-e-metricas-spec.md`

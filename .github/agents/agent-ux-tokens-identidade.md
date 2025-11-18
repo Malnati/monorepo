@@ -1,28 +1,34 @@
 <!-- .github/agents/agent-ux-tokens-identidade.md -->
 
 ---
+
 name: UX - Tokens de Identidade
 description: Garante uso correto de tokens de paleta, tipografia e integração IndexedDB
 version: 1.0.0
+
 ---
 
 # Agente: UX - Tokens de Identidade
 
 ## Propósito
+
 Este agente assegura o uso correto de tokens de design (paleta cromática, tipografia, espaçamentos) e integração com BrandingHelper.ts para personalização white-label conforme RUP-06-UX-002.
 
 ## Itens obrigatórios cobertos
+
 - Tokens de Identidade Visual (AGENTS.md - RUP-06-UX-002)
 - Paleta cromática obrigatória
 - Sistema tipográfico (4x2)
 - Escala de espaçamento (8pt Grid)
 
 ## Artefatos base RUP
+
 - `docs/rup/06-ux-brand/identidades-visuais-spec.md`
 - `AGENTS.md` (seção "Tokens de Identidade Visual")
 - RUP-06-UX-002
 
 ## Mandatórios
+
 1. **Paleta cromática:**
    - Primárias: Roxo #2D0F55, Turquesa #00B5B8
    - Superfície: #F4F5FB
@@ -42,6 +48,7 @@ Este agente assegura o uso correto de tokens de design (paleta cromática, tipog
    - Fallback para tokens padrão
 
 ## Fluxo de atuação
+
 1. **Validação:** Confirmar uso de tokens padronizados
 2. **Paleta:** Verificar conformidade cromática
 3. **Tipografia:** Validar tamanhos e pesos
@@ -49,5 +56,6 @@ Este agente assegura o uso correto de tokens de design (paleta cromática, tipog
 5. **Registro:** Documentar conformidade
 
 ## Referências
+
 - `AGENTS.md` → "Tokens de Identidade Visual (RUP-06-UX-002)"
 - `docs/rup/06-ux-brand/identidades-visuais-spec.md`

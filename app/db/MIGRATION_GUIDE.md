@@ -9,6 +9,7 @@ Este guia documenta a transição da estrutura monolítica de migrations (`001_c
 ## Motivação
 
 A estrutura modular oferece:
+
 - **Manutenibilidade**: Cada tabela em seu próprio arquivo
 - **Clareza**: Separação clara entre DDL e dados
 - **Rastreabilidade**: Mudanças isoladas e granulares
@@ -53,6 +54,7 @@ init/
 ### 1. tb_offer Nativa
 
 **Antes:**
+
 ```sql
 -- 001_create_schema.sql
 CREATE TABLE tb_lote_residuo (
@@ -70,6 +72,7 @@ ALTER TABLE tb_offer ADD COLUMN address VARCHAR(255);
 ```
 
 **Agora:**
+
 ```sql
 -- 005_ddl_tb_offer.sql
 CREATE TABLE IF NOT EXISTS tb_offer (
@@ -88,6 +91,7 @@ CREATE TABLE IF NOT EXISTS tb_offer (
 ### 2. Referências FK Corretas desde o Início
 
 **Antes:**
+
 ```sql
 -- tb_fotos com lote_residuo_id
 CREATE TABLE tb_fotos (
@@ -99,6 +103,7 @@ ALTER TABLE tb_fotos RENAME COLUMN lote_residuo_id TO offer_id;
 ```
 
 **Agora:**
+
 ```sql
 -- 006_ddl_tb_fotos.sql
 CREATE TABLE IF NOT EXISTS tb_fotos (
@@ -111,10 +116,12 @@ CREATE TABLE IF NOT EXISTS tb_fotos (
 ### 3. Separação DDL vs Seeds
 
 **Antes:**
+
 - Seeds misturados com DDL em `003_seed_lotes_residuos.sql`
 - Dificulta manutenção e versionamento
 
 **Agora:**
+
 - DDL puro em `init/ddl/` (001-007)
 - Seeds separados em `init/seeds/data/` (008+)
 - Imagens organizadas em `init/seeds/img/`
@@ -173,6 +180,7 @@ volumes:
 ```
 
 ⚠️ **Nota**: PostgreSQL executa arquivos em ordem alfabética. Com estrutura de diretórios:
+
 - `ddl/` será executado antes de `seeds/` (ordem alfabética)
 - Dentro de cada diretório, arquivos são executados em ordem numérica
 
@@ -181,9 +189,9 @@ volumes:
 ### Campos Obrigatórios de tb_offer
 
 ```sql
-SELECT 
-    column_name, 
-    data_type, 
+SELECT
+    column_name,
+    data_type,
     is_nullable
 FROM information_schema.columns
 WHERE table_name = 'tb_offer'
@@ -191,6 +199,7 @@ ORDER BY ordinal_position;
 ```
 
 **Esperado:**
+
 - ✅ `title` VARCHAR(255) NOT NULL
 - ✅ `description` TEXT
 - ✅ `location` VARCHAR(255)
@@ -203,20 +212,21 @@ ORDER BY ordinal_position;
 
 ```sql
 -- tb_fotos deve referenciar tb_offer
-SELECT 
+SELECT
     tc.constraint_name,
     kcu.column_name,
     ccu.table_name AS foreign_table_name
 FROM information_schema.table_constraints tc
-JOIN information_schema.key_column_usage kcu 
+JOIN information_schema.key_column_usage kcu
     ON tc.constraint_name = kcu.constraint_name
-JOIN information_schema.constraint_column_usage ccu 
+JOIN information_schema.constraint_column_usage ccu
     ON ccu.constraint_name = tc.constraint_name
 WHERE tc.table_name = 'tb_fotos'
     AND tc.constraint_type = 'FOREIGN KEY';
 ```
 
 **Esperado:**
+
 - ✅ `offer_id` → `tb_offer(id)`
 
 ## Plano de Transição

@@ -66,7 +66,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-8">
             <img
               src={LOGO_PATH}
-              alt="APP"
+              alt={brandTokens.name}
               className="h-32 w-auto cursor-pointer"
               onClick={() => window.location.reload()}
               role="button"

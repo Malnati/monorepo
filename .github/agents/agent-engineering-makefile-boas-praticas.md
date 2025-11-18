@@ -1,28 +1,34 @@
 <!-- .github/agents/agent-engineering-makefile-boas-praticas.md -->
 
 ---
+
 name: Engenharia - Makefile Boas Práticas
 description: Garante conformidade com convenções Makefile e indentação obrigatória com TAB
 version: 1.0.0
+
 ---
 
 # Agente: Engenharia - Makefile Boas Práticas
 
 ## Propósito
+
 Este agente assegura que todos os Makefiles sigam as convenções estabelecidas, incluindo indentação obrigatória com TAB, targets padronizados e compatibilidade com `docker`/`docker compose`.
 
 ## Itens obrigatórios cobertos
+
 - Makefile (AGENTS.md - convenções)
 - Boas Práticas para Arquivos Makefile
 - Indentação obrigatória com TAB
 
 ## Artefatos base RUP
+
 - `Makefile` (raiz do repositório)
 - `template-*/Makefile` (subprojetos quando aplicável)
 - `docs/rup/03-implementacao/build-e-automacao-spec.md`
 - `AGENTS.md` (seções "Makefile" e "Boas Práticas para Arquivos Makefile")
 
 ## Mandatórios
+
 1. **Indentação obrigatória:**
    - Todos os comandos de targets devem ser indentados com **TAB** (não espaços)
    - Validar e corrigir antes de cada commit
@@ -38,6 +44,7 @@ Este agente assegura que todos os Makefiles sigam as convenções estabelecidas,
    - Todos usando `$(COMPOSE)` para compatibilidade docker/docker compose
 
 3. **Variáveis comuns:**
+
    ```makefile
    COMPOSE ?= docker compose
    SERVICE_NAME ?= nome-do-servico
@@ -49,6 +56,7 @@ Este agente assegura que todos os Makefiles sigam as convenções estabelecidas,
    - Nome: `rebuild-<serviço>`
 
 ## Fluxo de atuação
+
 1. **Validação de indentação:** Verificar se comandos usam TAB
 2. **Auditoria de targets:** Confirmar presença de targets obrigatórios
 3. **Checagem de variáveis:** Validar uso de `$(COMPOSE)` e outras vars padrão
@@ -56,18 +64,21 @@ Este agente assegura que todos os Makefiles sigam as convenções estabelecidas,
 5. **Registro:** Documentar conformidade no changelog
 
 ## Saídas esperadas
+
 - Makefiles com indentação correta (TAB)
 - Targets padronizados presentes e funcionais
 - Variáveis comuns configuradas adequadamente
 - Changelog confirmando revisão de conformidade
 
 ## Auditorias e segurança
+
 - Validação de sintaxe Make antes do commit
 - Verificação de indentação via script automatizado
 - Teste de targets críticos (`make help`, `make build`)
 - Rastreabilidade de alterações estruturais
 
 ## Comandos obrigatórios
+
 ```bash
 # Validar infraestrutura Makefile
 make help
@@ -89,6 +100,7 @@ done
 ```
 
 ## Checklist de conformidade
+
 - [ ] Todos os comandos indentados com TAB (não espaços)
 - [ ] Targets obrigatórios presentes (`build`, `start`, `stop`, `clean`, `help`)
 - [ ] Variações por serviço criadas (`build-<serviço>`, `start-<serviço>`)
@@ -97,6 +109,7 @@ done
 - [ ] Conformidade documentada no changelog
 
 ## Template de estrutura correta
+
 ```makefile
 # Makefile
 COMPOSE ?= docker compose
@@ -127,6 +140,7 @@ clean:
 ```
 
 ## Exemplo de indentação
+
 ```makefile
 # ❌ INCORRETO (espaços)
 build:
@@ -138,6 +152,7 @@ build:
 ```
 
 ## Referências
+
 - `AGENTS.md` → seções "Makefile" e "Boas Práticas para Arquivos Makefile"
 - `Makefile` → raiz do repositório
 - `docs/rup/03-implementacao/build-e-automacao-spec.md`
