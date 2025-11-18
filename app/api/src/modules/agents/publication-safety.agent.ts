@@ -1,9 +1,7 @@
 // app/api/src/modules/agents/publication-safety.agent.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { OpenRouterService } from '../openrouter/openrouter.service';
-import {
-  PROMPT_VERSION,
-} from './sensitive-data-patterns';
+import { Injectable, Logger } from "@nestjs/common";
+import { OpenRouterService } from "../openrouter/openrouter.service";
+import { PROMPT_VERSION } from "./sensitive-data-patterns";
 
 export interface PublicationCheckInput {
   titulo: string;
@@ -13,13 +11,13 @@ export interface PublicationCheckInput {
 
 export interface FieldCheck {
   field: string;
-  status: 'clean' | 'sensitive' | 'review';
+  status: "clean" | "sensitive" | "review";
   evidences: string[];
   policy_reference?: string;
 }
 
 export interface PublicationCheckResult {
-  status: 'approved' | 'needs_revision' | 'blocked';
+  status: "approved" | "needs_revision" | "blocked";
   reason: string;
   fields: FieldCheck[];
   prompt_version: string;
@@ -117,7 +115,6 @@ CHECK_07: E-MAILS EM CAMPOS INADEQUADOS
 
 **IMPORTANTE:** Se houver QUALQUER dúvida, classifique como "review" (não bloquear). Apenas bloqueie quando tiver CERTEZA de dado sensível.`;
 
-
 @Injectable()
 export class PublicationSafetyAgent {
   private readonly logger = new Logger(PublicationSafetyAgent.name);
@@ -127,7 +124,7 @@ export class PublicationSafetyAgent {
   async checkPublication(
     input: PublicationCheckInput,
   ): Promise<PublicationCheckResult | null> {
-    const method = 'checkPublication';
+    const method = "checkPublication";
     const executionId = this.generateExecutionId();
 
     try {
@@ -139,19 +136,19 @@ export class PublicationSafetyAgent {
       // Conformidade: LGPD Art. 46 § 1º + REQ-200
       // A IA receberá dados ofuscados mas ainda poderá detectar padrões
       const sanitizedInput = {
-        titulo: this.sanitizeForPrompt(input.titulo || ''),
-        descricao: this.sanitizeForPrompt(input.descricao || ''),
-        categoria: input.categoria || '',
+        titulo: this.sanitizeForPrompt(input.titulo || ""),
+        descricao: this.sanitizeForPrompt(input.descricao || ""),
+        categoria: input.categoria || "",
       };
 
       const publicationDataJson = JSON.stringify(sanitizedInput, null, 2);
       const prompt = SAFETY_PROMPT.replace(
-        '{publicationDataJson}',
+        "{publicationDataJson}",
         publicationDataJson,
       );
 
       const modelId =
-        process.env.OPENROUTER_MODEL || 'anthropic/claude-3.5-sonnet';
+        process.env.OPENROUTER_MODEL || "anthropic/claude-3.5-sonnet";
 
       const response = await this.openRouterService.prompt(prompt, {
         temperature: 0.1, // Mais determinístico para detecção objetiva
@@ -160,7 +157,7 @@ export class PublicationSafetyAgent {
 
       const result = this.parseResponse(response, modelId, executionId);
       this.logger.log(
-        `${method} EXIT, executionId=${executionId}, status=${result.status}, sensitiveFields=${result.fields.filter((f) => f.status === 'sensitive').length}`,
+        `${method} EXIT, executionId=${executionId}, status=${result.status}, sensitiveFields=${result.fields.filter((f) => f.status === "sensitive").length}`,
       );
 
       return result;
@@ -200,34 +197,35 @@ export class PublicationSafetyAgent {
       }
 
       // Validar status
-      const validStatuses = ['approved', 'needs_revision', 'blocked'];
+      const validStatuses = ["approved", "needs_revision", "blocked"];
       const overallStatus = validStatuses.includes(parsed.overall_status)
         ? parsed.overall_status
-        : 'needs_revision';
+        : "needs_revision";
 
       // Processar campos
       const fields: FieldCheck[] = parsed.fields.map((field: any) => ({
-        field: String(field.field || 'unknown'),
-        status: ['clean', 'sensitive', 'review'].includes(field.status)
+        field: String(field.field || "unknown"),
+        status: ["clean", "sensitive", "review"].includes(field.status)
           ? field.status
-          : 'review',
+          : "review",
         evidences: Array.isArray(field.evidences) ? field.evidences : [],
         policy_reference: field.policy_reference || undefined,
       }));
 
       // Gerar reason baseado nos campos
-      const sensitiveCount = fields.filter((f) => f.status === 'sensitive')
-        .length;
-      const reviewCount = fields.filter((f) => f.status === 'review').length;
+      const sensitiveCount = fields.filter(
+        (f) => f.status === "sensitive",
+      ).length;
+      const reviewCount = fields.filter((f) => f.status === "review").length;
 
-      let reason = parsed.summary || '';
+      let reason = parsed.summary || "";
       if (!reason) {
         if (sensitiveCount > 0) {
           reason = `${sensitiveCount} campo(s) contém dados sensíveis que não devem ser expostos publicamente`;
         } else if (reviewCount > 0) {
           reason = `${reviewCount} campo(s) precisa de revisão manual`;
         } else {
-          reason = 'Nenhum dado sensível detectado';
+          reason = "Nenhum dado sensível detectado";
         }
       }
 
@@ -240,7 +238,7 @@ export class PublicationSafetyAgent {
         execution_id: executionId,
       };
     } catch (error) {
-      this.logger.error('Erro ao parsear resposta da IA:', error);
+      this.logger.error("Erro ao parsear resposta da IA:", error);
       // Em caso de erro de parsing, usar fallback fail-open
       return this.createFallbackResult(modelId, executionId);
     }
@@ -255,19 +253,19 @@ export class PublicationSafetyAgent {
     executionId: string,
   ): PublicationCheckResult {
     return {
-      status: 'needs_revision',
+      status: "needs_revision",
       reason:
-        'Validação automática indisponível. Publicação liberada para revisão manual.',
+        "Validação automática indisponível. Publicação liberada para revisão manual.",
       fields: [
         {
-          field: 'titulo',
-          status: 'review',
-          evidences: ['Validação automática falhou'],
+          field: "titulo",
+          status: "review",
+          evidences: ["Validação automática falhou"],
         },
         {
-          field: 'descricao',
-          status: 'review',
-          evidences: ['Validação automática falhou'],
+          field: "descricao",
+          status: "review",
+          evidences: ["Validação automática falhou"],
         },
       ],
       prompt_version: PROMPT_VERSION,
@@ -288,16 +286,16 @@ export class PublicationSafetyAgent {
   /**
    * Sanitiza dados sensíveis antes de enviar para IA externa
    * Conformidade: LGPD Art. 46 § 1º + REQ-200
-   * 
+   *
    * Estratégia: Ofuscar PII mantendo padrões detectáveis
    * - Telefones: (11) 99999-9999 → (XX) XXXXX-XXXX [PHONE_PATTERN_DETECTED]
    * - CPF: 123.456.789-00 → XXX.XXX.XXX-XX [CPF_PATTERN_DETECTED]
    * - E-mails: user@domain.com → xxx@xxx.xxx [EMAIL_PATTERN_DETECTED]
-   * 
+   *
    * A IA ainda pode detectar que havia um padrão suspeito sem ver o dado real
    */
   private sanitizeForPrompt(text: string): string {
-    if (!text) return '';
+    if (!text) return "";
 
     let sanitized = text;
 
@@ -305,45 +303,45 @@ export class PublicationSafetyAgent {
     // 1. Formato internacional com +55
     sanitized = sanitized.replace(
       /\+55\s*\d{2}\s*\d{4,5}-?\d{4}/g,
-      '(XX) XXXXX-XXXX [PHONE_PATTERN_DETECTED]',
+      "(XX) XXXXX-XXXX [PHONE_PATTERN_DETECTED]",
     );
     // 2. Formato com parênteses (11) 99999-9999
     sanitized = sanitized.replace(
       /\(\d{2}\)\s*\d{4,5}-?\d{4}/g,
-      '(XX) XXXXX-XXXX [PHONE_PATTERN_DETECTED]',
+      "(XX) XXXXX-XXXX [PHONE_PATTERN_DETECTED]",
     );
     // 3. Formato sem parênteses 11 99999-9999
     sanitized = sanitized.replace(
       /\b\d{2}\s*\d{4,5}-?\d{4}\b/g,
-      'XX XXXXX-XXXX [PHONE_PATTERN_DETECTED]',
+      "XX XXXXX-XXXX [PHONE_PATTERN_DETECTED]",
     );
 
     // Ofuscar CPF/CNPJ com marcador (ordem: mais específico primeiro)
     // 1. CNPJ formatado
     sanitized = sanitized.replace(
       /\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}/g,
-      'XX.XXX.XXX/XXXX-XX [CNPJ_PATTERN_DETECTED]',
+      "XX.XXX.XXX/XXXX-XX [CNPJ_PATTERN_DETECTED]",
     );
     // 2. CPF formatado
     sanitized = sanitized.replace(
       /\d{3}\.\d{3}\.\d{3}-\d{2}/g,
-      'XXX.XXX.XXX-XX [CPF_PATTERN_DETECTED]',
+      "XXX.XXX.XXX-XX [CPF_PATTERN_DETECTED]",
     );
     // 3. CNPJ sem formatação (14 dígitos)
     sanitized = sanitized.replace(
       /\b\d{14}\b/g,
-      'XXXXXXXXXXXXXX [CNPJ_PATTERN_DETECTED]',
+      "XXXXXXXXXXXXXX [CNPJ_PATTERN_DETECTED]",
     );
     // 4. CPF sem formatação (11 dígitos)
     sanitized = sanitized.replace(
       /\b\d{11}\b/g,
-      'XXXXXXXXXXX [CPF_PATTERN_DETECTED]',
+      "XXXXXXXXXXX [CPF_PATTERN_DETECTED]",
     );
 
     // Ofuscar e-mails com marcador
     sanitized = sanitized.replace(
       /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,
-      'xxx@xxx.xxx [EMAIL_PATTERN_DETECTED]',
+      "xxx@xxx.xxx [EMAIL_PATTERN_DETECTED]",
     );
 
     return sanitized;
@@ -354,30 +352,36 @@ export class PublicationSafetyAgent {
    * Remove ou ofusca informações sensíveis antes de registrar
    */
   private sanitizeForLog(text: string): string {
-    if (!text) return '';
+    if (!text) return "";
 
     let sanitized = text;
 
     // Ofuscar telefones
     sanitized = sanitized.replace(
       /\(\d{2}\)\s*\d{4,5}-?\d{4}/g,
-      '(XX) XXXXX-XXXX',
+      "(XX) XXXXX-XXXX",
     );
-    sanitized = sanitized.replace(/\d{2}\s*\d{4,5}-?\d{4}/g, 'XX XXXXX-XXXX');
+    sanitized = sanitized.replace(/\d{2}\s*\d{4,5}-?\d{4}/g, "XX XXXXX-XXXX");
 
     // Ofuscar CPF/CNPJ
-    sanitized = sanitized.replace(/\d{3}\.\d{3}\.\d{3}-\d{2}/g, 'XXX.XXX.XXX-XX');
-    sanitized = sanitized.replace(/\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}/g, 'XX.XXX.XXX/XXXX-XX');
+    sanitized = sanitized.replace(
+      /\d{3}\.\d{3}\.\d{3}-\d{2}/g,
+      "XXX.XXX.XXX-XX",
+    );
+    sanitized = sanitized.replace(
+      /\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}/g,
+      "XX.XXX.XXX/XXXX-XX",
+    );
 
     // Ofuscar e-mails
     sanitized = sanitized.replace(
       /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
-      'xxx@xxx.xxx',
+      "xxx@xxx.xxx",
     );
 
     // Limitar tamanho para logs
     if (sanitized.length > 100) {
-      sanitized = sanitized.substring(0, 97) + '...';
+      sanitized = sanitized.substring(0, 97) + "...";
     }
 
     return sanitized;

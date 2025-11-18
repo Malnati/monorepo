@@ -1,7 +1,7 @@
 // app/job/src/config/validation.ts
 
-import { plainToInstance } from 'class-transformer';
-import { IsString, IsNotEmpty, IsNumber, validateSync } from 'class-validator';
+import { plainToInstance } from "class-transformer";
+import { IsString, IsNotEmpty, IsNumber, validateSync } from "class-validator";
 
 class EnvironmentVariables {
   @IsString()

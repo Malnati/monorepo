@@ -1,29 +1,33 @@
 // app/ui/src/components/ContainedButton.tsx
-import React from 'react';
+import React from "react";
 
-interface ContainedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ContainedButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
-  variant?: 'primary' | 'secondary';
-  size?: 'small' | 'medium' | 'large';
+  iconPosition?: "left" | "right";
+  variant?: "primary" | "secondary";
+  size?: "small" | "medium" | "large";
   fullWidth?: boolean;
 }
 
-const ContainedButton = React.forwardRef<HTMLButtonElement, ContainedButtonProps>(
+const ContainedButton = React.forwardRef<
+  HTMLButtonElement,
+  ContainedButtonProps
+>(
   (
     {
       children,
       icon,
-      iconPosition = 'left',
-      variant = 'primary',
-      size = 'medium',
+      iconPosition = "left",
+      variant = "primary",
+      size = "medium",
       fullWidth = false,
       disabled,
-      className = '',
+      className = "",
       ...props
     },
-    ref
+    ref,
   ) => {
     const baseClasses = `
       inline-flex items-center justify-center gap-2
@@ -35,9 +39,9 @@ const ContainedButton = React.forwardRef<HTMLButtonElement, ContainedButtonProps
     `;
 
     const sizeClasses = {
-      small: 'h-8 px-3 text-xs rounded-md',
-      medium: 'h-10 px-4 text-sm rounded-md',
-      large: 'h-12 px-6 text-base rounded-md',
+      small: "h-8 px-3 text-xs rounded-md",
+      medium: "h-10 px-4 text-sm rounded-md",
+      large: "h-12 px-6 text-base rounded-md",
     };
 
     const variantClasses = {
@@ -58,7 +62,7 @@ const ContainedButton = React.forwardRef<HTMLButtonElement, ContainedButtonProps
       `,
     };
 
-    const widthClass = fullWidth ? 'w-full' : '';
+    const widthClass = fullWidth ? "w-full" : "";
 
     return (
       <button
@@ -70,7 +74,9 @@ const ContainedButton = React.forwardRef<HTMLButtonElement, ContainedButtonProps
           ${variantClasses[variant]}
           ${widthClass}
           ${className}
-        `.trim().replace(/\s+/g, ' ')}
+        `
+          .trim()
+          .replace(/\s+/g, " ")}
         {...props}
       >
         {/* Ripple effect overlay */}
@@ -78,19 +84,18 @@ const ContainedButton = React.forwardRef<HTMLButtonElement, ContainedButtonProps
           className="absolute inset-0 bg-white opacity-0 hover:opacity-[0.08] active:opacity-[0.12] transition-opacity duration-150"
           aria-hidden="true"
         />
-        
+
         {/* Content */}
         <span className="relative z-10 flex items-center gap-2">
-          {icon && iconPosition === 'left' && icon}
+          {icon && iconPosition === "left" && icon}
           <span>{children}</span>
-          {icon && iconPosition === 'right' && icon}
+          {icon && iconPosition === "right" && icon}
         </span>
       </button>
     );
-  }
+  },
 );
 
-ContainedButton.displayName = 'ContainedButton';
+ContainedButton.displayName = "ContainedButton";
 
 export default ContainedButton;
-

@@ -1,12 +1,13 @@
 // app/ui/src/components/TextButton.tsx
-import React from 'react';
+import React from "react";
 
-interface TextButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface TextButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
-  variant?: 'primary' | 'secondary';
-  size?: 'small' | 'medium' | 'large';
+  iconPosition?: "left" | "right";
+  variant?: "primary" | "secondary";
+  size?: "small" | "medium" | "large";
   fullWidth?: boolean;
 }
 
@@ -15,15 +16,15 @@ const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(
     {
       children,
       icon,
-      iconPosition = 'left',
-      variant = 'primary',
-      size = 'medium',
+      iconPosition = "left",
+      variant = "primary",
+      size = "medium",
       fullWidth = false,
       disabled,
-      className = '',
+      className = "",
       ...props
     },
-    ref
+    ref,
   ) => {
     const baseClasses = `
       inline-flex items-center justify-center gap-2
@@ -36,9 +37,9 @@ const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(
     `;
 
     const sizeClasses = {
-      small: 'h-8 px-3 text-xs rounded-md',
-      medium: 'h-10 px-4 text-sm rounded-md',
-      large: 'h-12 px-6 text-base rounded-md',
+      small: "h-8 px-3 text-xs rounded-md",
+      medium: "h-10 px-4 text-sm rounded-md",
+      large: "h-12 px-6 text-base rounded-md",
     };
 
     const variantClasses = {
@@ -58,7 +59,7 @@ const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(
       `,
     };
 
-    const widthClass = fullWidth ? 'w-full' : '';
+    const widthClass = fullWidth ? "w-full" : "";
 
     return (
       <button
@@ -70,7 +71,9 @@ const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(
           ${variantClasses[variant]}
           ${widthClass}
           ${className}
-        `.trim().replace(/\s+/g, ' ')}
+        `
+          .trim()
+          .replace(/\s+/g, " ")}
         {...props}
       >
         {/* Ripple effect overlay */}
@@ -78,19 +81,18 @@ const TextButton = React.forwardRef<HTMLButtonElement, TextButtonProps>(
           className="absolute inset-0 bg-primary opacity-0 hover:opacity-[0.08] focus:opacity-[0.12] active:opacity-[0.16] transition-opacity duration-150"
           aria-hidden="true"
         />
-        
+
         {/* Content */}
         <span className="relative z-10 flex items-center gap-2">
-          {icon && iconPosition === 'left' && icon}
+          {icon && iconPosition === "left" && icon}
           <span>{children}</span>
-          {icon && iconPosition === 'right' && icon}
+          {icon && iconPosition === "right" && icon}
         </span>
       </button>
     );
-  }
+  },
 );
 
-TextButton.displayName = 'TextButton';
+TextButton.displayName = "TextButton";
 
 export default TextButton;
-

@@ -5,8 +5,18 @@
  * This DTO is kept for backward compatibility with existing UI.
  * Migration guide: docs/rup/99-anexos/MVP/DEPRECATION_NOTICE.md
  */
-import { IsString, IsNumber, IsOptional, IsArray, Min, MaxLength, ValidateNested, IsObject, IsEnum } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsArray,
+  Min,
+  MaxLength,
+  ValidateNested,
+  IsObject,
+  IsEnum,
+} from "class-validator";
+import { Type } from "class-transformer";
 
 export class LocalizacaoDto {
   @IsNumber()
@@ -22,10 +32,10 @@ export class LocalizacaoDto {
 }
 
 export enum GeocodingAccuracy {
-  ROOFTOP = 'ROOFTOP',
-  RANGE_INTERPOLATED = 'RANGE_INTERPOLATED',
-  GEOMETRIC_CENTER = 'GEOMETRIC_CENTER',
-  APPROXIMATE = 'APPROXIMATE',
+  ROOFTOP = "ROOFTOP",
+  RANGE_INTERPOLATED = "RANGE_INTERPOLATED",
+  GEOMETRIC_CENTER = "GEOMETRIC_CENTER",
+  APPROXIMATE = "APPROXIMATE",
 }
 
 export class AddressDto {

@@ -1,14 +1,14 @@
 // app/job/src/modules/importer/importer.service.ts
 
-import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { ConfigService } from '@nestjs/config';
-import { FilesystemService } from '../filesystem/filesystem.service';
-import { ApiClientService } from '../api-client/api-client.service';
-import { AuditService } from '../audit/audit.service';
-import { CsvParserService } from './csv-parser.service';
-import { ImportResult } from '../../types/csv-row.interface';
-import { CreateOnboardingUserDto } from '../../types/onboarding-user.dto';
+import { Injectable, Logger } from "@nestjs/common";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import { ConfigService } from "@nestjs/config";
+import { FilesystemService } from "../filesystem/filesystem.service";
+import { ApiClientService } from "../api-client/api-client.service";
+import { AuditService } from "../audit/audit.service";
+import { CsvParserService } from "./csv-parser.service";
+import { ImportResult } from "../../types/csv-row.interface";
+import { CreateOnboardingUserDto } from "../../types/onboarding-user.dto";
 
 @Injectable()
 export class ImporterService {
@@ -23,18 +23,18 @@ export class ImporterService {
     private readonly auditService: AuditService,
     private readonly csvParserService: CsvParserService,
   ) {
-    this.batchSize = this.configService.get<number>('job.batchSize') || 100;
+    this.batchSize = this.configService.get<number>("job.batchSize") || 100;
   }
 
   async onModuleInit() {
     await this.filesystemService.ensureDirectories();
-    this.logger.log('Importer service initialized');
+    this.logger.log("Importer service initialized");
   }
 
   @Cron(CronExpression.EVERY_MINUTE)
   async processInbox() {
     if (this.isProcessing) {
-      this.logger.debug('Already processing, skipping this cycle');
+      this.logger.debug("Already processing, skipping this cycle");
       return;
     }
 
@@ -42,12 +42,13 @@ export class ImporterService {
 
     try {
       const files = await this.filesystemService.findNewCsvFiles();
-      
+
       for (const filename of files) {
         await this.processFile(filename);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
       this.logger.error(`Error processing inbox: ${errorMessage}`, errorStack);
     } finally {
@@ -57,7 +58,7 @@ export class ImporterService {
 
   private async processFile(filename: string): Promise<void> {
     const startTime = Date.now();
-    
+
     // Adquirir lock
     const lockAcquired = await this.filesystemService.acquireLock(filename);
     if (!lockAcquired) {
@@ -72,26 +73,33 @@ export class ImporterService {
       const content = await this.filesystemService.readCsvFile(filename);
 
       // Parse CSV
-      const { rows, errors: parseErrors } = await this.csvParserService.parseCsv(content);
-      
+      const { rows, errors: parseErrors } =
+        await this.csvParserService.parseCsv(content);
+
       const validationErrors = [...parseErrors];
       const normalizedUsers = [];
 
       // Normalizar e validar cada linha
       for (let i = 0; i < rows.length; i++) {
-        const { user, errors } = this.csvParserService.normalizeUser(rows[i], i + 2); // +2 por causa do header
-        
+        const { user, errors } = this.csvParserService.normalizeUser(
+          rows[i],
+          i + 2,
+        ); // +2 por causa do header
+
         if (user) {
           normalizedUsers.push(user);
         }
-        
+
         validationErrors.push(...errors);
       }
 
       // Deduplicar
-      const uniqueUsers = this.csvParserService.deduplicateUsers(normalizedUsers);
+      const uniqueUsers =
+        this.csvParserService.deduplicateUsers(normalizedUsers);
 
-      this.logger.log(`Parsed ${rows.length} rows, ${uniqueUsers.length} unique valid users, ${validationErrors.length} errors`);
+      this.logger.log(
+        `Parsed ${rows.length} rows, ${uniqueUsers.length} unique valid users, ${validationErrors.length} errors`,
+      );
 
       // Enviar em lotes
       let created = 0;
@@ -101,11 +109,11 @@ export class ImporterService {
 
       for (let i = 0; i < uniqueUsers.length; i += this.batchSize) {
         const batch = uniqueUsers.slice(i, i + this.batchSize);
-        
+
         try {
           const response = await this.apiClientService.sendBatch({
-            source: 'job',
-            users: batch.map(user => this.toDto(user)),
+            source: "job",
+            users: batch.map((user) => this.toDto(user)),
           });
 
           created += response.created;
@@ -113,10 +121,11 @@ export class ImporterService {
           skipped += response.skipped;
           batchErrors.push(...response.errors);
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
+          const errorMessage =
+            error instanceof Error ? error.message : String(error);
           this.logger.error(`Failed to send batch: ${errorMessage}`);
           batchErrors.push({
-            email: 'batch',
+            email: "batch",
             reason: errorMessage,
           });
         }
@@ -149,19 +158,26 @@ export class ImporterService {
         });
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
-      this.logger.error(`Error processing file ${filename}: ${errorMessage}`, errorStack);
+      this.logger.error(
+        `Error processing file ${filename}: ${errorMessage}`,
+        errorStack,
+      );
       this.auditService.recordError(filename, error);
-      
+
       try {
         await this.filesystemService.moveToFailed(filename, {
           error: errorMessage,
           stack: errorStack,
         });
       } catch (moveError) {
-        const moveErrorMessage = moveError instanceof Error ? moveError.message : String(moveError);
-        this.logger.error(`Failed to move file to failed directory: ${moveErrorMessage}`);
+        const moveErrorMessage =
+          moveError instanceof Error ? moveError.message : String(moveError);
+        this.logger.error(
+          `Failed to move file to failed directory: ${moveErrorMessage}`,
+        );
       }
     } finally {
       await this.filesystemService.releaseLock(filename);

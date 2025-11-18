@@ -1,9 +1,9 @@
 // app/ui/src/services/onboarding.service.ts
-import api from './api';
+import api from "./api";
 
-const REGISTER_ENDPOINT = '/onboarding/register';
-const ACTIVATE_ENDPOINT = '/onboarding/activate';
-const RESEND_ENDPOINT = '/onboarding/resend';
+const REGISTER_ENDPOINT = "/onboarding/register";
+const ACTIVATE_ENDPOINT = "/onboarding/activate";
+const RESEND_ENDPOINT = "/onboarding/resend";
 
 interface RegisterData {
   nome: string;
@@ -40,7 +40,9 @@ interface ResendResponse {
 /**
  * Registra novo usuário e envia e-mail de ativação
  */
-export const registerUser = async (data: RegisterData): Promise<RegisterResponse> => {
+export const registerUser = async (
+  data: RegisterData,
+): Promise<RegisterResponse> => {
   const response = await api.post<RegisterResponse>(REGISTER_ENDPOINT, data);
   return response.data;
 };
@@ -48,7 +50,9 @@ export const registerUser = async (data: RegisterData): Promise<RegisterResponse
 /**
  * Ativa conta de usuário com token
  */
-export const activateAccount = async (data: ActivateData): Promise<ActivateResponse> => {
+export const activateAccount = async (
+  data: ActivateData,
+): Promise<ActivateResponse> => {
   const response = await api.post<ActivateResponse>(ACTIVATE_ENDPOINT, data);
   return response.data;
 };
@@ -56,7 +60,9 @@ export const activateAccount = async (data: ActivateData): Promise<ActivateRespo
 /**
  * Reenvia e-mail de ativação
  */
-export const resendActivationEmail = async (data: ResendData): Promise<ResendResponse> => {
+export const resendActivationEmail = async (
+  data: ResendData,
+): Promise<ResendResponse> => {
   const response = await api.post<ResendResponse>(RESEND_ENDPOINT, data);
   return response.data;
 };

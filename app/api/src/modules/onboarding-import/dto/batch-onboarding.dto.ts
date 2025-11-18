@@ -1,7 +1,15 @@
 // app/api/src/modules/onboarding-import/dto/batch-onboarding.dto.ts
 
-import { IsEmail, IsNotEmpty, IsString, IsBoolean, IsOptional, ValidateNested, IsArray } from 'class-validator';
-import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsBoolean,
+  IsOptional,
+  ValidateNested,
+  IsArray,
+} from "class-validator";
+import { Type } from "class-transformer";
 
 class AddressDto {
   @IsString()
@@ -52,7 +60,7 @@ export class CreateOnboardingUserDto {
 
   @IsString()
   @IsNotEmpty()
-  userType!: 'PF' | 'PJ';
+  userType!: "PF" | "PJ";
 
   @ValidateNested()
   @Type(() => ConsentDto)

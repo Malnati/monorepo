@@ -1,8 +1,8 @@
 // app/job/src/modules/audit/audit.service.ts
 
-import { Injectable } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
-import { ImportResult } from '../../types/csv-row.interface';
+import { Injectable } from "@nestjs/common";
+import { Logger } from "@nestjs/common";
+import { ImportResult } from "../../types/csv-row.interface";
 
 @Injectable()
 export class AuditService {
@@ -19,7 +19,7 @@ export class AuditService {
     this.metrics.lastRuntimeMs = result.processingTimeMs;
 
     this.logger.log({
-      event: 'onboarding_import',
+      event: "onboarding_import",
       filename: result.filename,
       totalRows: result.totalRows,
       created: result.created,
@@ -37,7 +37,7 @@ export class AuditService {
     const errorStack = error instanceof Error ? error.stack : undefined;
 
     this.logger.error({
-      event: 'onboarding_import_error',
+      event: "onboarding_import_error",
       filename,
       error: errorMessage,
       stack: errorStack,

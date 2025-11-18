@@ -29,7 +29,7 @@ import {
   ArrowUpCircleIcon,
   TagIcon,
   MapPinIcon,
-} from '@heroicons/react/24/outline';
+} from "@heroicons/react/24/outline";
 
 // Solid icons (24x24) - para feedback e estados
 import {
@@ -38,7 +38,7 @@ import {
   CheckCircleIcon as CheckCircleSolid,
   InformationCircleIcon as InformationCircleSolid,
   BanknotesIcon as BanknotesSolid,
-} from '@heroicons/react/24/solid';
+} from "@heroicons/react/24/solid";
 
 /**
  * Mapeamento centralizado de ícones outline (ações padrão).
@@ -50,7 +50,7 @@ export const ICON_MAP = {
   catalog: BuildingStorefrontIcon,
   create: PlusCircleIcon,
   inventory: ArchiveBoxIcon,
-  
+
   // Ações
   back: ArrowLeftIcon,
   logout: ArrowRightOnRectangleIcon,
@@ -61,30 +61,30 @@ export const ICON_MAP = {
   sync: ArrowPathIcon,
   close: XMarkIcon,
   download: ArrowDownTrayIcon,
-  
+
   // Tabs/Categorias
   sell: CurrencyDollarIcon,
   shopping: ShoppingBagIcon,
-  
+
   // Status
   wifi: WifiIcon,
   wifiOff: SignalSlashIcon,
-  
+
   // UI elements
   chevronDown: ChevronDownIcon,
   chevronUp: ChevronUpIcon,
   photo: PhotoIcon,
-  
+
   // Pagamentos
   creditCard: CreditCardIcon,
   qrCode: QrCodeIcon,
   document: DocumentTextIcon,
   coin: CurrencyDollarIcon,
-  
+
   // Transações
   incoming: ArrowDownCircleIcon,
   outgoing: ArrowUpCircleIcon,
-  
+
   // Categorias e localização
   tag: TagIcon,
   location: MapPinIcon,
@@ -114,8 +114,8 @@ export type IconSolidName = keyof typeof ICON_SOLID_MAP;
 /**
  * Tipo utilitário para componentes de ícone Heroicons.
  */
-export type HeroIconComponent = typeof ICON_MAP[IconName];
-export type HeroIconSolidComponent = typeof ICON_SOLID_MAP[IconSolidName];
+export type HeroIconComponent = (typeof ICON_MAP)[IconName];
+export type HeroIconSolidComponent = (typeof ICON_SOLID_MAP)[IconSolidName];
 
 /**
  * Busca um ícone outline pelo nome semântico.

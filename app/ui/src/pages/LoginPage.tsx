@@ -1,17 +1,18 @@
 // app/ui/src/pages/LoginPage.tsx
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { CredentialResponse } from '@react-oauth/google';
-import GoogleSignInButton from '../components/GoogleSignInButton';
-import { googleLogin } from '../services/auth.service';
-import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { CredentialResponse } from "@react-oauth/google";
+import GoogleSignInButton from "../components/GoogleSignInButton";
+import { googleLogin } from "../services/auth.service";
+import { useAuth } from "../contexts/AuthContext";
 
-const LOGO_PATH = '/assets/dominio-logo-transparencia-colors.png';
-const ERROR_MSG_LOGIN_FAILED = 'Falha no login. Verifique suas credenciais.';
-const ERROR_MSG_EMAIL_NOT_AUTHORIZED = 'Email não autorizado. Entre em contato com o administrador.';
-const ERROR_MSG_GENERIC = 'Erro ao processar login. Tente novamente.';
-const LOADING_TEXT = 'Processando login...';
-const OLIVE_GREEN_COLOR = '#6B8E23';
+const LOGO_PATH = "/assets/dominio-logo-transparencia-colors.png";
+const ERROR_MSG_LOGIN_FAILED = "Falha no login. Verifique suas credenciais.";
+const ERROR_MSG_EMAIL_NOT_AUTHORIZED =
+  "Email não autorizado. Entre em contato com o administrador.";
+const ERROR_MSG_GENERIC = "Erro ao processar login. Tente novamente.";
+const LOADING_TEXT = "Processando login...";
+const OLIVE_GREEN_COLOR = "#6B8E23";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -22,11 +23,13 @@ export default function LoginPage() {
   // Redirecionar para /offers se já estiver autenticado
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      navigate('/offers', { replace: true });
+      navigate("/offers", { replace: true });
     }
   }, [isAuthenticated, isLoading, navigate]);
 
-  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
     if (!credentialResponse.credential) {
       setError(ERROR_MSG_LOGIN_FAILED);
       return;
@@ -38,10 +41,10 @@ export default function LoginPage() {
     try {
       const response = await googleLogin(credentialResponse.credential);
       login(response.accessToken, response.user);
-      navigate('/offers', { replace: true });
+      navigate("/offers", { replace: true });
     } catch (err: any) {
-      console.error('Login error:', err);
-      
+      console.error("Login error:", err);
+
       if (err.response?.status === 401) {
         setError(ERROR_MSG_EMAIL_NOT_AUTHORIZED);
       } else {
@@ -69,7 +72,7 @@ export default function LoginPage() {
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
+                if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
                   window.location.reload();
                 }

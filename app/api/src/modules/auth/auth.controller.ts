@@ -9,17 +9,17 @@ import {
   HttpCode,
   HttpStatus,
   BadRequestException,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+} from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
-const ERROR_MSG_TOKEN_REQUIRED = 'Token ID do Google é obrigatório';
+const ERROR_MSG_TOKEN_REQUIRED = "Token ID do Google é obrigatório";
 
-@Controller('auth')
+@Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('google')
+  @Post("google")
   @HttpCode(HttpStatus.OK)
   async googleAuth(@Body() body: { idToken: string }) {
     if (!body.idToken) {
@@ -29,7 +29,7 @@ export class AuthController {
     return this.authService.googleLogin(body.idToken);
   }
 
-  @Get('me')
+  @Get("me")
   @UseGuards(JwtAuthGuard)
   async getMe(@Request() req: any) {
     return this.authService.validateUser(req.user.sub);

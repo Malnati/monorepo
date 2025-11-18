@@ -2,7 +2,7 @@
 
 /**
  * Constantes de validação de coordenadas geográficas
- * 
+ *
  * Centraliza as validações de coordenadas usadas em toda a stack APP.
  */
 

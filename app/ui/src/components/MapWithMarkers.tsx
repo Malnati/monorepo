@@ -1,15 +1,15 @@
 // app/ui/src/components/MapWithMarkers.tsx
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { GoogleMap, InfoWindow } from '@react-google-maps/api';
-import { MARKER_COLORS } from '../constants/google-maps';
-import { formatCurrencyValue, formatNumber } from '../utils/format';
-import { useAdvancedMarker } from '../hooks/useAdvancedMarker';
-import { useGoogleMaps } from '../contexts/GoogleMapsContext';
-import { createMarkerContent } from './MarkerIcon';
+import { useState, useCallback, useEffect, useRef } from "react";
+import { GoogleMap, InfoWindow } from "@react-google-maps/api";
+import { MARKER_COLORS } from "../constants/google-maps";
+import { formatCurrencyValue, formatNumber } from "../utils/format";
+import { useAdvancedMarker } from "../hooks/useAdvancedMarker";
+import { useGoogleMaps } from "../contexts/GoogleMapsContext";
+import { createMarkerContent } from "./MarkerIcon";
 
 const MAP_CONTAINER_STYLE = {
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
 };
 
 const DEFAULT_CENTER = {
@@ -49,19 +49,25 @@ export default function MapWithMarkers({
   const { isLoaded } = useGoogleMaps();
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<MarkerData | null>(null);
-  const advancedMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
-  const { markerLibrary, loading: markerLibraryLoading } = useAdvancedMarker(isLoaded);
+  const advancedMarkersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>(
+    [],
+  );
+  const { markerLibrary, loading: markerLibraryLoading } =
+    useAdvancedMarker(isLoaded);
 
   const onMapLoad = useCallback((mapInstance: google.maps.Map) => {
     setMap(mapInstance);
   }, []);
 
-  const handleMarkerClick = useCallback((marker: MarkerData) => {
-    setSelectedMarker(marker);
-    if (onMarkerClick) {
-      onMarkerClick(marker.id);
-    }
-  }, [onMarkerClick]);
+  const handleMarkerClick = useCallback(
+    (marker: MarkerData) => {
+      setSelectedMarker(marker);
+      if (onMarkerClick) {
+        onMarkerClick(marker.id);
+      }
+    },
+    [onMarkerClick],
+  );
 
   useEffect(() => {
     if (!map || markers.length === 0) return;
@@ -69,20 +75,26 @@ export default function MapWithMarkers({
     const bounds = new google.maps.LatLngBounds();
     markers.forEach((marker) => {
       if (marker.latitude !== 0 && marker.longitude !== 0) {
-        bounds.extend(new google.maps.LatLng(marker.latitude, marker.longitude));
+        bounds.extend(
+          new google.maps.LatLng(marker.latitude, marker.longitude),
+        );
       }
     });
 
     if (!bounds.isEmpty()) {
       map.fitBounds(bounds);
-      
-      const listener = google.maps.event.addListener(map, 'bounds_changed', () => {
-        const currentZoom = map.getZoom();
-        if (currentZoom && currentZoom > MAX_ZOOM) {
-          map.setZoom(MAX_ZOOM);
-        }
-        google.maps.event.removeListener(listener);
-      });
+
+      const listener = google.maps.event.addListener(
+        map,
+        "bounds_changed",
+        () => {
+          const currentZoom = map.getZoom();
+          if (currentZoom && currentZoom > MAX_ZOOM) {
+            map.setZoom(MAX_ZOOM);
+          }
+          google.maps.event.removeListener(listener);
+        },
+      );
     }
   }, [map, markers]);
 
@@ -90,13 +102,22 @@ export default function MapWithMarkers({
     if (!map || !initialBounds) return;
 
     const bounds = new google.maps.LatLngBounds();
-    bounds.extend(new google.maps.LatLng(initialBounds.south, initialBounds.west));
-    bounds.extend(new google.maps.LatLng(initialBounds.north, initialBounds.east));
+    bounds.extend(
+      new google.maps.LatLng(initialBounds.south, initialBounds.west),
+    );
+    bounds.extend(
+      new google.maps.LatLng(initialBounds.north, initialBounds.east),
+    );
     map.fitBounds(bounds);
   }, [map, initialBounds]);
 
   useEffect(() => {
-    if (!map || !markerLibrary || markerLibraryLoading || markers.length === 0) {
+    if (
+      !map ||
+      !markerLibrary ||
+      markerLibraryLoading ||
+      markers.length === 0
+    ) {
       return;
     }
 
@@ -119,7 +140,7 @@ export default function MapWithMarkers({
         title: markerData.nome,
       });
 
-      advancedMarker.addListener('click', () => {
+      advancedMarker.addListener("click", () => {
         handleMarkerClick(markerData);
       });
 
@@ -157,49 +178,49 @@ export default function MapWithMarkers({
   }
 
   return (
-      <GoogleMap
-        mapContainerStyle={MAP_CONTAINER_STYLE}
-        center={DEFAULT_CENTER}
-        zoom={DEFAULT_ZOOM}
-        onLoad={onMapLoad}
-        options={{
-          mapTypeControl: false,
-          streetViewControl: false,
-          fullscreenControl: true,
-          mapId: 'DEMO_MAP_ID',
-        }}
-      >
-        {selectedMarker && (
-          <InfoWindow
-            position={{
-              lat: selectedMarker.latitude,
-              lng: selectedMarker.longitude,
-            }}
-            onCloseClick={() => setSelectedMarker(null)}
-          >
-            <div>
-              <h3 className="font-bold text-text-light-primary dark:text-text-dark-primary">
-                {selectedMarker.nome}
-              </h3>
-              {selectedMarker.label && selectedMarker.label !== selectedMarker.nome && (
+    <GoogleMap
+      mapContainerStyle={MAP_CONTAINER_STYLE}
+      center={DEFAULT_CENTER}
+      zoom={DEFAULT_ZOOM}
+      onLoad={onMapLoad}
+      options={{
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true,
+        mapId: "DEMO_MAP_ID",
+      }}
+    >
+      {selectedMarker && (
+        <InfoWindow
+          position={{
+            lat: selectedMarker.latitude,
+            lng: selectedMarker.longitude,
+          }}
+          onCloseClick={() => setSelectedMarker(null)}
+        >
+          <div>
+            <h3 className="font-bold text-text-light-primary dark:text-text-dark-primary">
+              {selectedMarker.nome}
+            </h3>
+            {selectedMarker.label &&
+              selectedMarker.label !== selectedMarker.nome && (
                 <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary mb-1">
                   {selectedMarker.label}
                 </p>
               )}
-              {selectedMarker.preco && (
-                <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                  R$ {formatCurrencyValue(selectedMarker.preco)}
-                </p>
-              )}
-              {selectedMarker.quantidade && (
-                <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                  {formatNumber(selectedMarker.quantidade)} unidades
-                </p>
-              )}
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
+            {selectedMarker.preco && (
+              <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                R$ {formatCurrencyValue(selectedMarker.preco)}
+              </p>
+            )}
+            {selectedMarker.quantidade && (
+              <p className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
+                {formatNumber(selectedMarker.quantidade)} unidades
+              </p>
+            )}
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
   );
 }
-

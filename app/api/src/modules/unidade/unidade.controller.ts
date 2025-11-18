@@ -1,9 +1,9 @@
 // app/api/src/modules/unidade/unidade.controller.ts
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
-import { UnidadeService } from './unidade.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Controller, Get, UseGuards, Request } from "@nestjs/common";
+import { UnidadeService } from "./unidade.service";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
-@Controller('unidades')
+@Controller("unidades")
 export class UnidadeController {
   constructor(private readonly unidadeService: UnidadeService) {}
 

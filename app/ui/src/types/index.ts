@@ -125,7 +125,11 @@ export interface Address {
   placeId: string;
   latitude: number;
   longitude: number;
-  geocodingAccuracy?: 'ROOFTOP' | 'RANGE_INTERPOLATED' | 'GEOMETRIC_CENTER' | 'APPROXIMATE';
+  geocodingAccuracy?:
+    | "ROOFTOP"
+    | "RANGE_INTERPOLATED"
+    | "GEOMETRIC_CENTER"
+    | "APPROXIMATE";
 }
 
 export interface CreateOfferDto {

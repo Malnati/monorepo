@@ -1,25 +1,25 @@
 // app/job/src/types/csv-row.interface.ts
 
 export interface CsvRow {
-  'E-mail': string;
-  'Nome': string;
-  'Sobrenome': string;
-  'IP da inscrição': string;
-  'Tempo de assinatura': string;
-  'Tempo de confirmação': string;
-  'IP da confirmação': string;
-  'Status da lista': string;
-  'Status global': string;
-  'Nome completo': string;
-  'CPF': string;
-  'Data de nascimento': string;
-  'Telefone': string;
-  'CEP': string;
-  'Cidade': string;
-  'Estado': string;
-  'Lgpd_termos': string;
-  'Lgpd_autorizacao': string;
-  'Lista': string;
+  "E-mail": string;
+  Nome: string;
+  Sobrenome: string;
+  "IP da inscrição": string;
+  "Tempo de assinatura": string;
+  "Tempo de confirmação": string;
+  "IP da confirmação": string;
+  "Status da lista": string;
+  "Status global": string;
+  "Nome completo": string;
+  CPF: string;
+  "Data de nascimento": string;
+  Telefone: string;
+  CEP: string;
+  Cidade: string;
+  Estado: string;
+  Lgpd_termos: string;
+  Lgpd_autorizacao: string;
+  Lista: string;
 }
 
 export interface NormalizedUser {
@@ -33,7 +33,7 @@ export interface NormalizedUser {
     city: string;
     state: string;
   };
-  userType: 'PF' | 'PJ';
+  userType: "PF" | "PJ";
   consent: {
     terms: boolean;
     authorization: boolean;

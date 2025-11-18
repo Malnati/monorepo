@@ -1,6 +1,6 @@
 // app/ui/src/components/FilledSelectField.tsx
-import { useState } from 'react';
-import { ICON_MAP } from '../utils/icons';
+import { useState } from "react";
+import { ICON_MAP } from "../utils/icons";
 
 interface FilledSelectFieldProps {
   label: string;
@@ -21,13 +21,13 @@ export default function FilledSelectField({
   value,
   onChange,
   options,
-  placeholder = 'Selecione...',
+  placeholder = "Selecione...",
   required = false,
   disabled = false,
   error = false,
   errorMessage,
   helpText,
-  className = '',
+  className = "",
 }: FilledSelectFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -35,40 +35,40 @@ export default function FilledSelectField({
   const showHelpText = !showError && helpText;
 
   const labelColor = disabled
-    ? 'text-gray-400 dark:text-gray-600'
+    ? "text-gray-400 dark:text-gray-600"
     : showError
-    ? 'text-red-600 dark:text-red-400'
-    : isFocused
-    ? 'text-primary dark:text-primary'
-    : 'text-gray-700 dark:text-gray-300';
+      ? "text-red-600 dark:text-red-400"
+      : isFocused
+        ? "text-primary dark:text-primary"
+        : "text-gray-700 dark:text-gray-300";
 
   const selectBgColor = disabled
-    ? 'bg-gray-50 dark:bg-gray-800'
+    ? "bg-gray-50 dark:bg-gray-800"
     : showError
-    ? 'bg-red-50 dark:bg-red-900/20'
-    : 'bg-gray-100 dark:bg-gray-700';
+      ? "bg-red-50 dark:bg-red-900/20"
+      : "bg-gray-100 dark:bg-gray-700";
 
   const borderColor = disabled
-    ? 'border-gray-200 dark:border-gray-700'
+    ? "border-gray-200 dark:border-gray-700"
     : showError
-    ? 'border-red-500 dark:border-red-400'
-    : isFocused
-    ? 'border-primary dark:border-primary border-2'
-    : 'border-gray-300 dark:border-gray-600';
+      ? "border-red-500 dark:border-red-400"
+      : isFocused
+        ? "border-primary dark:border-primary border-2"
+        : "border-gray-300 dark:border-gray-600";
 
   const textColor = disabled
-    ? 'text-gray-400 dark:text-gray-600'
+    ? "text-gray-400 dark:text-gray-600"
     : showError
-    ? 'text-red-600 dark:text-red-400'
-    : 'text-gray-900 dark:text-gray-100';
+      ? "text-red-600 dark:text-red-400"
+      : "text-gray-900 dark:text-gray-100";
 
   const helpTextColor = disabled
-    ? 'text-gray-400 dark:text-gray-600'
+    ? "text-gray-400 dark:text-gray-600"
     : showError
-    ? 'text-red-600 dark:text-red-400'
-    : isFocused
-    ? 'text-primary dark:text-primary'
-    : 'text-gray-500 dark:text-gray-400';
+      ? "text-red-600 dark:text-red-400"
+      : isFocused
+        ? "text-primary dark:text-primary"
+        : "text-gray-500 dark:text-gray-400";
 
   return (
     <div className={`flex flex-col ${className}`}>
@@ -93,7 +93,7 @@ export default function FilledSelectField({
             text-sm font-normal
             focus:outline-none focus:ring-0
             transition-colors
-            ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
+            ${disabled ? "cursor-not-allowed" : "cursor-pointer"}
             pr-10
           `}
         >
@@ -105,7 +105,10 @@ export default function FilledSelectField({
           ))}
         </select>
         <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-          <ICON_MAP.chevronDown className="h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+          <ICON_MAP.chevronDown
+            className="h-5 w-5 text-gray-500 dark:text-gray-400"
+            aria-hidden="true"
+          />
         </div>
       </div>
       {(showHelpText || showError) && (
@@ -116,4 +119,3 @@ export default function FilledSelectField({
     </div>
   );
 }
-

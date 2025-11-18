@@ -1,9 +1,9 @@
 // app/ui/src/contexts/FeedbackContext.tsx
-import { createContext, useState, useCallback, ReactNode } from 'react';
-import FeedbackToast from '../components/FeedbackToast';
-import ActionDialog from '../components/ActionDialog';
+import { createContext, useState, useCallback, ReactNode } from "react";
+import FeedbackToast from "../components/FeedbackToast";
+import ActionDialog from "../components/ActionDialog";
 
-type FeedbackVariant = 'error' | 'warning' | 'success' | 'info';
+type FeedbackVariant = "error" | "warning" | "success" | "info";
 
 interface ToastOptions {
   variant: FeedbackVariant;
@@ -32,7 +32,9 @@ interface FeedbackContextType {
   hideDialog: () => void;
 }
 
-export const FeedbackContext = createContext<FeedbackContextType | undefined>(undefined);
+export const FeedbackContext = createContext<FeedbackContextType | undefined>(
+  undefined,
+);
 
 export function FeedbackProvider({ children }: { children: ReactNode }) {
   const [toast, setToast] = useState<ToastOptions | null>(null);

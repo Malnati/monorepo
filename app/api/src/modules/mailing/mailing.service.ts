@@ -1,14 +1,14 @@
 // app/api/src/modules/mailing/mailing.service.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { google } from 'googleapis';
-import * as fs from 'fs';
-import * as path from 'path';
+import { Injectable, Logger } from "@nestjs/common";
+import { google } from "googleapis";
+import * as fs from "fs";
+import * as path from "path";
 
-const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || '';
-const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || '';
-const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || '';
-const GMAIL_SENDER = process.env.GMAIL_SENDER || 'noreply@example.com';
-const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:5174';
+const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || "";
+const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || "";
+const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
+const GMAIL_SENDER = process.env.GMAIL_SENDER || "noreply@example.com";
+const APP_BASE_URL = process.env.APP_BASE_URL || "http://localhost:5174";
 
 interface EmailOptions {
   to: string;
@@ -37,12 +37,12 @@ export class MailingService {
    */
   async sendEmail(options: EmailOptions): Promise<boolean> {
     try {
-      const gmail = google.gmail({ version: 'v1', auth: this.oauth2Client });
+      const gmail = google.gmail({ version: "v1", auth: this.oauth2Client });
 
       const rawMessage = this.createRawMessage(options);
-      
+
       await gmail.users.messages.send({
-        userId: 'me',
+        userId: "me",
         requestBody: {
           raw: rawMessage,
         },
@@ -65,13 +65,13 @@ export class MailingService {
     nome?: string,
   ): Promise<boolean> {
     const activationLink = `${APP_BASE_URL}/ativacao?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
-    
-    const html = this.getActivationEmailHtml(activationLink, nome || 'Usuário');
-    const text = this.getActivationEmailText(activationLink, nome || 'Usuário');
+
+    const html = this.getActivationEmailHtml(activationLink, nome || "Usuário");
+    const text = this.getActivationEmailText(activationLink, nome || "Usuário");
 
     return this.sendEmail({
       to: email,
-      subject: 'Ative sua conta na APP',
+      subject: "Ative sua conta na APP",
       html,
       text,
     });
@@ -83,13 +83,13 @@ export class MailingService {
   private encodeSubject(subject: string): string {
     // Verificar se contém caracteres não-ASCII
     const hasNonAscii = /[^\x00-\x7F]/.test(subject);
-    
+
     if (!hasNonAscii) {
       return subject;
     }
 
     // Codificar em base64 com prefixo RFC 2047
-    const encoded = Buffer.from(subject, 'utf-8').toString('base64');
+    const encoded = Buffer.from(subject, "utf-8").toString("base64");
     return `=?UTF-8?B?${encoded}?=`;
   }
 
@@ -98,46 +98,57 @@ export class MailingService {
    */
   private createRawMessage(options: EmailOptions): string {
     const encodedSubject = this.encodeSubject(options.subject);
-    
+
     const messageParts = [
       `From: APP <${GMAIL_SENDER}>`,
       `To: ${options.to}`,
       `Subject: ${encodedSubject}`,
-      'MIME-Version: 1.0',
+      "MIME-Version: 1.0",
       'Content-Type: multipart/alternative; boundary="boundary-mixed"',
-      '',
-      '--boundary-mixed',
-      'Content-Type: text/plain; charset=utf-8',
-      'Content-Transfer-Encoding: 8bit',
-      '',
+      "",
+      "--boundary-mixed",
+      "Content-Type: text/plain; charset=utf-8",
+      "Content-Transfer-Encoding: 8bit",
+      "",
       options.text,
-      '',
-      '--boundary-mixed',
-      'Content-Type: text/html; charset=utf-8',
-      'Content-Transfer-Encoding: 8bit',
-      '',
+      "",
+      "--boundary-mixed",
+      "Content-Type: text/html; charset=utf-8",
+      "Content-Transfer-Encoding: 8bit",
+      "",
       options.html,
-      '',
-      '--boundary-mixed--',
+      "",
+      "--boundary-mixed--",
     ];
 
-    const message = messageParts.join('\r\n');
-    return Buffer.from(message, 'utf-8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const message = messageParts.join("\r\n");
+    return Buffer.from(message, "utf-8")
+      .toString("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
   }
 
   /**
    * Retorna HTML do e-mail de ativação
    */
   private getActivationEmailHtml(activationLink: string, nome: string): string {
-    const templatePath = path.join(__dirname, 'templates', 'welcome-activation.html');
-    
+    const templatePath = path.join(
+      __dirname,
+      "templates",
+      "welcome-activation.html",
+    );
+
     try {
-      let html = fs.readFileSync(templatePath, 'utf-8');
+      let html = fs.readFileSync(templatePath, "utf-8");
       html = html.replace(/\{\{nome\}\}/g, nome);
       html = html.replace(/\{\{activationLink\}\}/g, activationLink);
       return html;
     } catch (error) {
-      this.logger.error('Erro ao ler template de e-mail, usando fallback', error);
+      this.logger.error(
+        "Erro ao ler template de e-mail, usando fallback",
+        error,
+      );
       return this.getActivationEmailHtmlFallback(activationLink, nome);
     }
   }
@@ -145,7 +156,10 @@ export class MailingService {
   /**
    * Fallback HTML se template não estiver disponível
    */
-  private getActivationEmailHtmlFallback(activationLink: string, nome: string): string {
+  private getActivationEmailHtmlFallback(
+    activationLink: string,
+    nome: string,
+  ): string {
     return `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -210,12 +224,12 @@ APP - Template Corporation
     email: string,
     nome?: string,
   ): Promise<boolean> {
-    const html = this.getDomainRejectionEmailHtml(nome || 'Usuário');
-    const text = this.getDomainRejectionEmailText(nome || 'Usuário');
+    const html = this.getDomainRejectionEmailHtml(nome || "Usuário");
+    const text = this.getDomainRejectionEmailText(nome || "Usuário");
 
     return this.sendEmail({
       to: email,
-      subject: 'Cadastro na APP - Domínio de e-mail não aceito',
+      subject: "Cadastro na APP - Domínio de e-mail não aceito",
       html,
       text,
     });
@@ -244,7 +258,7 @@ APP - Template Corporation
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Olá, ${nome}!</p>
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Recebemos sua tentativa de cadastro, mas apenas e-mails <strong>Gmail</strong> ou <strong>Google Workspace</strong> são aceitos atualmente.</p>
                             <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Para se cadastrar, por favor acesse:</p>
-                            <a href="${APP_BASE_URL || 'https://template-monorepo.cranio.dev'}" style="display: inline-block; padding: 16px 32px; background-color: #00B5B8; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Acessar APP</a>
+                            <a href="${APP_BASE_URL || "https://template-monorepo.cranio.dev"}" style="display: inline-block; padding: 16px 32px; background-color: #00B5B8; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Acessar APP</a>
                             <p style="margin: 32px 0 0; font-size: 12px; line-height: 1.4; color: #6B7280;">Use um e-mail Gmail ou Google Workspace para criar sua conta.</p>
                         </td>
                     </tr>
@@ -273,7 +287,7 @@ Olá, ${nome}!
 
 Recebemos sua tentativa de cadastro, mas apenas e-mails Gmail ou Google Workspace são aceitos atualmente.
 
-Para se cadastrar, por favor acesse: ${APP_BASE_URL || 'https://template-monorepo.cranio.dev'}
+Para se cadastrar, por favor acesse: ${APP_BASE_URL || "https://template-monorepo.cranio.dev"}
 
 Use um e-mail Gmail ou Google Workspace para criar sua conta.
 
@@ -295,12 +309,25 @@ APP - Template Corporation
     issues: string[],
     suggestions?: string[],
   ): Promise<boolean> {
-    const html = this.getPublicationGuidanceEmailHtml(nome, status, reason, issues, suggestions);
-    const text = this.getPublicationGuidanceEmailText(nome, status, reason, issues, suggestions);
+    const html = this.getPublicationGuidanceEmailHtml(
+      nome,
+      status,
+      reason,
+      issues,
+      suggestions,
+    );
+    const text = this.getPublicationGuidanceEmailText(
+      nome,
+      status,
+      reason,
+      issues,
+      suggestions,
+    );
 
-    const subject = status === 'blocked'
-      ? 'Publicação bloqueada na APP - Orientações'
-      : 'Publicação precisa de revisão na APP - Orientações';
+    const subject =
+      status === "blocked"
+        ? "Publicação bloqueada na APP - Orientações"
+        : "Publicação precisa de revisão na APP - Orientações";
 
     return this.sendEmail({
       to: email,
@@ -320,14 +347,27 @@ APP - Template Corporation
     issues: string[],
     suggestions?: string[],
   ): string {
-    const isBlocked = status === 'blocked';
-    const title = isBlocked ? 'Publicação bloqueada' : 'Publicação precisa de revisão';
-    const titleColor = isBlocked ? '#E63946' : '#FF9F1C';
+    const isBlocked = status === "blocked";
+    const title = isBlocked
+      ? "Publicação bloqueada"
+      : "Publicação precisa de revisão";
+    const titleColor = isBlocked ? "#E63946" : "#FF9F1C";
 
-    const issuesList = issues.map((issue) => `<li style="margin-bottom: 8px;">${this.escapeHtml(issue)}</li>`).join('');
-    const suggestionsList = suggestions && suggestions.length > 0
-      ? suggestions.map((suggestion) => `<li style="margin-bottom: 8px;">${this.escapeHtml(suggestion)}</li>`).join('')
-      : '';
+    const issuesList = issues
+      .map(
+        (issue) =>
+          `<li style="margin-bottom: 8px;">${this.escapeHtml(issue)}</li>`,
+      )
+      .join("");
+    const suggestionsList =
+      suggestions && suggestions.length > 0
+        ? suggestions
+            .map(
+              (suggestion) =>
+                `<li style="margin-bottom: 8px;">${this.escapeHtml(suggestion)}</li>`,
+            )
+            .join("")
+        : "";
 
     return `
 <!DOCTYPE html>
@@ -348,23 +388,31 @@ APP - Template Corporation
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Olá, ${this.escapeHtml(nome)}!</p>
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">${this.escapeHtml(reason)}</p>
                             
-                            ${issues.length > 0 ? `
+                            ${
+                              issues.length > 0
+                                ? `
                             <div style="margin: 24px 0; padding: 16px; background-color: #F4F5FB; border-radius: 8px;">
                                 <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 600; color: #1C1D22;">Problemas encontrados:</h2>
                                 <ul style="margin: 0; padding-left: 20px; color: #1C1D22;">
                                     ${issuesList}
                                 </ul>
                             </div>
-                            ` : ''}
+                            `
+                                : ""
+                            }
                             
-                            ${suggestionsList ? `
+                            ${
+                              suggestionsList
+                                ? `
                             <div style="margin: 24px 0; padding: 16px; background-color: #F4F5FB; border-radius: 8px;">
                                 <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 600; color: #1C1D22;">Sugestões de correção:</h2>
                                 <ul style="margin: 0; padding-left: 20px; color: #1C1D22;">
                                     ${suggestionsList}
                                 </ul>
                             </div>
-                            ` : ''}
+                            `
+                                : ""
+                            }
                             
                             <div style="margin: 32px 0 0; padding: 16px; background-color: #F4F5FB; border-radius: 8px;">
                                 <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 600; color: #1C1D22;">O que fazer agora:</h2>
@@ -402,8 +450,11 @@ APP - Template Corporation
     issues: string[],
     suggestions?: string[],
   ): string {
-    const title = status === 'blocked' ? 'Publicação bloqueada' : 'Publicação precisa de revisão';
-    
+    const title =
+      status === "blocked"
+        ? "Publicação bloqueada"
+        : "Publicação precisa de revisão";
+
     let text = `
 ${title} - APP
 
@@ -446,10 +497,10 @@ ${reason}
    */
   private escapeHtml(text: string): string {
     return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 }

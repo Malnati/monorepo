@@ -1,5 +1,5 @@
 // app/api/src/modules/agents/email-domain-guard.agent.ts
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from "@nestjs/common";
 
 export interface DomainCheckResult {
   valid: boolean;
@@ -8,12 +8,10 @@ export interface DomainCheckResult {
   reason?: string;
 }
 
-const ALLOWED_DOMAINS = [
-  'gmail.com',
-  'googlemail.com',
-];
+const ALLOWED_DOMAINS = ["gmail.com", "googlemail.com"];
 
-const GOOGLE_WORKSPACE_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const GOOGLE_WORKSPACE_PATTERN =
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 @Injectable()
 export class EmailDomainGuardAgent {
@@ -23,7 +21,7 @@ export class EmailDomainGuardAgent {
    * Valida se o domínio do e-mail é Gmail ou Google Workspace
    */
   async checkDomain(email: string): Promise<DomainCheckResult> {
-    const method = 'checkDomain';
+    const method = "checkDomain";
     try {
       this.logger.log(`${method} ENTER, email=${email}`);
 
@@ -33,9 +31,9 @@ export class EmailDomainGuardAgent {
       if (!domain) {
         return {
           valid: false,
-          domain: '',
-          provider: 'unknown',
-          reason: 'E-mail inválido',
+          domain: "",
+          provider: "unknown",
+          reason: "E-mail inválido",
         };
       }
 
@@ -45,7 +43,7 @@ export class EmailDomainGuardAgent {
         return {
           valid: true,
           domain,
-          provider: 'gmail',
+          provider: "gmail",
         };
       }
 
@@ -54,11 +52,13 @@ export class EmailDomainGuardAgent {
         // Para Google Workspace, precisaríamos fazer uma verificação MX record
         // Por ora, vamos aceitar domínios corporativos com estrutura válida
         // mas registrar para revisão manual se necessário
-        this.logger.log(`${method} EXIT, valid=true, provider=google-workspace-candidate`);
+        this.logger.log(
+          `${method} EXIT, valid=true, provider=google-workspace-candidate`,
+        );
         return {
           valid: true,
           domain,
-          provider: 'google-workspace',
+          provider: "google-workspace",
         };
       }
 
@@ -66,8 +66,8 @@ export class EmailDomainGuardAgent {
       return {
         valid: false,
         domain,
-        provider: 'other',
-        reason: 'Apenas e-mails Gmail ou Google Workspace são aceitos',
+        provider: "other",
+        reason: "Apenas e-mails Gmail ou Google Workspace são aceitos",
       };
     } catch (error) {
       this.logger.error(
@@ -75,9 +75,9 @@ export class EmailDomainGuardAgent {
       );
       return {
         valid: false,
-        domain: '',
-        provider: 'error',
-        reason: 'Erro na validação do domínio',
+        domain: "",
+        provider: "error",
+        reason: "Erro na validação do domínio",
       };
     }
   }
@@ -101,18 +101,18 @@ export class EmailDomainGuardAgent {
     // Google Workspace geralmente usa domínios corporativos (não gratuitos)
     // Excluir provedores conhecidos não-Google
     const excludedDomains = [
-      'hotmail.com',
-      'outlook.com',
-      'yahoo.com',
-      'dominio.com.br',
-      'live.com',
-      'msn.com',
-      'aol.com',
-      'icloud.com',
-      'me.com',
-      'protonmail.com',
-      'yandex.com',
-      'mail.ru',
+      "hotmail.com",
+      "outlook.com",
+      "yahoo.com",
+      "dominio.com.br",
+      "live.com",
+      "msn.com",
+      "aol.com",
+      "icloud.com",
+      "me.com",
+      "protonmail.com",
+      "yandex.com",
+      "mail.ru",
     ];
 
     return !excludedDomains.includes(domain);

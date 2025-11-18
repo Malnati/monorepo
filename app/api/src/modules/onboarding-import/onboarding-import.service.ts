@@ -1,8 +1,11 @@
 // app/api/src/modules/onboarding-import/onboarding-import.service.ts
 
-import { Injectable, Logger } from '@nestjs/common';
-import { BatchOnboardingDto, CreateOnboardingUserDto } from './dto/batch-onboarding.dto';
-import { randomUUID } from 'crypto';
+import { Injectable, Logger } from "@nestjs/common";
+import {
+  BatchOnboardingDto,
+  CreateOnboardingUserDto,
+} from "./dto/batch-onboarding.dto";
+import { randomUUID } from "crypto";
 
 export interface BatchResponse {
   batchId: string;
@@ -25,7 +28,9 @@ export class OnboardingImportService {
     const batchId = randomUUID();
     const { source, users } = batchDto;
 
-    this.logger.log(`Processing batch ${batchId} from ${source} with ${users.length} users`);
+    this.logger.log(
+      `Processing batch ${batchId} from ${source} with ${users.length} users`,
+    );
 
     let created = 0;
     const updated = 0;
@@ -35,7 +40,7 @@ export class OnboardingImportService {
     for (const user of users) {
       try {
         const key = `${user.email}:${user.userType}`;
-        
+
         if (this.processedEmails.has(key)) {
           this.logger.debug(`User already processed: ${user.email}`);
           skipped++;
@@ -45,14 +50,17 @@ export class OnboardingImportService {
         // TODO: Integrar com banco de dados real
         // Por enquanto, apenas simular o processamento
         await this.createUser(user);
-        
+
         this.processedEmails.add(key);
         created++;
 
         this.logger.log(`User created: ${user.email} (${user.userType})`);
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        this.logger.error(`Error processing user ${user.email}: ${errorMessage}`);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        this.logger.error(
+          `Error processing user ${user.email}: ${errorMessage}`,
+        );
         errors.push({
           email: user.email,
           reason: errorMessage,
@@ -69,7 +77,9 @@ export class OnboardingImportService {
       errors,
     };
 
-    this.logger.log(`Batch ${batchId} completed: ${created} created, ${updated} updated, ${skipped} skipped, ${errors.length} errors`);
+    this.logger.log(
+      `Batch ${batchId} completed: ${created} created, ${updated} updated, ${skipped} skipped, ${errors.length} errors`,
+    );
 
     return response;
   }
@@ -80,8 +90,8 @@ export class OnboardingImportService {
     // 2. Inserir usuário com status 'pendente'
     // 3. Disparar evento para envio de email de ativação
     // 4. Registrar auditoria
-    
+
     // Simulação de delay para processamento
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 10));
   }
 }

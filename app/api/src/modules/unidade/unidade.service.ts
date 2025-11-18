@@ -1,8 +1,8 @@
 // app/api/src/modules/unidade/unidade.service.ts
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UnidadeEntity } from './unidade.entity';
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { UnidadeEntity } from "./unidade.entity";
 
 @Injectable()
 export class UnidadeService {
@@ -14,11 +14,13 @@ export class UnidadeService {
   ) {}
 
   async findAll(userId: number | null) {
-    this.logger.log(`findAll - User: ${userId || 'anonymous'}`);
+    this.logger.log(`findAll - User: ${userId || "anonymous"}`);
     const unidades = await this.unidadeRepository.find({
-      order: { id: 'ASC' },
+      order: { id: "ASC" },
     });
-    this.logger.log(`findAll - User: ${userId || 'anonymous'} - Found ${unidades.length} unidades`);
+    this.logger.log(
+      `findAll - User: ${userId || "anonymous"} - Found ${unidades.length} unidades`,
+    );
     return { data: unidades };
   }
 }

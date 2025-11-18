@@ -1,22 +1,28 @@
 // app/ui/src/hooks/useAuthenticatedImage.ts
-import { useState, useEffect } from 'react';
-import { getAbsoluteApiUrl } from '../services/api';
+import { useState, useEffect } from "react";
+import { getAbsoluteApiUrl } from "../services/api";
 
 /**
  * Hook para carregar imagens autenticadas
  * Converte URLs de imagens protegidas em object URLs que podem ser usadas em <img> ou backgroundImage
  */
-export function useAuthenticatedImage(url: string | null | undefined): string | null {
+export function useAuthenticatedImage(
+  url: string | null | undefined,
+): string | null {
   const [objectUrl, setObjectUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!url || url.trim() === '') {
+    if (!url || url.trim() === "") {
       setObjectUrl(null);
       return;
     }
 
     // Se já é uma URL absoluta externa ou data URL, usar diretamente
-    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+    if (
+      url.startsWith("http://") ||
+      url.startsWith("https://") ||
+      url.startsWith("data:")
+    ) {
       setObjectUrl(url);
       return;
     }
@@ -25,18 +31,18 @@ export function useAuthenticatedImage(url: string | null | undefined): string | 
     const loadImage = async () => {
       try {
         const absoluteUrl = getAbsoluteApiUrl(url);
-        
+
         // Validar URL antes de fazer a requisição
-        if (!absoluteUrl || absoluteUrl.trim() === '') {
+        if (!absoluteUrl || absoluteUrl.trim() === "") {
           setObjectUrl(null);
           return;
         }
-        
-        const token = localStorage.getItem('accessToken');
-        
+
+        const token = localStorage.getItem("accessToken");
+
         const response = await fetch(absoluteUrl, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: token ? `Bearer ${token}` : "",
           },
         });
 
@@ -49,7 +55,9 @@ export function useAuthenticatedImage(url: string | null | undefined): string | 
             setObjectUrl(null);
             return;
           } else {
-            console.error(`Erro ao carregar imagem: ${response.status} ${response.statusText} - URL: ${absoluteUrl}`);
+            console.error(
+              `Erro ao carregar imagem: ${response.status} ${response.statusText} - URL: ${absoluteUrl}`,
+            );
           }
           setObjectUrl(null);
           return;
@@ -61,8 +69,11 @@ export function useAuthenticatedImage(url: string | null | undefined): string | 
       } catch (error) {
         // Erros de rede (CORS, timeout, etc.) são logados
         // Mas 404 não é um erro de rede, é uma resposta válida do servidor
-        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-          console.error('Erro de rede ao carregar imagem autenticada:', error);
+        if (
+          error instanceof TypeError &&
+          error.message.includes("Failed to fetch")
+        ) {
+          console.error("Erro de rede ao carregar imagem autenticada:", error);
         }
         setObjectUrl(null);
       }
@@ -72,7 +83,7 @@ export function useAuthenticatedImage(url: string | null | undefined): string | 
 
     // Cleanup: revogar object URL quando o componente desmontar ou a URL mudar
     return () => {
-      if (objectUrl && objectUrl.startsWith('blob:')) {
+      if (objectUrl && objectUrl.startsWith("blob:")) {
         URL.revokeObjectURL(objectUrl);
       }
     };
@@ -80,4 +91,3 @@ export function useAuthenticatedImage(url: string | null | undefined): string | 
 
   return objectUrl;
 }
-

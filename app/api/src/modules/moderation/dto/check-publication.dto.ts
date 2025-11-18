@@ -1,5 +1,5 @@
 // app/api/src/modules/moderation/dto/check-publication.dto.ts
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional } from "class-validator";
 
 export class CheckPublicationDto {
   @IsString()

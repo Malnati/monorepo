@@ -1,10 +1,11 @@
 // app/ui/src/components/OfflineBanner.tsx
-import { useState, useEffect } from 'react';
-import { ICON_MAP } from '../utils/icons';
+import { useState, useEffect } from "react";
+import { ICON_MAP } from "../utils/icons";
 
-const BANNER_TEXT = 'Sem conexão';
-const BANNER_DESCRIPTION = 'Você está offline. Algumas funcionalidades podem estar limitadas.';
-const RETRY_TEXT = 'Tentar novamente';
+const BANNER_TEXT = "Sem conexão";
+const BANNER_DESCRIPTION =
+  "Você está offline. Algumas funcionalidades podem estar limitadas.";
+const RETRY_TEXT = "Tentar novamente";
 
 export default function OfflineBanner() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -22,12 +23,12 @@ export default function OfflineBanner() {
       setIsVisible(true);
     };
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
@@ -43,10 +44,7 @@ export default function OfflineBanner() {
     <div
       className={`
         fixed top-0 left-0 right-0 z-50 px-4 py-3
-        ${isOnline 
-          ? 'bg-green-500' 
-          : 'bg-orange-500'
-        }
+        ${isOnline ? "bg-green-500" : "bg-orange-500"}
         text-white shadow-lg
         animate-in slide-in-from-top duration-300
       `}
@@ -56,13 +54,19 @@ export default function OfflineBanner() {
       <div className="flex items-center justify-between gap-4 max-w-screen-xl mx-auto">
         <div className="flex items-center gap-3 flex-1">
           {isOnline ? (
-            <ICON_MAP.wifi className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
+            <ICON_MAP.wifi
+              className="h-6 w-6 flex-shrink-0"
+              aria-hidden="true"
+            />
           ) : (
-            <ICON_MAP.wifiOff className="h-6 w-6 flex-shrink-0" aria-hidden="true" />
+            <ICON_MAP.wifiOff
+              className="h-6 w-6 flex-shrink-0"
+              aria-hidden="true"
+            />
           )}
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold">
-              {isOnline ? 'Conectado' : BANNER_TEXT}
+              {isOnline ? "Conectado" : BANNER_TEXT}
             </p>
             {!isOnline && (
               <p className="text-xs opacity-90 line-clamp-1">

@@ -1,8 +1,8 @@
 // app/api/src/app.controller.ts
-import { Controller, Get } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { AppService } from './app.service';
+import { Controller, Get } from "@nestjs/common";
+import { InjectDataSource } from "@nestjs/typeorm";
+import { DataSource } from "typeorm";
+import { AppService } from "./app.service";
 
 @Controller()
 export class AppController {
@@ -16,23 +16,23 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('health')
+  @Get("health")
   async getHealth() {
     // Verificar conexão com banco de dados
-    let dbStatus = 'unknown';
+    let dbStatus = "unknown";
     try {
-      await this.dataSource.query('SELECT 1');
-      dbStatus = 'connected';
+      await this.dataSource.query("SELECT 1");
+      dbStatus = "connected";
     } catch (error) {
-      dbStatus = 'disconnected';
+      dbStatus = "disconnected";
     }
 
-    const status = dbStatus === 'connected' ? 'ok' : 'degraded';
-    
-    return { 
-      status, 
+    const status = dbStatus === "connected" ? "ok" : "degraded";
+
+    return {
+      status,
       timestamp: new Date().toISOString(),
-      database: dbStatus
+      database: dbStatus,
     };
   }
 }

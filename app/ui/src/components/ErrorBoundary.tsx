@@ -1,5 +1,5 @@
 // app/ui/src/components/ErrorBoundary.tsx
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -34,22 +34,24 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('[ErrorBoundary] ===== ERRO CAPTURADO =====');
-    console.error('[ErrorBoundary] Erro:', error);
-    console.error('[ErrorBoundary] Mensagem:', error.message);
-    console.error('[ErrorBoundary] Nome:', error.name);
-    console.error('[ErrorBoundary] Stack:', error.stack);
-    console.error('[ErrorBoundary] ErrorInfo:', errorInfo);
-    console.error('[ErrorBoundary] ComponentStack:', errorInfo.componentStack);
-    
+    console.error("[ErrorBoundary] ===== ERRO CAPTURADO =====");
+    console.error("[ErrorBoundary] Erro:", error);
+    console.error("[ErrorBoundary] Mensagem:", error.message);
+    console.error("[ErrorBoundary] Nome:", error.name);
+    console.error("[ErrorBoundary] Stack:", error.stack);
+    console.error("[ErrorBoundary] ErrorInfo:", errorInfo);
+    console.error("[ErrorBoundary] ComponentStack:", errorInfo.componentStack);
+
     // Tentar identificar a variável quebrada
-    const errorMessage = error.message || '';
-    if (errorMessage.includes('Cannot access uninitialized variable')) {
-      console.error('[ErrorBoundary] ❌ ERRO: Variável não inicializada detectada');
-      console.error('[ErrorBoundary] Stack trace completo:', new Error().stack);
-      
+    const errorMessage = error.message || "";
+    if (errorMessage.includes("Cannot access uninitialized variable")) {
+      console.error(
+        "[ErrorBoundary] ❌ ERRO: Variável não inicializada detectada",
+      );
+      console.error("[ErrorBoundary] Stack trace completo:", new Error().stack);
+
       // Capturar todas as variáveis do escopo global
-      console.error('[ErrorBoundary] Variáveis do escopo:', {
+      console.error("[ErrorBoundary] Variáveis do escopo:", {
         window: typeof window,
         document: typeof document,
         navigator: typeof navigator,
@@ -73,7 +75,9 @@ export default class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
-            <h1 className="text-sm font-bold text-red-600 mb-4">Erro na aplicação</h1>
+            <h1 className="text-sm font-bold text-red-600 mb-4">
+              Erro na aplicação
+            </h1>
             <p className="text-gray-700 mb-4">
               Ocorreu um erro inesperado. Por favor, recarregue a página.
             </p>
@@ -102,4 +106,3 @@ export default class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
-

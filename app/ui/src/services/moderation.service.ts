@@ -1,7 +1,7 @@
 // app/ui/src/services/moderation.service.ts
-import api from './api';
+import api from "./api";
 
-const CHECK_PUBLICATION_ENDPOINT = '/moderation/publications';
+const CHECK_PUBLICATION_ENDPOINT = "/moderation/publications";
 
 interface CheckPublicationData {
   titulo: string;
@@ -10,7 +10,7 @@ interface CheckPublicationData {
 }
 
 interface CheckPublicationResponse {
-  status: 'approved' | 'needs_revision' | 'blocked';
+  status: "approved" | "needs_revision" | "blocked";
   reason: string;
   issues: string[];
   suggestions?: string[];
