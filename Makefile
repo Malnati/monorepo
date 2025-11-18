@@ -16,7 +16,16 @@ clean:
 	@echo "No build artifacts to clean; extend this target when build outputs are created."
 
 format-prettier:
-	@if command -v act >/dev/null 2>&1 && docker info >/dev/null 2>&1; then \
+	@if docker info >/dev/null 2>&1; then \
+		echo "🐳 Executando Prettier via Docker..."; \
+		docker run --rm -it \
+			-v "$(PWD):/workspace" \
+			-w /workspace \
+			-e IN_DOCKER=true \
+			-e WORK_DIR=/workspace \
+			node:20-alpine \
+			sh -c "apk add --no-cache bash findutils && bash scripts/format-prettier.sh"; \
+	elif command -v act >/dev/null 2>&1 && docker info >/dev/null 2>&1; then \
 		echo "✅ Usando act para executar workflow..."; \
 		echo "⚠️  Nota: act pode requerer configuração adicional. Se falhar, use o script shell diretamente."; \
 		act workflow_dispatch -W .github/workflows/prettier.yml \
@@ -25,6 +34,6 @@ format-prettier:
 			--secret GITHUB_TOKEN=dummy \
 			--secret COPILOT_PAT=dummy || (echo "⚠️  act falhou, usando script shell como fallback..."; bash scripts/format-prettier.sh); \
 	else \
-		echo "⚠️  act não disponível, usando script shell..."; \
+		echo "⚠️  Docker não disponível, usando script shell local..."; \
 		bash scripts/format-prettier.sh; \
 	fi

@@ -42,7 +42,7 @@ jobs:
           no_commit: false
           prettier_version: latest
           working_directory: .
-          prettier_options: "--ignore-path .github/workflows/.prettierignore --ignore-unknown --write ${{ steps.find-projects.outputs.dirs }}"
+          prettier_options: "--ignore-path .prettierignore --ignore-unknown --write ${{ steps.find-projects.outputs.dirs }}"
           commit_message: "chore: format code with Prettier"
           commit_description: "Automated code formatting using Prettier action."
           same_commit: false
