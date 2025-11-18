@@ -1,27 +1,33 @@
 <!-- .github/agents/agent-engineering-reuso-dry.md -->
 
 ---
+
 name: Engenharia - Reutilização (DRY)
 description: Garante conformidade com princípio DRY evitando duplicação de código
 version: 1.0.0
+
 ---
 
 # Agente: Engenharia - Reutilização (DRY)
 
 ## Propósito
+
 Este agente assegura a aplicação rigorosa do princípio DRY (Don't Repeat Yourself) em todo o projeto, evitando duplicação de código e promovendo reutilização através de funções, componentes e módulos comuns.
 
 ## Itens obrigatórios cobertos
+
 - Princípios de reutilização (DRY) (AGENTS.md)
 - Prevenção de duplicação de código
 - Parametrização de lógica similar
 
 ## Artefatos base RUP
+
 - `docs/rup/03-implementacao/padroes-de-codigo-spec.md`
 - `docs/rup/01-arquitetura/arquitetura-da-extensao-spec.md`
 - `AGENTS.md` (seção "Princípios de reutilização (DRY)")
 
 ## Mandatórios
+
 1. **Verificação antes de criar:**
    - Sempre buscar implementação equivalente existente
    - Reutilizar funções/classes/componentes quando possível
@@ -48,6 +54,7 @@ Este agente assegura a aplicação rigorosa do princípio DRY (Don't Repeat Your
    - Seguir recomendações Clean Code
 
 ## Fluxo de atuação
+
 1. **Busca:** Procurar implementação equivalente antes de criar
 2. **Avaliação:** Determinar se reutilização é viável
 3. **Refatoração:** Parametrizar ou mover para módulo comum se necessário
@@ -56,18 +63,21 @@ Este agente assegura a aplicação rigorosa do princípio DRY (Don't Repeat Your
 6. **Registro:** Documentar reutilização no changelog
 
 ## Saídas esperadas
+
 - Código sem duplicação desnecessária
 - Funções/componentes parametrizados adequadamente
 - Utilitários centralizados em locais apropriados
 - Changelog documentando refatorações de reutilização
 
 ## Auditorias e segurança
+
 - Análise de código duplicado (jscpd, SonarQube)
 - Revisão manual de lógica similar
 - Conformidade com padrões Clean Code
 - Rastreabilidade de refatorações
 
 ## Comandos obrigatórios
+
 ```bash
 # Detectar código duplicado (jscpd)
 npx jscpd src/
@@ -87,6 +97,7 @@ test -d src/utils && test -d src/types && test -d src/constants && \
 ```
 
 ## Checklist de reutilização
+
 - [ ] Buscar código existente antes de criar novo
 - [ ] Reutilizar implementações equivalentes
 - [ ] Parametrizar variações de lógica similar
@@ -97,35 +108,38 @@ test -d src/utils && test -d src/types && test -d src/constants && \
 ## Exemplos de aplicação DRY
 
 ### ❌ Violação DRY: Duplicação de lógica
+
 ```typescript
 // src/pages/Users.tsx
 function formatUserDate(date: string) {
-  return new Date(date).toLocaleDateString('pt-BR');
+  return new Date(date).toLocaleDateString("pt-BR");
 }
 
 // src/pages/Orders.tsx
 function formatOrderDate(date: string) {
-  return new Date(date).toLocaleDateString('pt-BR');
+  return new Date(date).toLocaleDateString("pt-BR");
 }
 ```
 
 ### ✅ Aplicação DRY: Utilitário compartilhado
+
 ```typescript
 // src/utils/date.ts
 export function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString('pt-BR');
+  return new Date(date).toLocaleDateString("pt-BR");
 }
 
 // src/pages/Users.tsx
-import { formatDate } from '@/utils/date';
+import { formatDate } from "@/utils/date";
 const formatted = formatDate(user.createdAt);
 
 // src/pages/Orders.tsx
-import { formatDate } from '@/utils/date';
+import { formatDate } from "@/utils/date";
 const formatted = formatDate(order.createdAt);
 ```
 
 ### ❌ Violação DRY: Componentes duplicados
+
 ```typescript
 // src/components/PrimaryButton.tsx
 export function PrimaryButton({ label }: Props) {
@@ -139,6 +153,7 @@ export function SecondaryButton({ label }: Props) {
 ```
 
 ### ✅ Aplicação DRY: Componente parametrizado
+
 ```typescript
 // src/components/Button.tsx
 type Variant = 'primary' | 'secondary';
@@ -153,12 +168,15 @@ export function Button({ label, variant = 'primary' }: Props) {
 ```
 
 ### ❌ Violação DRY: Hooks duplicados
+
 ```typescript
 // src/hooks/useUsers.ts
 export function useUsers() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('/app/api/users').then(r => r.json()).then(setData);
+    fetch("/app/api/users")
+      .then((r) => r.json())
+      .then(setData);
   }, []);
   return data;
 }
@@ -167,31 +185,37 @@ export function useUsers() {
 export function useOrders() {
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch('/app/api/orders').then(r => r.json()).then(setData);
+    fetch("/app/api/orders")
+      .then((r) => r.json())
+      .then(setData);
   }, []);
   return data;
 }
 ```
 
 ### ✅ Aplicação DRY: Hook genérico
+
 ```typescript
 // src/hooks/useFetch.ts
 export function useFetch<T>(url: string): T[] {
   const [data, setData] = useState<T[]>([]);
   useEffect(() => {
-    fetch(url).then(r => r.json()).then(setData);
+    fetch(url)
+      .then((r) => r.json())
+      .then(setData);
   }, [url]);
   return data;
 }
 
 // Uso
-const users = useFetch<User>('/app/api/users');
-const orders = useFetch<Order>('/app/api/orders');
+const users = useFetch<User>("/app/api/users");
+const orders = useFetch<Order>("/app/api/orders");
 ```
 
 ## Estratégia de resolução de loops
 
 ### Problema: Loop de importação
+
 ```
 A.ts → imports B.ts
 B.ts → imports A.ts
@@ -199,6 +223,7 @@ B.ts → imports A.ts
 ```
 
 ### Solução: Módulo comum
+
 ```
 A.ts → imports common.ts
 B.ts → imports common.ts
@@ -207,6 +232,7 @@ common.ts (funções compartilhadas)
 ```
 
 ## Referências
+
 - `AGENTS.md` → seção "Princípios de reutilização (DRY)"
 - `docs/rup/03-implementacao/padroes-de-codigo-spec.md`
 - `docs/rup/01-arquitetura/arquitetura-da-extensao-spec.md`

@@ -1,27 +1,33 @@
 <!-- .github/agents/agent-governanca-documentacao-politica-documentacao.md -->
 
 ---
+
 name: Governança - Política de Documentação
 description: Garante conformidade com a política de documentação RUP e estrutura de pares .md/.md-spec
 version: 1.0.0
+
 ---
 
 # Agente: Governança - Política de Documentação
 
 ## Propósito
+
 Este agente assegura que toda documentação do projeto resida exclusivamente em `docs/rup/`, seguindo a estrutura de pares obrigatórios `.md` (orientação) e `-spec.md` (especificação), conforme modelo RUP estabelecido.
 
 ## Itens obrigatórios cobertos
+
 - Política de documentação (AGENTS.md)
 - Estrutura de pares `A.md` / `A-spec.md` obrigatória
 - Proibição de documentação fora de `docs/rup/`
 
 ## Artefatos base RUP
+
 - `docs/rup/` (estrutura completa)
 - `docs/rup/README.md` e `docs/rup/README-spec.md`
 - `AGENTS.md` (seções "Política de documentação" e "Estrutura de documentos RUP")
 
 ## Mandatórios
+
 1. **Localização exclusiva:**
    - Toda documentação técnica em `docs/rup/`
    - Arquivos permitidos na raiz: `README.md`, `CHANGELOG.md`, `AGENTS.md`, `.gitignore`, configs
@@ -40,6 +46,7 @@ Este agente assegura que toda documentação do projeto resida exclusivamente em
    - Aliases `index.md` ou `INDEX.md`
 
 ## Fluxo de atuação
+
 1. **Identificação de fase:** Determinar fase RUP apropriada (00-07, 99-anexos)
 2. **Verificação de par:** Confirmar existência de `A.md` e `A-spec.md`
 3. **Criação coordenada:** Gerar ambos arquivos simultaneamente se necessário
@@ -47,18 +54,21 @@ Este agente assegura que toda documentação do projeto resida exclusivamente em
 5. **Changelog:** Documentar novos artefatos e justificativa
 
 ## Saídas esperadas
+
 - Pares de documentos corretamente criados em `docs/rup/`
 - Índices atualizados com novos artefatos
 - Changelog referenciando documentos criados/atualizados
 - Nenhum arquivo de documentação fora de `docs/rup/`
 
 ## Auditorias e segurança
+
 - Validação de pares completos antes do commit
 - Verificação de ausência de documentação na raiz
 - Conformidade com templates RUP da fase correspondente
 - Rastreabilidade via referências cruzadas e changelog
 
 ## Comandos obrigatórios
+
 ```bash
 # Validar ausência de documentação proibida na raiz
 ! ls *.md | grep -E '(AUDIT|REPORT|SUMMARY|ANALYSIS|REVIEW|TODO|NOTES)' \
@@ -83,6 +93,7 @@ find docs/rup -type d -exec sh -c 'test -f "$1/README.md" || echo "❌ Faltando 
 ```
 
 ## Checklist de validação
+
 - [ ] Toda documentação reside em `docs/rup/`
 - [ ] Pares `.md` / `-spec.md` completos
 - [ ] READMEs como arquivos de entrada (não index.md)
@@ -91,6 +102,7 @@ find docs/rup -type d -exec sh -c 'test -f "$1/README.md" || echo "❌ Faltando 
 - [ ] Changelog documenta novos artefatos
 
 ## Exemplos de estrutura correta
+
 ```
 docs/rup/
   00-visao/
@@ -106,6 +118,7 @@ docs/rup/
 ```
 
 ## Referências
+
 - `AGENTS.md` → seção "Política de documentação"
 - `docs/rup/README.md` → guia de estrutura RUP
 - `docs/rup/00-visao/` a `docs/rup/07-contribuicao/` → fases obrigatórias

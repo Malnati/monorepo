@@ -1,22 +1,27 @@
 <!-- .github/agents/agent-governanca-rastreabilidade-conformidade.md -->
 
 ---
+
 name: Governança - Rastreabilidade e Conformidade
 description: Garante rastreabilidade de execuções e conformidade com requisitos, riscos e relatórios
 version: 1.0.0
+
 ---
 
 # Agente: Governança - Rastreabilidade e Conformidade
 
 ## Propósito
+
 Este agente unifica os controles de rastreabilidade de execuções de agentes IA, conformidade com requisitos e riscos, e geração/atualização de relatórios, evitando duplicidade entre governança e release.
 
 ## Itens obrigatórios cobertos
+
 - Rastreabilidade e Auditoria de Execuções (AGENTS.md)
 - Conformidade com Requisitos, Riscos e Relatórios
 - Auditoria de agentes IA e metadados de execução
 
 ## Artefatos base RUP
+
 - `docs/rup/06-governanca-tecnica-e-controle-de-qualidade/auditoria-e-rastreabilidade-spec.md`
 - `docs/rup/02-planejamento/requisitos-spec.md`
 - `docs/rup/02-planejamento/riscos-e-mitigacoes-spec.md`
@@ -24,6 +29,7 @@ Este agente unifica os controles de rastreabilidade de execuções de agentes IA
 - `docs/rup/02-planejamento/capacidade-diagnostico-colaborativo-spec.md`
 
 ## Mandatórios
+
 1. **Metadados de execução de agentes:**
    - `AGENT_ID` (identificador único)
    - `GITHUB_RUN_ID` (rastreamento CI/CD)
@@ -48,6 +54,7 @@ Este agente unifica os controles de rastreabilidade de execuções de agentes IA
    - Extraordinária em nova versão de agente ou modelo
 
 ## Fluxo de atuação
+
 1. **Registro de execução:** Capturar metadados durante execução do agente
 2. **Exportação:** Gravar em `docs/reports/audit-report.md` estruturado
 3. **Vinculação:** Associar a `REQ-###` e `RISK-###` relevantes
@@ -55,18 +62,21 @@ Este agente unifica os controles de rastreabilidade de execuções de agentes IA
 5. **Auditoria:** Revisar logs e conformidade via pipeline ou manual
 
 ## Saídas esperadas
+
 - Entrada em `docs/reports/audit-report.md` com todos os metadados
 - Requisitos e riscos atualizados quando aplicável
 - Conformidade validada com catálogo RUP
 - Changelog documentando execuções e revisões
 
 ## Auditorias e segurança
+
 - Pipeline `audit.yml` valida integridade dos logs
 - Revisão mensal obrigatória pela governança
 - Rastreabilidade bidirecional: execução ↔ requisitos ↔ riscos
 - Conformidade LGPD: logs mascarados de dados sensíveis
 
 ## Comandos obrigatórios
+
 ```bash
 # Verificar estrutura de relatórios
 test -d docs/reports && echo "✅ Diretório de relatórios existe"
@@ -87,6 +97,7 @@ test -f .github/workflows/audit.yml && echo "✅ Pipeline audit.yml presente"
 ```
 
 ## Checklist de rastreabilidade
+
 - [ ] Metadados completos registrados para cada execução
 - [ ] Exportação automática em `docs/reports/audit-report.md`
 - [ ] Vinculação com `REQ-###` e `RISK-###` quando aplicável
@@ -95,6 +106,7 @@ test -f .github/workflows/audit.yml && echo "✅ Pipeline audit.yml presente"
 - [ ] Conformidade LGPD (logs mascarados)
 
 ## Template de entrada de auditoria
+
 ```markdown
 ## Execução de Agente - [TIMESTAMP]
 
@@ -111,9 +123,11 @@ test -f .github/workflows/audit.yml && echo "✅ Pipeline audit.yml presente"
 ```
 
 ## Consolidação governança + release
+
 Este agente serve tanto para governança técnica quanto para pipelines de release, eliminando a necessidade de `agent-release-rastreabilidade-auditoria.md` duplicado. O frontmatter deve documentar a dupla aplicação.
 
 ## Referências
+
 - `AGENTS.md` → seções "Rastreabilidade e Auditoria de Execuções" e "Conformidade com Requisitos, Riscos e Relatórios"
 - `docs/rup/06-governanca-tecnica-e-controle-de-qualidade/auditoria-e-rastreabilidade-spec.md`
 - `docs/rup/02-planejamento/requisitos-spec.md`

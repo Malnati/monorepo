@@ -14,6 +14,7 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 ## Arquivos da Estrutura Modular
 
 ### DDL (8 arquivos)
+
 1. `000_extensions.sql` - Extensão PostGIS
 2. `001_ddl_tb_tipo.sql` - Tipos de resíduo
 3. `002_ddl_tb_unidade.sql` - Unidades de medida
@@ -24,6 +25,7 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 8. `007_ddl_tb_transacao.sql` - Transações
 
 ### Seeds (7 arquivos)
+
 1. `008_seed_tb_tipo.sql` - 6 tipos de resíduo
 2. `009_seed_tb_unidade.sql` - 5 unidades de medida
 3. `010_seed_tb_fornecedor.sql` - 1 fornecedor padrão
@@ -37,6 +39,7 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 ## Processo de Validação
 
 ### Ambiente de Teste
+
 - **Container:** Docker PostgreSQL + PostGIS
 - **Imagem:** `postgis/postgis:16-3.4-alpine`
 - **Banco:** `test_modular`
@@ -45,11 +48,13 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 ### Scripts de Validação
 
 #### 1. test-modular-migrations.sh
+
 - Concatena todos os arquivos DDL e seeds em ordem
 - Gera arquivo consolidado em `/tmp/modular-migrations-test/consolidated_migrations.sql`
 - Valida contagem de objetos SQL
 
 **Resultado:**
+
 ```
 ✅ 8 arquivos DDL concatenados
 ✅ 7 arquivos seeds concatenados
@@ -59,6 +64,7 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 ```
 
 #### 2. validate-modular-schema.sh
+
 - Inicia container PostgreSQL limpo
 - Copia imagens de teste para `/opt/dominio/seeds/img/`
 - Executa migrations consolidadas
@@ -66,6 +72,7 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 - Gera pg_dump do schema
 
 **Resultado:**
+
 ```
 ✅ Container iniciado com sucesso
 ✅ PostgreSQL pronto em < 30s
@@ -77,15 +84,16 @@ A estrutura modular de migrations foi completamente validada em ambiente isolado
 ## Resultados da Validação
 
 ### Tabelas Criadas
-| Tabela | Registros | Status |
-|--------|-----------|--------|
-| tb_tipo | 6 | ✅ |
-| tb_unidade | 5 | ✅ |
-| tb_fornecedor | 1 | ✅ |
-| tb_comprador | 1 | ✅ |
-| tb_offer | 5 | ✅ |
-| tb_fotos | 5 | ✅ |
-| tb_transacao | 2 | ✅ |
+
+| Tabela        | Registros | Status |
+| ------------- | --------- | ------ |
+| tb_tipo       | 6         | ✅     |
+| tb_unidade    | 5         | ✅     |
+| tb_fornecedor | 1         | ✅     |
+| tb_comprador  | 1         | ✅     |
+| tb_offer      | 5         | ✅     |
+| tb_fotos      | 5         | ✅     |
+| tb_transacao  | 2         | ✅     |
 
 **Total:** 7 tabelas, 19 registros
 
@@ -195,9 +203,11 @@ Conforme `docs/rup/99-anexos/MVP/plan-unify-migrations.md`:
 ## Evidências de Teste
 
 ### Arquivo Consolidado
+
 **Localização:** `/tmp/modular-migrations-test/consolidated_migrations.sql`
 
 **Estatísticas:**
+
 - 7 CREATE TABLE statements
 - 74 COMMENT ON statements
 - 17 INSERT statements
@@ -206,9 +216,11 @@ Conforme `docs/rup/99-anexos/MVP/plan-unify-migrations.md`:
 - 1 CREATE TRIGGER statement
 
 ### Schema Dump
+
 **Localização:** `/tmp/modular-migrations-test/schema_modular.sql`
 
 **Conteúdo:**
+
 - Definições completas de todas as tabelas
 - Todas as constraints e foreign keys
 - Todos os índices e triggers
@@ -218,16 +230,16 @@ Conforme `docs/rup/99-anexos/MVP/plan-unify-migrations.md`:
 
 ### Tabela Principal
 
-| Aspecto | Legacy | Modular |
-|---------|--------|---------|
-| Nome | tb_lote_residuo | tb_offer ✅ |
-| Criação | CREATE + 3x ALTER TABLE | CREATE TABLE nativo ✅ |
-| Campo título | nome | title ✅ |
-| Campo descrição | descricao | description ✅ |
-| Campo local | localizacao | location ✅ |
-| Campo bairro | (não existia) | neighborhood ✅ |
-| Campo endereço | (não existia) | address ✅ |
-| Geoespacial | Adicionado em migration 002 | Nativo no CREATE ✅ |
+| Aspecto         | Legacy                      | Modular                |
+| --------------- | --------------------------- | ---------------------- |
+| Nome            | tb_lote_residuo             | tb_offer ✅            |
+| Criação         | CREATE + 3x ALTER TABLE     | CREATE TABLE nativo ✅ |
+| Campo título    | nome                        | title ✅               |
+| Campo descrição | descricao                   | description ✅         |
+| Campo local     | localizacao                 | location ✅            |
+| Campo bairro    | (não existia)               | neighborhood ✅        |
+| Campo endereço  | (não existia)               | address ✅             |
+| Geoespacial     | Adicionado em migration 002 | Nativo no CREATE ✅    |
 
 ### Vantagens da Estrutura Modular
 
@@ -240,13 +252,16 @@ Conforme `docs/rup/99-anexos/MVP/plan-unify-migrations.md`:
 ## Arquivos Gerados
 
 ### Scripts de Validação Atualizados
+
 1. `test-modular-migrations.sh` - Corrigido para usar `init/migrations/modular/`
 2. `validate-modular-schema.sh` - Corrigido para usar `init/migrations/modular/`
 
 ### Novo Arquivo DDL
+
 3. `ddl/000_extensions.sql` - Habilita PostGIS (crítico para GEOGRAPHY types)
 
 ### Documentação
+
 4. `VALIDATION_REPORT.md` - Este relatório
 5. `init/migrations/modular/README.md` - Atualizado com status Fase 2 completa
 
@@ -269,6 +284,7 @@ A estrutura modular de migrations foi testada em ambiente isolado e funciona per
 ## Próximos Passos (Fora do Escopo)
 
 ### Fase 3: Substituição (Planejamento Futuro)
+
 - [ ] Deprecar `001_create_schema.sql` e migrations 002-027
 - [ ] Mover arquivos de `modular/` para diretório principal
 - [ ] Atualizar Dockerfile e docker-compose.yml

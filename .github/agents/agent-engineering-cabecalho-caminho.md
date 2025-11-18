@@ -7,18 +7,22 @@ version: 1.0.0
 # Agente: Engenharia - Cabeçalho de Caminho
 
 ## Propósito
+
 Este agente assegura que todos os arquivos do projeto contenham, no topo, um comentário com o caminho relativo real do arquivo, seguindo a sintaxe específica da linguagem.
 
 ## Itens obrigatórios cobertos
+
 - Convenções de cabeçalho de caminho (AGENTS.md)
 - Validação obrigatória de presença de cabeçalhos
 - Sintaxe por tipo de arquivo
 
 ## Artefatos base RUP
+
 - `AGENTS.md` (seção "Convenções de cabeçalho de caminho" e validação pré-execução)
 - `docs/rup/03-implementacao/padroes-de-codigo-spec.md`
 
 ## Mandatórios
+
 1. **Sintaxe por linguagem:**
    - TypeScript: `// caminho/do/arquivo.ts`
    - TypeScript React: `// caminho/do/arquivo.tsx`
@@ -35,6 +39,7 @@ Este agente assegura que todos os arquivos do projeto contenham, no topo, um com
    - Caminho relativo calculado automaticamente da raiz do repositório
 
 3. **Validação automática:**
+
    ```bash
    find . -name "*.md" -exec grep -L "^<!--.*\.md -->" {} +
    ```
@@ -45,6 +50,7 @@ Este agente assegura que todos os arquivos do projeto contenham, no topo, um com
    - Omissão de cabeçalho em arquivos versionados
 
 ## Fluxo de atuação
+
 1. **Detecção:** Identificar arquivos sem cabeçalho de caminho
 2. **Cálculo:** Determinar caminho relativo correto da raiz
 3. **Inserção:** Adicionar cabeçalho na sintaxe apropriada
@@ -52,18 +58,21 @@ Este agente assegura que todos os arquivos do projeto contenham, no topo, um com
 5. **Registro:** Documentar ajustes no changelog
 
 ## Saídas esperadas
+
 - Todos os arquivos com cabeçalho de caminho correto
 - Sintaxe apropriada por tipo de arquivo
 - Validação automática sem falhas
 - Changelog documentando adições de cabeçalhos
 
 ## Auditorias e segurança
+
 - Comando de validação executado antes do commit
 - Checklist obrigatório incluindo verificação de cabeçalhos
 - Conformidade com estrutura de projeto
 - Rastreabilidade de localização de arquivos
 
 ## Comandos obrigatórios
+
 ```bash
 # Detectar arquivos Markdown sem cabeçalho
 find . -name "*.md" -not -path "./node_modules/*" -exec grep -L "^<!--.*\.md -->" {} +
@@ -81,6 +90,7 @@ find . -name "Makefile" -exec head -1 {} \; -print | grep -B1 "^#.*Makefile"
 ```
 
 ## Checklist de validação
+
 - [ ] Todos arquivos `.md` possuem `<!-- caminho/arquivo.md -->`
 - [ ] Todos arquivos `.ts`/`.tsx` possuem `// caminho/arquivo.ts`
 - [ ] Todos arquivos `.yml`/`.yaml` possuem `# caminho/arquivo.yaml`
@@ -91,12 +101,15 @@ find . -name "Makefile" -exec head -1 {} \; -print | grep -B1 "^#.*Makefile"
 ## Exemplos por tipo de arquivo
 
 ### Markdown
+
 ```markdown
 <!-- docs/rup/00-visao/README.md -->
+
 # Visão do Produto
 ```
 
 ### TypeScript
+
 ```typescript
 // src/services/auth.service.ts
 export class AuthService {
@@ -105,6 +118,7 @@ export class AuthService {
 ```
 
 ### YAML
+
 ```yaml
 # .github/workflows/ci.yml
 name: CI Pipeline
@@ -112,6 +126,7 @@ on: [push, pull_request]
 ```
 
 ### Makefile
+
 ```makefile
 # Makefile
 COMPOSE ?= docker compose
@@ -122,6 +137,7 @@ help:
 ```
 
 ### SQL
+
 ```sql
 -- app/db/migrations/0001_create_users.sql
 CREATE TABLE users (
@@ -130,6 +146,7 @@ CREATE TABLE users (
 ```
 
 ### Com elementos obrigatórios
+
 ```bash
 #!/bin/bash
 # app/api/entrypoint.sh
@@ -144,6 +161,7 @@ import sys
 ```
 
 ## Script de validação completo
+
 ```bash
 #!/bin/bash
 # scripts/validate-path-headers.sh
@@ -176,6 +194,7 @@ echo "✅ Todos os cabeçalhos de caminho presentes"
 ```
 
 ## Referências
+
 - `AGENTS.md` → seção "Convenções de cabeçalho de caminho"
 - `AGENTS.md` → checklist "Validação Obrigatória Antes de Execução"
 - `docs/rup/03-implementacao/padroes-de-codigo-spec.md`

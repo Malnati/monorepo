@@ -36,6 +36,7 @@ app/db/init/
 ### ✅ tb_offer Nativa (Sem ALTER TABLE)
 
 **Antes (Legacy):**
+
 ```sql
 -- 001_create_schema.sql
 CREATE TABLE tb_lote_residuo (nome, localizacao, ...);
@@ -49,6 +50,7 @@ ALTER TABLE tb_offer ADD COLUMN address VARCHAR(255);
 ```
 
 **Agora (Modular):**
+
 ```sql
 -- 005_ddl_tb_offer.sql
 CREATE TABLE IF NOT EXISTS tb_offer (
@@ -74,16 +76,19 @@ CREATE TABLE IF NOT EXISTS tb_offer (
 ### ✅ Validação Automatizada
 
 **Scripts Criados:**
+
 1. `test-modular-migrations.sh` - Concatena e valida sintaxe
 2. `validate-modular-schema.sh` - Testa em PostgreSQL real
 
 **Execução:**
+
 ```bash
 cd db
 ./validate-modular-schema.sh
 ```
 
 **Resultado:**
+
 ```
 ✅ 7 tabelas criadas
 ✅ 0 erros SQL
@@ -157,16 +162,16 @@ cd db
 Indexes:
     "tb_offer_pkey" PRIMARY KEY, btree (id)
 Foreign-key constraints:
-    "tb_offer_fornecedor_id_fkey" FOREIGN KEY (fornecedor_id) 
+    "tb_offer_fornecedor_id_fkey" FOREIGN KEY (fornecedor_id)
         REFERENCES tb_fornecedor(id) ON DELETE SET NULL
-    "tb_offer_tipo_id_fkey" FOREIGN KEY (tipo_id) 
+    "tb_offer_tipo_id_fkey" FOREIGN KEY (tipo_id)
         REFERENCES tb_tipo(id) ON DELETE SET NULL
-    "tb_offer_unidade_id_fkey" FOREIGN KEY (unidade_id) 
+    "tb_offer_unidade_id_fkey" FOREIGN KEY (unidade_id)
         REFERENCES tb_unidade(id) ON DELETE SET NULL
 Referenced by:
-    TABLE "tb_fotos" CONSTRAINT "tb_fotos_offer_id_fkey" 
+    TABLE "tb_fotos" CONSTRAINT "tb_fotos_offer_id_fkey"
         FOREIGN KEY (offer_id) REFERENCES tb_offer(id) ON DELETE CASCADE
-    TABLE "tb_transacao" CONSTRAINT "tb_transacao_offer_id_fkey" 
+    TABLE "tb_transacao" CONSTRAINT "tb_transacao_offer_id_fkey"
         FOREIGN KEY (offer_id) REFERENCES tb_offer(id) ON DELETE CASCADE
 ```
 
@@ -252,21 +257,25 @@ docker-compose up -d db
 ## Próximos Passos (Fora do Escopo Desta PR)
 
 ### Imediato
+
 - [ ] Code review por time técnico
 - [ ] Aprovação de governança
 - [ ] Merge para branch principal
 
 ### Curto Prazo
+
 - [ ] Decidir quando ativar estrutura modular
 - [ ] Migrar migrations adicionais (002-027 → 010+)
 - [ ] Testar em ambiente de desenvolvimento
 
 ### Médio Prazo
+
 - [ ] Criar feature flag para escolha de estrutura
 - [ ] Migrar staging para modular
 - [ ] Planejar migração de produção
 
 ### Longo Prazo
+
 - [ ] Deprecar estrutura legacy
 - [ ] Mover para `/legacy/` ou remover
 - [ ] Atualizar toda documentação
@@ -276,6 +285,7 @@ docker-compose up -d db
 **Total:** 18 arquivos
 
 ### DDL (7)
+
 - `init/ddl/001_ddl_tb_tipo.sql`
 - `init/ddl/002_ddl_tb_unidade.sql`
 - `init/ddl/003_ddl_tb_fornecedor.sql`
@@ -285,10 +295,12 @@ docker-compose up -d db
 - `init/ddl/007_ddl_tb_transacao.sql`
 
 ### Seeds (2)
+
 - `init/seeds/data/008_seed_fornecedores_compradores.sql`
 - `init/seeds/data/009_seed_offers.sql`
 
 ### Documentação (6)
+
 - `init/README.md`
 - `init/ddl/README.md`
 - `init/seeds/data/README.md`
@@ -297,10 +309,12 @@ docker-compose up -d db
 - `CHANGELOG/20251116164116.md`
 
 ### Scripts (2)
+
 - `test-modular-migrations.sh`
 - `validate-modular-schema.sh`
 
 ### Commits (3)
+
 1. `7883daf` - Create modular DDL and seeds structure with native tb_offer
 2. `b4566f3` - Fix seed scripts and add validation tools for modular migrations
 3. `6eefec5` - Add migration guide and comprehensive changelog

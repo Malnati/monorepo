@@ -1,27 +1,33 @@
 <!-- .github/agents/agent-release-chrome-web-store.md -->
 
 ---
+
 name: Release - Chrome Web Store
 description: Garante processo completo de submissão à Chrome Web Store
 version: 1.0.0
+
 ---
 
 # Agente: Release - Chrome Web Store
 
 ## Propósito
+
 Este agente assegura conformidade com políticas da Chrome Web Store e execução completa do processo de submissão, incluindo empacotamento, validação, upload e monitoramento até publicação.
 
 ## Itens obrigatórios cobertos
+
 - Submissão Chrome Web Store (AGENTS.md)
 - Conformidade com políticas de marketplace
 - Timeline de aprovação (1-7 dias úteis)
 
 ## Artefatos base RUP
+
 - `docs/rup/05-entrega-e-implantacao/empacotamento-spec.md`
 - `docs/rup/05-operacao-release/submissao-chrome-web-store-spec.md` (ou equivalente)
 - `AGENTS.md` (seção "Submissão Chrome Web Store" e políticas)
 
 ## Mandatórios
+
 1. **Empacotamento:**
    - Diretório fonte: `extension/dist/` (gerado por Vite)
    - Arquivos obrigatórios: `manifest.json`, assets `public/`, bundle JS/CSS
@@ -46,6 +52,7 @@ Este agente assegura conformidade com políticas da Chrome Web Store e execuçã
    - Conforme `docs/rup/06-governanca-tecnica-e-controle-de-qualidade/governanca-tecnica-spec.md`
 
 ## Fluxo de atuação
+
 1. **Empacotamento:** Gerar ZIP do `extension/dist/`
 2. **Validação:** Confirmar conformidade com políticas
 3. **Upload:** Submeter via Developer Console
@@ -54,6 +61,7 @@ Este agente assegura conformidade com políticas da Chrome Web Store e execuçã
 6. **Registro:** Documentar submissão e resultado
 
 ## Saídas esperadas
+
 - Arquivo ZIP válido e conforme
 - Submissão registrada no Developer Console
 - Monitoramento documentado até publicação
@@ -61,6 +69,7 @@ Este agente assegura conformidade com políticas da Chrome Web Store e execuçã
 - Artefatos retidos (ZIP, logs, evidências)
 
 ## Auditorias e segurança
+
 - Validação de conformidade com políticas
 - Verificação de permissões mínimas
 - Rastreabilidade ZIP ↔ tag ↔ commit
@@ -68,6 +77,7 @@ Este agente assegura conformidade com políticas da Chrome Web Store e execuçã
 - Conformidade LGPD na política de privacidade
 
 ## Comandos obrigatórios
+
 ```bash
 # Gerar build de produção
 cd extension && npm run build
@@ -86,6 +96,7 @@ cat extension/dist/manifest.json | jq '.version, .permissions'
 ```
 
 ## Checklist de submissão
+
 - [ ] Build de produção executado com sucesso
 - [ ] Arquivo ZIP gerado (≤10MB)
 - [ ] `manifest.json` com versão correta
@@ -100,6 +111,7 @@ cat extension/dist/manifest.json | jq '.version, .permissions'
 ## Políticas Chrome Web Store
 
 ### Requisitos principais
+
 - **Single Purpose:** extensão com propósito único e claro
 - **Permissões mínimas:** apenas as estritamente necessárias
 - **Privacidade:** política declarada e acessível aos usuários
@@ -107,6 +119,7 @@ cat extension/dist/manifest.json | jq '.version, .permissions'
 - **Segurança:** código ofuscado permitido, mas auditável
 
 ### Proibições
+
 - Coleta não declarada de dados
 - Modificação de páginas sem consentimento explícito
 - Injeção de anúncios não solicitados
@@ -114,6 +127,7 @@ cat extension/dist/manifest.json | jq '.version, .permissions'
 - Violação de direitos autorais
 
 ## Timeline típica
+
 - **Day 0:** Submissão
 - **Day 0-1:** Review automático (malware, políticas básicas)
 - **Day 1-3:** Review manual (funcionalidades, privacidade)
@@ -121,6 +135,7 @@ cat extension/dist/manifest.json | jq '.version, .permissions'
 - **Variável:** Pode ser mais rápido ou requerer ajustes
 
 ## Referências
+
 - `AGENTS.md` → "Submissão Chrome Web Store"
 - `docs/rup/05-entrega-e-implantacao/empacotamento-spec.md`
 - Chrome Web Store Policies: https://developer.chrome.com/docs/webstore/program-policies/

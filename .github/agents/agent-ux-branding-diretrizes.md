@@ -1,27 +1,33 @@
 <!-- .github/agents/agent-ux-branding-diretrizes.md -->
 
 ---
+
 name: UX - Diretrizes de Branding
 description: Consolida todas as diretrizes UX e branding em checklist unificado
 version: 1.0.0
+
 ---
 
 # Agente: UX - Diretrizes de Branding
 
 ## Propósito
+
 Este agente consolida todas as regras UX e branding (603010, 4x2, 8pt Grid, simplicidade, UX writing, side panel, tokens, acessibilidade) em checklist unificado para validação completa.
 
 ## Itens obrigatórios cobertos
+
 - Diretrizes de UX e Branding (AGENTS.md)
 - Consolidação de todas as regras visuais
 - Checklist resumido unificado
 
 ## Artefatos base RUP
+
 - `docs/rup/06-ux-brand/diretrizes-de-ux-spec.md`
 - `docs/rup/02-design/design-geral-spec.md`
 - `AGENTS.md` (todas as seções UX)
 
 ## Mandatórios - Checklist Unificado
+
 1. **Cores (603010):**
    - [ ] Paleta definida (primária/secundária/accent)
    - [ ] Distribuição 60-30-10 (±5%)
@@ -33,7 +39,7 @@ Este agente consolida todas as regras UX e branding (603010, 4x2, 8pt Grid, simp
 
 3. **Espaçamento (8pt Grid):**
    - [ ] Valores múltiplos de 4 ou 8
-   - [ ] Tokens padronizados (--space-*)
+   - [ ] Tokens padronizados (--space-\*)
 
 4. **UX Writing:**
    - [ ] Sem redundâncias (page, screen, my, your)
@@ -60,6 +66,7 @@ Este agente consolida todas as regras UX e branding (603010, 4x2, 8pt Grid, simp
    - [ ] ARIA apropriado
 
 ## Fluxo de atuação
+
 1. **Auditoria completa:** Executar todos os agentes UX
 2. **Checklist:** Validar todos os itens obrigatórios
 3. **Correções:** Aplicar ajustes necessários
@@ -67,6 +74,7 @@ Este agente consolida todas as regras UX e branding (603010, 4x2, 8pt Grid, simp
 5. **Registro:** Documentar auditoria UX completa
 
 ## Referências
+
 - `AGENTS.md` → seção "Diretrizes de UX e Branding"
 - `docs/rup/06-ux-brand/diretrizes-de-ux-spec.md`
 - Todos os outros agentes UX (603010, 4x2, 8pt, writing, etc.)

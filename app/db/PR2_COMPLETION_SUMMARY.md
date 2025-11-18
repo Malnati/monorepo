@@ -48,6 +48,7 @@ Todos os deliverables do issue foram atendidos:
 ## Estrutura Modular Validada
 
 ### DDL Files (8 arquivos)
+
 ```
 ddl/
 ├── 000_extensions.sql          ← NOVO: PostGIS extension
@@ -61,6 +62,7 @@ ddl/
 ```
 
 ### Seed Files (7 arquivos)
+
 ```
 seeds/
 ├── 008_seed_tb_tipo.sql
@@ -75,21 +77,23 @@ seeds/
 ## Resultados da Validação
 
 ### Ambiente de Teste
+
 - **Container:** Docker PostgreSQL 16 + PostGIS 3.4
 - **Imagem:** postgis/postgis:16-3.4-alpine
 - **Porta:** 5433 (isolado)
 - **Status:** ✅ Passou todos os testes
 
 ### Tabelas Criadas
-| Tabela | Registros | Campos Principais | Status |
-|--------|-----------|-------------------|--------|
-| tb_tipo | 6 | nome | ✅ |
-| tb_unidade | 5 | nome | ✅ |
-| tb_fornecedor | 1 | nome, avatar | ✅ |
-| tb_comprador | 1 | nome, avatar | ✅ |
-| tb_offer | 5 | title, description, location, neighborhood, address | ✅ |
-| tb_fotos | 5 | offer_id, imagem | ✅ |
-| tb_transacao | 2 | offer_id, comprador_id | ✅ |
+
+| Tabela        | Registros | Campos Principais                                   | Status |
+| ------------- | --------- | --------------------------------------------------- | ------ |
+| tb_tipo       | 6         | nome                                                | ✅     |
+| tb_unidade    | 5         | nome                                                | ✅     |
+| tb_fornecedor | 1         | nome, avatar                                        | ✅     |
+| tb_comprador  | 1         | nome, avatar                                        | ✅     |
+| tb_offer      | 5         | title, description, location, neighborhood, address | ✅     |
+| tb_fotos      | 5         | offer_id, imagem                                    | ✅     |
+| tb_transacao  | 2         | offer_id, comprador_id                              | ✅     |
 
 **Total:** 7 tabelas, 19 registros
 
@@ -98,35 +102,35 @@ seeds/
 ```sql
 CREATE TABLE tb_offer (
     id SERIAL PRIMARY KEY,
-    
+
     -- Campos principais (novos nomes)
     title VARCHAR(255) NOT NULL,          ✅
     description TEXT,                     ✅
     location VARCHAR(255),                ✅
     neighborhood VARCHAR(120),            ✅ NOVO
     address VARCHAR(255),                 ✅ NOVO
-    
+
     -- Campos de negócio
     preco NUMERIC(12,2),
     quantidade NUMERIC(12,2),
     quantidade_vendida NUMERIC(12,2) DEFAULT 0,
-    
+
     -- Campos geoespaciais (nativos)
     location_geog GEOGRAPHY(POINT, 4326),
     formatted_address VARCHAR(255),
     place_id VARCHAR(64),
     geocoding_accuracy VARCHAR(20),
-    
+
     -- Localização da cidade
     city_name VARCHAR(120),
     city_location_raw VARCHAR(255),
     city_location_geog GEOGRAPHY(POINT, 4326),
-    
+
     -- Localização do bairro
     neighborhood_name VARCHAR(120),
     neighborhood_location_raw VARCHAR(255),
     neighborhood_location_geog GEOGRAPHY(POINT, 4326),
-    
+
     -- Localização aproximada (privacidade)
     approx_location_geog GEOGRAPHY(POINT, 4326),
     approx_location_raw VARCHAR(255),
@@ -139,12 +143,12 @@ CREATE TABLE tb_offer (
     approx_neighborhood_name VARCHAR(120),
     approx_neighborhood_location_raw VARCHAR(255),
     approx_neighborhood_location_geog GEOGRAPHY(POINT, 4326),
-    
+
     -- Foreign Keys
     tipo_id INT REFERENCES tb_tipo(id) ON DELETE SET NULL,
     unidade_id INT REFERENCES tb_unidade(id) ON DELETE SET NULL,
     fornecedor_id INT REFERENCES tb_fornecedor(id) ON DELETE SET NULL,
-    
+
     -- Timestamps
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -186,9 +190,11 @@ CREATE TABLE tb_offer (
 ## Scripts de Validação
 
 ### 1. test-modular-migrations.sh
+
 **Função:** Concatenar todos os arquivos DDL e seeds em ordem alfabética
 
 **Saída:**
+
 - Arquivo consolidado: `/tmp/modular-migrations-test/consolidated_migrations.sql`
 - 15 arquivos processados (8 DDL + 7 seeds)
 - 7 CREATE TABLE
@@ -196,15 +202,18 @@ CREATE TABLE tb_offer (
 - 17 INSERT statements
 
 ### 2. validate-modular-schema.sh
+
 **Função:** Executar migrations em PostgreSQL real e validar schema
 
 **Saída:**
+
 - Container Docker iniciado e configurado
 - Migrations executadas sem erros
 - 7 tabelas criadas com dados
 - Schema dump: `/tmp/modular-migrations-test/schema_modular.sql`
 
 ### Execução
+
 ```bash
 cd db
 
@@ -218,16 +227,19 @@ cd db
 ## Correções Realizadas
 
 ### 1. Path dos Scripts
+
 **Problema:** Scripts procuravam arquivos em `init/ddl/` e `init/seeds/data/`  
 **Solução:** Corrigido para `init/migrations/modular/ddl/` e `init/migrations/modular/seeds/`  
 **Impacto:** Scripts agora validam a estrutura modular completa
 
 ### 2. Extensão PostGIS
+
 **Problema:** Tipo `GEOGRAPHY` não existia, causando erro na criação de tb_offer  
 **Solução:** Criado `000_extensions.sql` habilitando PostGIS  
 **Impacto:** Todas as migrations executam corretamente
 
 ### 3. Pattern de Glob
+
 **Problema:** Pattern `00*.sql` não capturava todos os arquivos  
 **Solução:** Alterado para `0*.sql`  
 **Impacto:** Todos os 15 arquivos são incluídos na validação
@@ -235,16 +247,19 @@ cd db
 ## Arquivos Entregues
 
 ### Novos Arquivos (3)
+
 1. `app/db/init/migrations/modular/ddl/000_extensions.sql` - PostGIS extension
 2. `app/db/VALIDATION_REPORT.md` - Relatório detalhado de validação
 3. `app/db/PR2_COMPLETION_SUMMARY.md` - Este documento
 
 ### Arquivos Modificados (3)
+
 4. `app/db/test-modular-migrations.sh` - Corrigido paths
 5. `app/db/validate-modular-schema.sh` - Corrigido paths
 6. `app/db/init/migrations/modular/README.md` - Status Fase 2 completa
 
 ### Documentação (1)
+
 7. `CHANGELOG/20251116181426.md` - Changelog completo
 
 **Total:** 7 arquivos (3 novos + 3 modificados + 1 changelog)
@@ -252,6 +267,7 @@ cd db
 ## Conformidade com Políticas
 
 ### AGENTS.md
+
 - ✅ Changelog obrigatório criado com timestamp UTC
 - ✅ Cabeçalhos de caminho em todos os arquivos SQL
 - ✅ Documentação RUP atualizada
@@ -260,7 +276,9 @@ cd db
 - ✅ Clean Code: separação de responsabilidades
 
 ### Plano de Unificação
+
 Conforme `docs/rup/99-anexos/MVP/plan-unify-migrations.md`:
+
 - ✅ Modularizar migrations (arquivo por tabela)
 - ✅ Renomear tb_lote_residuo → tb_offer
 - ✅ Converter campos (nome → title, localizacao → location)
@@ -270,37 +288,41 @@ Conforme `docs/rup/99-anexos/MVP/plan-unify-migrations.md`:
 
 ## Comparação: Legacy vs Modular
 
-| Aspecto | Legacy | Modular |
-|---------|--------|---------|
-| Estrutura | 1 arquivo monolítico | 15 arquivos modulares |
-| Tabela principal | tb_lote_residuo | tb_offer |
-| Criação | CREATE + 3 ALTER TABLE | CREATE TABLE nativo |
-| Campo título | nome | title |
-| Campo local | localizacao | location |
-| Campo bairro | (não existia) | neighborhood |
-| Campo endereço | (não existia) | address |
-| Geoespacial | Migration separada (002) | Nativo no CREATE |
-| Manutenibilidade | Difícil | Fácil (arquivo por tabela) |
+| Aspecto          | Legacy                   | Modular                    |
+| ---------------- | ------------------------ | -------------------------- |
+| Estrutura        | 1 arquivo monolítico     | 15 arquivos modulares      |
+| Tabela principal | tb_lote_residuo          | tb_offer                   |
+| Criação          | CREATE + 3 ALTER TABLE   | CREATE TABLE nativo        |
+| Campo título     | nome                     | title                      |
+| Campo local      | localizacao              | location                   |
+| Campo bairro     | (não existia)            | neighborhood               |
+| Campo endereço   | (não existia)            | address                    |
+| Geoespacial      | Migration separada (002) | Nativo no CREATE           |
+| Manutenibilidade | Difícil                  | Fácil (arquivo por tabela) |
 
 ## Impacto e Compatibilidade
 
 ### ✅ Zero Impacto em Produção
+
 - Estrutura legacy preservada em `init/migrations/`
 - Dockerfile não modificado (ainda usa legacy)
 - docker-compose.yml não modificado (ainda usa legacy)
 - Ambientes existentes continuam funcionando
 
 ### ✅ Estrutura Modular Validada
+
 - Pronta para substituição quando decidido
 - Schema equivalente ao legacy confirmado
 - Todos os testes automatizados passando
 
 ### ✅ Opt-in Gradual
+
 A estrutura modular coexiste com legacy e pode ser ativada quando apropriado (Fase 3).
 
 ## Evidências de Teste
 
 ### Saída do test-modular-migrations.sh
+
 ```
 [INFO] Adicionando DDL files (000-007)...
 [INFO]   → 000_extensions.sql
@@ -327,6 +349,7 @@ A estrutura modular coexiste com legacy e pode ser ativada quando apropriado (Fa
 ```
 
 ### Saída do validate-modular-schema.sh
+
 ```
 [INFO] PostgreSQL pronto!
 [INFO] Executando migrations modulares...
@@ -358,6 +381,7 @@ CREATE TRIGGER (x1)
 ## Próximos Passos (Fora do Escopo)
 
 ### Fase 3: Substituição (Planejamento Futuro)
+
 - [ ] Code review e aprovação
 - [ ] Deprecar estrutura legacy (001_create_schema.sql + 002-027)
 - [ ] Atualizar Dockerfile para usar modular
@@ -368,17 +392,21 @@ CREATE TRIGGER (x1)
 ## Referências
 
 ### Documentação Criada
+
 1. `app/db/VALIDATION_REPORT.md` - Relatório técnico detalhado
 2. `app/db/PR2_COMPLETION_SUMMARY.md` - Este documento
 3. `CHANGELOG/20251116181426.md` - Changelog completo
 
 ### Documentação Atualizada
+
 4. `app/db/init/migrations/modular/README.md` - Status atualizado
 
 ### Planos e Guias
+
 5. `docs/rup/99-anexos/MVP/plan-unify-migrations.md` - Plano de unificação
 
 ### Scripts
+
 6. `app/db/test-modular-migrations.sh` - Teste de concatenação
 7. `app/db/validate-modular-schema.sh` - Validação em PostgreSQL
 
@@ -392,6 +420,7 @@ CREATE TRIGGER (x1)
 ✅ **ISSUE #PR2 COMPLETAMENTE IMPLEMENTADO**
 
 Todos os deliverables foram atendidos com sucesso:
+
 - ✅ Estrutura modular completa (15 arquivos)
 - ✅ tb_offer criada nativamente com todos os campos
 - ✅ Sem dependências de ALTER TABLE

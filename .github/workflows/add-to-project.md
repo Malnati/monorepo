@@ -1,4 +1,3 @@
-
 # actions/add-to-project
 
 Use this action to automatically add the current issue or pull request to a [GitHub project](https://docs.github.com/en/issues/trying-out-the-new-projects-experience/about-projects).
@@ -138,7 +137,6 @@ Using these events ensure that a given issue or pull request, in the workflow's 
 ## Creating a PAT and adding it to your repository
 
 - Create a new [personal access token](https://github.com/settings/tokens/new). _See [Creating a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) for more information_
-
   - For **Tokens (classic)** include the `project` scope; for private repos you will also need `repo` scope.
   - For **Fine-grained tokens**, you must first select the appropriate _owner_ and associated _repositories_. Then select _Organization permissions -> `projects` `read & write`_, and _Repository permissions -> `issues` `read-only`_ and _`pull requests` `read-only`_.
 
@@ -188,33 +186,35 @@ Now, a release can be created from the branch containing the built action.
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
 
 # action.yml
+
 name: Add To GitHub projects
 description: Automatically add issues and PRs to GitHub projects
 author: GitHub
 branding:
-  icon: table
-  color: white
+icon: table
+color: white
 inputs:
-  project-url:
-    required: true
-    description: URL of the project to add issues to
-  github-token:
-    required: true
-    description: A GitHub personal access token with write access to the project
-  labeled:
-    required: false
-    description: A comma-separated list of labels to use as a filter for issue to be added
-  label-operator:
-    required: false
-    description: The behavior of the labels filter, AND to match all labels, OR to match any label, NOT to exclude any listed label (default is OR)
+project-url:
+required: true
+description: URL of the project to add issues to
+github-token:
+required: true
+description: A GitHub personal access token with write access to the project
+labeled:
+required: false
+description: A comma-separated list of labels to use as a filter for issue to be added
+label-operator:
+required: false
+description: The behavior of the labels filter, AND to match all labels, OR to match any label, NOT to exclude any listed label (default is OR)
 outputs:
-  itemId:
-    description: The ID of the item that was added to the project
+itemId:
+description: The ID of the item that was added to the project
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+using: 'node20'
+main: 'dist/index.js'
 
 # Metadata syntax reference
+
 You can create actions to perform tasks in your repository. If you’re making a custom action, it will require a metadata file that uses YAML syntax.
 In this article
 Note
@@ -246,16 +246,16 @@ Actions using required: true will not automatically return an error if the input
 Workflow files that use this action can use the with keyword to set an input value for octocat-eye-color. For more information about the with syntax, see Workflow syntax for GitHub Actions.
 
 inputs:
-  num-octocats:
-    description: 'Number of Octocats'
-    required: false
-    default: '1'
-  octocat-eye-color:
-    description: 'Eye color of the Octocats'
-    required: true
-When you specify an input, GitHub creates an environment variable for the input with the name INPUT_<VARIABLE_NAME>. The environment variable created converts input names to uppercase letters and replaces spaces with _ characters.
+num-octocats:
+description: 'Number of Octocats'
+required: false
+default: '1'
+octocat-eye-color:
+description: 'Eye color of the Octocats'
+required: true
+When you specify an input, GitHub creates an environment variable for the input with the name INPUT*<VARIABLE_NAME>. The environment variable created converts input names to uppercase letters and replaces spaces with * characters.
 
-If the action is written using a composite, then it will not automatically get INPUT_<VARIABLE_NAME>. With composite actions you can use inputs Contexts reference to access action inputs.
+If the action is written using a composite, then it will not automatically get INPUT\_<VARIABLE_NAME>. With composite actions you can use inputs Contexts reference to access action inputs.
 
 To access the environment variable in a Docker container action, you must pass the input using the args keyword in the action metadata file. For more information about the action metadata file for Docker container actions, see Creating a Docker container action.
 
@@ -263,7 +263,7 @@ For example, if a workflow defined the num-octocats and octocat-eye-color inputs
 
 inputs.<input_id>
 
-Required A string identifier to associate with the input. The value of <input_id> is a map of the input's metadata. The <input_id> must be a unique identifier within the inputs object. The <input_id> must start with a letter or _ and contain only alphanumeric characters, -, or _.
+Required A string identifier to associate with the input. The value of <input*id> is a map of the input's metadata. The <input_id> must be a unique identifier within the inputs object. The <input_id> must start with a letter or * and contain only alphanumeric characters, -, or \_.
 
 inputs.<input_id>.description
 
@@ -292,11 +292,11 @@ If you don't declare an output in your action metadata file, you can still set o
 Example: Declaring outputs for Docker container and JavaScript actions
 
 outputs:
-  sum: # id of the output
-    description: 'The sum of the inputs'
+sum: # id of the output
+description: 'The sum of the inputs'
 outputs.<output_id>
 
-Required A string identifier to associate with the output. The value of <output_id> is a map of the output's metadata. The <output_id> must be a unique identifier within the outputs object. The <output_id> must start with a letter or _ and contain only alphanumeric characters, -, or _.
+Required A string identifier to associate with the output. The value of <output*id> is a map of the output's metadata. The <output_id> must be a unique identifier within the outputs object. The <output_id> must start with a letter or * and contain only alphanumeric characters, -, or \_.
 
 outputs.<output_id>.description
 
@@ -311,15 +311,15 @@ Outputs can be a maximum of 1 MB per job. The total of all outputs in a workflow
 Example: Declaring outputs for composite actions
 
 outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-id }}
+random-number:
+description: "Random number"
+value: ${{ steps.random-number-generator.outputs.random-id }}
 runs:
   using: "composite"
   steps:
     - id: random-number-generator
       run: echo "random-id=$(echo $RANDOM)" >> $GITHUB_OUTPUT
-      shell: bash
+shell: bash
 outputs.<output_id>.value
 
 Required The value that the output parameter will be mapped to. You can set this to a string or an expression with context. For example, you can use the steps context to set the value of an output to the output value of a step.
@@ -337,8 +337,8 @@ Required Configures the path to the action's code and the runtime used to execut
 Example: Using Node.js v24
 
 runs:
-  using: 'node24'
-  main: 'main.js'
+using: 'node24'
+main: 'main.js'
 runs.using for JavaScript actions
 
 Required The runtime used to execute the code specified in main.
@@ -359,10 +359,10 @@ runs.pre is not supported for local actions.
 In this example, the pre: action runs a script called setup.js:
 
 runs:
-  using: 'node24'
-  pre: 'setup.js'
-  main: 'index.js'
-  post: 'cleanup.js'
+using: 'node24'
+pre: 'setup.js'
+main: 'index.js'
+post: 'cleanup.js'
 runs.pre-if
 
 Optional Allows you to define conditions for the pre: action execution. The pre: action will only run if the conditions in pre-if are met. If not set, then pre-if defaults to always(). In pre-if, status check functions evaluate against the job's status, not the action's own status.
@@ -371,8 +371,8 @@ Note that the step context is unavailable, as no steps have run yet.
 
 In this example, cleanup.js only runs on Linux-based runners:
 
-  pre: 'cleanup.js'
-  pre-if: runner.os == 'linux'
+pre: 'cleanup.js'
+pre-if: runner.os == 'linux'
 runs.post
 
 Optional Allows you to run a script at the end of a job, once the main: action has completed. For example, you can use post: to terminate certain processes or remove unneeded files. The runtime specified with the using syntax will execute this file.
@@ -380,9 +380,9 @@ Optional Allows you to run a script at the end of a job, once the main: action h
 In this example, the post: action runs a script called cleanup.js:
 
 runs:
-  using: 'node24'
-  main: 'index.js'
-  post: 'cleanup.js'
+using: 'node24'
+main: 'index.js'
+post: 'cleanup.js'
 The post: action always runs by default but you can override this using post-if.
 
 runs.post-if
@@ -391,8 +391,8 @@ Optional Allows you to define conditions for the post: action execution. The pos
 
 For example, this cleanup.js will only run on Linux-based runners:
 
-  post: 'cleanup.js'
-  post-if: runner.os == 'linux'
+post: 'cleanup.js'
+post-if: runner.os == 'linux'
 runs for composite actions
 
 Required Configures the path to the composite action.
@@ -410,17 +410,15 @@ runs.steps[*].run
 Optional The command you want to run. This can be inline or a script in your action repository:
 
 runs:
-  using: "composite"
-  steps:
-    - run: ${{ github.action_path }}/test/script.sh
-      shell: bash
+using: "composite"
+steps: - run: ${{ github.action_path }}/test/script.sh
+shell: bash
 Alternatively, you can use $GITHUB_ACTION_PATH:
 
 runs:
-  using: "composite"
-  steps:
-    - run: $GITHUB_ACTION_PATH/script.sh
-      shell: bash
+using: "composite"
+steps: - run: $GITHUB_ACTION_PATH/script.sh
+shell: bash
 For more information, see Contexts reference.
 
 runs.steps[*].shell
@@ -443,19 +441,21 @@ Example: Using contexts
 This step only runs when the event type is a pull_request and the event action is unassigned.
 
 steps:
-  - run: echo This event is a pull request that had an assignee removed.
-    if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
-Example: Using status check functions
+
+- run: echo This event is a pull request that had an assignee removed.
+  if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
+  Example: Using status check functions
 
 The my backup step only runs when the previous step of a composite action fails. For more information, see Evaluate expressions in workflows and actions.
 
 steps:
-  - name: My first step
-    uses: octo-org/action-name@main
-  - name: My backup step
-    if: ${{ failure() }}
-    uses: actions/heroku@1.0.0
-runs.steps[*].name
+
+- name: My first step
+  uses: octo-org/action-name@main
+- name: My backup step
+  if: ${{ failure() }}
+  uses: actions/heroku@1.0.0
+  runs.steps[*].name
 
 Optional The name of the composite step.
 
@@ -483,37 +483,20 @@ Using the default branch of an action may be convenient, but if someone releases
 Some actions require inputs that you must set using the with keyword. Review the action's README file to determine the inputs required.
 
 runs:
-  using: "composite"
-  steps:
-    # Reference a specific commit
-    - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3
-    # Reference the major version of a release
-    - uses: actions/checkout@v5
-    # Reference a specific version
-    - uses: actions/checkout@v5.2.0
-    # Reference a branch
-    - uses: actions/checkout@main
-    # References a subdirectory in a public GitHub repository at a specific branch, ref, or SHA
-    - uses: actions/aws/ec2@main
-    # References a local action
-    - uses: ./.github/actions/my-action
-    # References a docker public registry action
-    - uses: docker://gcr.io/cloud-builders/gradle
-    # Reference a docker image published on docker hub
-    - uses: docker://alpine:3.8
+using: "composite"
+steps: # Reference a specific commit - uses: actions/checkout@8f4b7f84864484a7bf31766abe9204da3cbe65b3 # Reference the major version of a release - uses: actions/checkout@v5 # Reference a specific version - uses: actions/checkout@v5.2.0 # Reference a branch - uses: actions/checkout@main # References a subdirectory in a public GitHub repository at a specific branch, ref, or SHA - uses: actions/aws/ec2@main # References a local action - uses: ./.github/actions/my-action # References a docker public registry action - uses: docker://gcr.io/cloud-builders/gradle # Reference a docker image published on docker hub - uses: docker://alpine:3.8
 runs.steps[*].with
 
 Optional A map of the input parameters defined by the action. Each input parameter is a key/value pair. For more information, see Example: Specifying inputs.
 
 runs:
-  using: "composite"
-  steps:
-    - name: My first step
-      uses: actions/hello_world@main
-      with:
-        first_name: Mona
-        middle_name: The
-        last_name: Octocat
+using: "composite"
+steps: - name: My first step
+uses: actions/hello_world@main
+with:
+first_name: Mona
+middle_name: The
+last_name: Octocat
 runs.steps[*].continue-on-error
 
 Optional Prevents the action from failing when a step fails. Set to true to allow the action to pass when this step fails.
@@ -525,32 +508,31 @@ Required Configures the image used for the Docker container action.
 Example: Using a Dockerfile in your repository
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+using: 'docker'
+image: 'Dockerfile'
 Example: Using public Docker registry container
 
 runs:
-  using: 'docker'
-  image: 'docker://debian:stretch-slim'
+using: 'docker'
+image: 'docker://debian:stretch-slim'
 runs.using for Docker container actions
 
 Required You must set this value to 'docker'.
 
 runs.pre-entrypoint
 
-Optional Allows you to run a script before the entrypoint action begins. For example, you can use pre-entrypoint: to run a prerequisite setup script. GitHub Actions uses docker run to launch this action, and runs the script inside a new container that uses the same base image. This means that the runtime state is different from the main entrypoint container, and any states you require must be accessed in either the workspace, HOME, or as a STATE_ variable. The pre-entrypoint: action always runs by default but you can override this using runs.pre-if.
+Optional Allows you to run a script before the entrypoint action begins. For example, you can use pre-entrypoint: to run a prerequisite setup script. GitHub Actions uses docker run to launch this action, and runs the script inside a new container that uses the same base image. This means that the runtime state is different from the main entrypoint container, and any states you require must be accessed in either the workspace, HOME, or as a STATE\_ variable. The pre-entrypoint: action always runs by default but you can override this using runs.pre-if.
 
 The runtime specified with the using syntax will execute this file.
 
 In this example, the pre-entrypoint: action runs a script called setup.sh:
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - 'bzz'
-  pre-entrypoint: 'setup.sh'
-  entrypoint: 'main.sh'
+using: 'docker'
+image: 'Dockerfile'
+args: - 'bzz'
+pre-entrypoint: 'setup.sh'
+entrypoint: 'main.sh'
 runs.image
 
 Required The Docker image to use as the container to run the action. The value can be the Docker base image name, a local Dockerfile in your repository, or a public image in Docker Hub or another registry. To reference a Dockerfile local to your repository, the file must be named Dockerfile and you must use a path relative to your action metadata file. The docker application will execute this file.
@@ -567,15 +549,14 @@ For more information about how the entrypoint executes, see Dockerfile support f
 
 runs.post-entrypoint
 
-Optional Allows you to run a cleanup script once the runs.entrypoint action has completed. GitHub Actions uses docker run to launch this action. Because GitHub Actions runs the script inside a new container using the same base image, the runtime state is different from the main entrypoint container. You can access any state you need in either the workspace, HOME, or as a STATE_ variable. The post-entrypoint: action always runs by default but you can override this using runs.post-if.
+Optional Allows you to run a cleanup script once the runs.entrypoint action has completed. GitHub Actions uses docker run to launch this action. Because GitHub Actions runs the script inside a new container using the same base image, the runtime state is different from the main entrypoint container. You can access any state you need in either the workspace, HOME, or as a STATE\_ variable. The post-entrypoint: action always runs by default but you can override this using runs.post-if.
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - 'bzz'
-  entrypoint: 'main.sh'
-  post-entrypoint: 'cleanup.sh'
+using: 'docker'
+image: 'Dockerfile'
+args: - 'bzz'
+entrypoint: 'main.sh'
+post-entrypoint: 'cleanup.sh'
 runs.args
 
 Optional An array of strings that define the inputs for a Docker container. Inputs can include hardcoded strings. GitHub passes the args to the container's ENTRYPOINT when the container starts up.
@@ -592,12 +573,9 @@ For more information about using the CMD instruction with GitHub Actions, see Do
 Example: Defining arguments for the Docker container
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.greeting }}
-    - 'foo'
-    - 'bar'
+using: 'docker'
+image: 'Dockerfile'
+args: - ${{ inputs.greeting }} - 'foo' - 'bar'
 branding
 
 Optional You can use a color and Feather icon to create a badge to personalize and distinguish your action. Badges are shown next to your action name in GitHub Marketplace.
@@ -605,8 +583,8 @@ Optional You can use a color and Feather icon to create a badge to personalize a
 Example: Configuring branding for an action
 
 branding:
-  icon: 'award'
-  color: 'green'
+icon: 'award'
+color: 'green'
 branding.color
 
 The background color of the badge. Can be one of: white, black, yellow, blue, green, orange, red, purple, or gray-dark.
@@ -896,4 +874,3 @@ Changing the metadata file name
 While the actions metadata file supports both YAML formats, changing the metadata file name (from action.yml to action.yaml or vice versa) between releases will affect previous release versions that have been published to GitHub Marketplace. Changing the file name will hide all release versions associated with the previous file name from GitHub Marketplace. Previous release versions will still be accessible to users through the source repository.
 
 When releasing new versions of actions, only versions released after the metadata file name change will have the GitHub Marketplace tag and will show up on GitHub Marketplace
-
