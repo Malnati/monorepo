@@ -127,6 +127,8 @@ describe('OfferController', () => {
   describe('findMyOffers', () => {
     it('should return user offers with default pagination', async () => {
       const mockResult = {
+        offersVendidos: [],
+        offersComprados: [],
         lotesVendidos: [],
         lotesComprados: [],
         pagination: {
@@ -151,6 +153,8 @@ describe('OfferController', () => {
 
     it('should return user offers with custom pagination', async () => {
       const mockResult = {
+        offersVendidos: [],
+        offersComprados: [],
         lotesVendidos: [],
         lotesComprados: [],
         pagination: {

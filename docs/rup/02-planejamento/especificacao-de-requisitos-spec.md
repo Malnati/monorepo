@@ -4,11 +4,11 @@
 > Base: [./especificacao-de-requisitos.md](./especificacao-de-requisitos.md)
 
 
-**Projeto:** Template APP (base white-label configurável)
-**Organização:** Equipe responsável pelo produto white-label
+**Projeto:** Template de Projeto Multiplataforma (plataforma digital corporativa)
+**Organização:** Template Corporation
 
 Esta página consolida todos os requisitos do projeto conforme a metodologia **Rational Unified Process (RUP)**.
-Cada requisito é identificado, classificado e vinculado às fases subsequentes do ciclo de desenvolvimento (Arquitetura, Design, Testes e Governança), garantindo rastreabilidade com a matriz de riscos, relatórios automatizados e indicadores funcionais do produto configurável.
+Cada requisito é identificado, classificado e vinculado às fases subsequentes do ciclo de desenvolvimento (Arquitetura, Design, Testes e Governança), garantindo rastreabilidade com a matriz de riscos e indicadores de qualidade da aplicação.
 
 ---
 
@@ -16,10 +16,10 @@ Cada requisito é identificado, classificado e vinculado às fases subsequentes 
 
 Os requisitos estão organizados nas seguintes categorias:
 
-1. **Requisitos Funcionais (RF)** — descrevem o comportamento esperado da solução white-label nos canais digitais, APIs e integrações padrão.
+1. **Requisitos Funcionais (RF)** — descrevem o comportamento esperado da plataforma nos canais digitais, APIs e integrações de negócio.
 2. **Requisitos Não Funcionais (RNF)** — abrangem desempenho, segurança e restrições.
 3. **Requisitos Técnicos (RT)** — tratam da arquitetura, compatibilidade e integração.
-4. **Requisitos Legais e de Conformidade (RL)** — garantem aderência à LGPD, boas práticas de segurança e padrões corporativos definidos pelo implementador.
+4. **Requisitos Legais e de Conformidade (RL)** — garantem aderência à LGPD, regulações aplicáveis, políticas de segurança e padrões corporativos.
 
 ---
 
@@ -70,7 +70,7 @@ Obrigações LGPD, diretrizes do BACEN, políticas de sustentabilidade e demais 
 
 ## 8. Responsabilidade técnica
 
-**Responsável:** Time de arquitetura do template
-**Organização:** Equipe mantenedora do white-label
+**Responsável:** Equipe de Engenharia — Desenvolvedores Sênior
+**Organização:** Template Corporation
 **Documento:** Especificação e Rastreabilidade de Requisitos
 **Status:** Ativo e sob revisão contínua

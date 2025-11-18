@@ -15,8 +15,8 @@ Proxy reverso Caddy com HTTPS automático via Let's Encrypt para o protótipo MV
 
 Variáveis de ambiente (valores padrão no `docker-compose.yml`):
 
-- `CADDY_DOMAIN` - Domínio para HTTPS (padrão: app.dominio.com.br)
-- `CADDY_EMAIL` - Email para Let's Encrypt (padrão: admin@dominio.com.br)
+- `CADDY_DOMAIN` - Domínio para HTTPS (padrão: template-monorepo.cranio.dev)
+- `CADDY_EMAIL` - Email para Let's Encrypt (padrão: admin@cranio.dev)
 
 ## Estrutura
 

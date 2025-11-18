@@ -26,40 +26,46 @@ export const TEST_USERS = {
 };
 
 /**
- * Dados dos lotes de teste conforme seed 011_seed_test_scenarios.sql
+ * Dados das ofertas de teste conforme seed 011_seed_test_scenarios.sql
+ * @deprecated Use TEST_OFFERS instead. Kept for backward compatibility.
  */
 export const TEST_LOTES = {
   L1: {
     id: 1000,
-    nome: 'L1 - PET Incolor Teste',
+    nome: 'L1 - Produto Premium Teste',
     fornecedor_id: 100,
     quantidade: 10.0,
   },
   L2: {
     id: 1001,
-    nome: 'L2 - Vidros Teste',
+    nome: 'L2 - Produto Categoria B Teste',
     fornecedor_id: 101,
     quantidade: 5.0,
   },
   L3: {
     id: 1002,
-    nome: 'L3 - Plástico Misto Teste (VENDIDO)',
+    nome: 'L3 - Produto Mix Teste (VENDIDO)',
     fornecedor_id: 100,
     vendido_para_comprador_id: 101,
   },
   L4: {
     id: 1003,
-    nome: 'L4 - Papelão Teste (VENDIDO)',
+    nome: 'L4 - Produto Categoria C Teste (VENDIDO)',
     fornecedor_id: 101,
     vendido_para_comprador_id: 100,
   },
   L5: {
     id: 1004,
-    nome: 'L5 - Alumínio Teste (Para teste auto-compra)',
+    nome: 'L5 - Produto Teste (Para teste auto-compra)',
     fornecedor_id: 100,
     quantidade: 6.0,
   },
 };
+
+/**
+ * Dados das ofertas de teste conforme seed 011_seed_test_scenarios.sql
+ */
+export const TEST_OFFERS = TEST_LOTES;
 
 /**
  * Gera um token JWT fake para testes

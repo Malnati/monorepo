@@ -14,6 +14,10 @@ if [ ! -f /etc/app/caddy/Caddyfile ]; then
   exit 1
 fi
 
+# O Caddy escuta em todas as interfaces (:80 e :443)
+# O Docker faz o binding específico no IPv6 através do mapeamento de portas
+log "Caddy configurado para escutar em todas as interfaces (Docker faz binding no IPv6)"
+
 log "Caddyfile encontrado, iniciando Caddy"
 
 # Executar Caddy

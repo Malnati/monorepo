@@ -1,6 +1,6 @@
 // app/ui/src/components/OfferCard.tsx
 import { Link } from 'react-router-dom';
-import { LoteResiduo } from '../types';
+import { Offer } from '../types';
 import { formatCurrency, formatNumber } from '../utils/format';
 import { useAuthenticatedImage } from '../hooks/useAuthenticatedImage';
 import { ICON_MAP } from '../utils/icons';
@@ -12,7 +12,7 @@ const NO_DESCRIPTION_TEXT = 'Sem descrição';
 const NO_PHOTO_ALT = 'Sem foto';
 
 interface OfferCardProps {
-  lote: LoteResiduo;
+  offer: Offer;
   isSyncing?: boolean;
   showPhoto?: boolean;
   showLink?: boolean;
@@ -33,36 +33,39 @@ function AuthenticatedPhotoCard({ url, alt }: { url: string; alt: string }) {
 }
 
 // Função para obter endereço sugerido (neighborhood ou city, nunca localização exata)
-function getSuggestedAddress(lote: LoteResiduo): string | null {
+function getSuggestedAddress(offer: Offer): string | null {
   // Priorizar neighborhood, depois city, nunca real
-  if (lote.locationLayers?.neighborhood?.label) {
-    const cityLabel = lote.locationLayers?.city?.label;
+  if (offer.locationLayers?.neighborhood?.label) {
+    const cityLabel = offer.locationLayers?.city?.label;
     if (cityLabel) {
-      return `${lote.locationLayers.neighborhood.label}, ${cityLabel}`;
+      return `${offer.locationLayers.neighborhood.label}, ${cityLabel}`;
     }
-    return lote.locationLayers.neighborhood.label;
+    return offer.locationLayers.neighborhood.label;
   }
   
-  if (lote.locationLayers?.city?.label) {
-    return lote.locationLayers.city.label;
+  if (offer.locationLayers?.city?.label) {
+    return offer.locationLayers.city.label;
   }
   
   // Fallback para endereço formatado aproximado se disponível
-  if (lote.approx_formatted_address) {
-    return lote.approx_formatted_address;
+  if (offer.approx_formatted_address) {
+    return offer.approx_formatted_address;
   }
   
   return null;
 }
 
 export default function OfferCard({ 
-  lote, 
+  offer, 
   isSyncing = false, 
   showPhoto = true,
   showLink = true,
   className = ''
 }: OfferCardProps) {
-  const suggestedAddress = getSuggestedAddress(lote);
+  // Compatibilidade com tipo legacy LoteResiduo
+  const title = offer.title || (offer as any).titulo || NO_TITLE_TEXT;
+  const description = offer.description || (offer as any).descricao || NO_DESCRIPTION_TEXT;
+  const suggestedAddress = getSuggestedAddress(offer);
   
   const cardContent = (
     <>
@@ -85,19 +88,19 @@ export default function OfferCard({
         <div className="flex flex-1 flex-col gap-3">
           {/* Título */}
           <h3 className="text-base font-semibold leading-tight text-text-light-primary dark:text-text-dark-primary line-clamp-2">
-            {lote.titulo || NO_TITLE_TEXT}
+            {title}
           </h3>
           {/* Descrição */}
           <p className="text-sm leading-relaxed text-text-light-secondary dark:text-text-dark-secondary line-clamp-2">
-            {lote.descricao || NO_DESCRIPTION_TEXT}
+            {description}
           </p>
           
           {/* Tipo */}
-          {lote.tipo && (
+          {offer.tipo && (
             <div className="flex items-center gap-2">
               <ICON_MAP.tag className="h-4 w-4 text-text-light-secondary dark:text-text-dark-secondary" aria-hidden="true" />
               <span className="text-sm text-text-light-secondary dark:text-text-dark-secondary">
-                {lote.tipo.nome}
+                {offer.tipo.nome}
               </span>
             </div>
           )}
@@ -105,11 +108,11 @@ export default function OfferCard({
           {/* Quantidade e Valor */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-medium text-text-light-primary dark:text-text-dark-primary">
-              {formatNumber(lote.quantidade)} {lote.unidade?.nome || ''}
+              {formatNumber(offer.quantidade)} {offer.unidade?.nome || ''}
             </span>
             <span className="text-text-light-secondary dark:text-text-dark-secondary">{SEPARATOR}</span>
             <span className="text-sm font-semibold text-primary">
-              {formatCurrency(lote.preco)}
+              {formatCurrency(offer.preco)}
             </span>
           </div>
           
@@ -126,8 +129,8 @@ export default function OfferCard({
         
         {showPhoto && (
           <>
-            {lote.foto_principal ? (
-              <AuthenticatedPhotoCard url={lote.foto_principal.url} alt={`Foto de ${lote.titulo || NO_TITLE_TEXT}`} />
+            {offer.foto_principal ? (
+              <AuthenticatedPhotoCard url={offer.foto_principal.url} alt={`Foto de ${title}`} />
             ) : (
               <div 
                 className="h-24 w-24 flex-shrink-0 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
@@ -155,7 +158,7 @@ export default function OfferCard({
   if (showLink) {
     return (
       <Link
-        to={`/lotes/${lote.id}`}
+        to={`/offers/${offer.id}`}
         className={baseClassName}
         role="listitem"
       >

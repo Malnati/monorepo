@@ -2,7 +2,7 @@
 # Checklist de UX, Branding e Acessibilidade
 
 ## Identidade Visual
-- [ ] Confirmar aplicação da paleta MBRA (primária, secundária, acentos) e respeito à regra 60-30-10 em todas as telas.
+- [ ] Confirmar aplicação da paleta da organização (primária, secundária, acentos) e respeito à regra 60-30-10 em todas as telas.
 - [ ] Garantir que tipografia, espaçamentos e ícones seguem o design system documentado (regra 4x2, Material Symbols Rounded).
 - [ ] Verificar que variantes white-label podem ajustar logotipo, cores e contatos via `branding.js` e helpers associados.
 

@@ -1,19 +1,19 @@
 <!-- docs/rup/README.md -->
-# App — CLImate INvestment
+# Template de Projeto Multiplataforma
 
 > Base: [./README.md](./README.md)
 
 **Fase: Documentação completa RUP**
 
-Bem-vindo à documentação oficial do **App — CLImate INvestment**, iniciativa da **Millennium Brasil (MBRA)** para criar um App de impacto climático. O diretório `docs/rup/` organiza as fases do projeto conforme o **Rational Unified Process (RUP)**, garantindo rastreabilidade, previsibilidade e governança técnica contínua enquanto estruturamos uma plataforma financeira voltada à reciclagem e à revalorização de resíduos de grande escala.
+Bem-vindo à documentação oficial do **Template de Projeto Multiplataforma**, iniciativa da **Template Corporation** para criar uma estrutura de desenvolvimento corporativo. O diretório `docs/rup/` organiza as fases do projeto conforme o **Rational Unified Process (RUP)**, garantindo rastreabilidade, previsibilidade e governança técnica contínua enquanto estruturamos uma plataforma digital versátil para diversos casos de uso corporativo.
 
 ---
 
 ## Introdução Geral
 
-O App combina aplicativos web e mobile, uma API bancária segura, motores de avaliação socioambiental e integrações com cooperativas de reciclagem, indústrias e registradores de créditos de carbono. A plataforma captura dados de coleta e reuso de materiais, calcula indicadores de descarbonização, monetiza os resultados em carteiras digitais e liquida transações locais com remuneração justa para catadores, cooperativas e parceiros logísticos.
+O Template combina aplicativos web e mobile, APIs seguras, motores de avaliação de negócio e integrações com diversos sistemas corporativos. A plataforma captura dados de processos de negócio, calcula indicadores de performance, monetiza os resultados em carteiras digitais e liquida transações com remuneração justa para todos os stakeholders envolvidos.
 
-Os componentes centrais abrangem canais digitais para clientes e agentes de campo, serviços de onboarding e KYC verde, motor de elegibilidade para financiamentos climáticos, módulo de tokenização de resíduos, camadas de relatório regulatório (BACEN e órgãos ambientais) e painéis de impacto para investidores ESG. Esta documentação serve como guia completo — da visão inicial à manutenção evolutiva — e está alinhada aos agentes e pipelines definidos em `AGENTS.md` e `PIPELINE.md`.
+Os componentes centrais abrangem canais digitais para clientes e agentes de campo, serviços de onboarding e KYC, motor de elegibilidade para financiamentos, módulo de tokenização de ativos, camadas de relatório regulatório e painéis de impacto para investidores. Esta documentação serve como guia completo — da visão inicial à manutenção evolutiva — e está alinhada aos agentes e pipelines definidos em `AGENTS.md`.
 
 ---
 

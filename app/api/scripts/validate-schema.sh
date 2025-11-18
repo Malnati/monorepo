@@ -41,23 +41,23 @@ log "Banco de dados está disponível"
 # Validar que tabelas críticas existem e têm estrutura esperada
 log "Verificando estrutura das tabelas críticas..."
 
-# Verificar se tb_offer existe (renomeada de tb_lote_residuo) ou se tb_lote_residuo ainda existe (backward compatibility)
+# Verificar se tb_lote_residuo existe (renomeada de tb_offer)
 CHECK_OFFER_TABLE=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
   SELECT COUNT(*) 
   FROM information_schema.tables 
-  WHERE table_name IN ('tb_offer', 'tb_lote_residuo')
+  WHERE table_name = 'tb_lote_residuo'
     AND table_schema = 'public';
-" 2>&1) || error "Falha ao verificar tabela tb_offer/tb_lote_residuo: ${CHECK_OFFER_TABLE}"
+" 2>&1) || error "Falha ao verificar tabela tb_lote_residuo: ${CHECK_OFFER_TABLE}"
 
 if [ "${CHECK_OFFER_TABLE}" -eq 0 ]; then
   error "Nenhuma das tabelas tb_offer ou tb_lote_residuo existe. Migrations não foram executadas."
 fi
 
-# Verificar se tb_offer tem coluna title (renomeada de titulo/nome) ou nome (backward compatibility)
+# Verificar se tb_lote_residuo tem coluna title (renomeada de titulo/nome) ou nome (backward compatibility)
 CHECK_COLUMN=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
   SELECT COUNT(*) 
   FROM information_schema.columns 
-  WHERE table_name = 'tb_offer' 
+  WHERE table_name = 'tb_lote_residuo' 
     AND column_name IN ('title', 'nome', 'titulo')
     AND table_schema = 'public';
 " 2>&1) || error "Falha ao verificar coluna title/nome: ${CHECK_COLUMN}"
@@ -66,12 +66,12 @@ if [ "${CHECK_COLUMN}" -eq 0 ]; then
   error "Tabela tb_offer não possui coluna 'title', 'nome' ou 'titulo'. Schema desatualizado ou migração não executada."
 fi
 
-# Verificar se tb_offer tem coluna description (renomeada de descricao) ou descricao (backward compatibility)
+# Verificar se tb_lote_residuo tem coluna description (renomeada de descricao) ou descricao (backward compatibility)
 # Durante transição, esta coluna pode não existir ainda - apenas log se ausente
 CHECK_DESCRICAO=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
   SELECT COUNT(*) 
   FROM information_schema.columns 
-  WHERE table_name = 'tb_offer' 
+  WHERE table_name = 'tb_lote_residuo' 
     AND column_name IN ('description', 'descricao')
     AND table_schema = 'public';
 " 2>&1) || CHECK_DESCRICAO=0
@@ -80,11 +80,11 @@ if [ "${CHECK_DESCRICAO}" -eq 0 ]; then
   log "Aviso: Tabela tb_offer não possui coluna 'description' ou 'descricao' (opcional durante transição)"
 fi
 
-# Verificar se tb_offer tem coluna location (renomeada de localizacao) ou localizacao (backward compatibility)
+# Verificar se tb_lote_residuo tem coluna location (renomeada de localizacao) ou localizacao (backward compatibility)
 CHECK_LOCATION=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
   SELECT COUNT(*) 
   FROM information_schema.columns 
-  WHERE table_name = 'tb_offer' 
+  WHERE table_name = 'tb_lote_residuo' 
     AND column_name IN ('location', 'localizacao')
     AND table_schema = 'public';
 " 2>&1) || error "Falha ao verificar coluna location/localizacao: ${CHECK_LOCATION}"
@@ -97,7 +97,7 @@ fi
 CHECK_NEIGHBORHOOD=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
   SELECT COUNT(*) 
   FROM information_schema.columns 
-  WHERE table_name = 'tb_offer' 
+  WHERE table_name = 'tb_lote_residuo' 
     AND column_name = 'neighborhood'
     AND table_schema = 'public';
 " 2>&1) || CHECK_NEIGHBORHOOD=0
@@ -110,7 +110,7 @@ fi
 CHECK_ADDRESS=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
   SELECT COUNT(*) 
   FROM information_schema.columns 
-  WHERE table_name = 'tb_offer' 
+  WHERE table_name = 'tb_lote_residuo' 
     AND column_name = 'address'
     AND table_schema = 'public';
 " 2>&1) || CHECK_ADDRESS=0
@@ -134,17 +134,17 @@ CHECK_VIEW_DISPONIVEIS=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d
 if [ "${CHECK_VIEW_DISPONIVEIS}" -eq 0 ]; then
   log "Aviso: View vw_lotes_disponiveis não existe (opcional durante transição)"
 else
-  # Verificar se a view referencia tb_offer (atualizada pela migration 027)
+  # Verificar se a view referencia tb_lote_residuo (atualizada pela migration 027)
   VIEW_USES_OFFER=$(psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -tAc "
     SELECT COUNT(*) 
     FROM pg_views 
     WHERE schemaname = 'public' 
       AND viewname = 'vw_lotes_disponiveis'
-      AND definition LIKE '%tb_offer%';
+      AND definition LIKE '%tb_lote_residuo%';
   " 2>&1) || VIEW_USES_OFFER=0
 
   if [ "${VIEW_USES_OFFER}" -eq 0 ]; then
-    log "Aviso: View vw_lotes_disponiveis não referencia tabela 'tb_offer' (opcional durante transição)"
+    log "Aviso: View vw_lotes_disponiveis não referencia tabela 'tb_lote_residuo' (opcional durante transição)"
   fi
 fi
 
@@ -175,7 +175,7 @@ if [ "${CHECK_TRANSACAO_FK}" -eq 0 ]; then
 fi
 
 log "✅ Validação de schema concluída com sucesso"
-log "   - Tabela tb_offer com campos title, description, location, neighborhood, address"
+log "   - Tabela tb_lote_residuo com campos title, description, location, neighborhood, address"
 log "   - FK offer_id em tb_fotos e tb_transacao"
-log "   - View vw_lotes_disponiveis atualizada para tb_offer"
+log "   - View vw_lotes_disponiveis atualizada para tb_lote_residuo"
 exit 0

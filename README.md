@@ -1,7 +1,7 @@
 <!-- README.md -->
-# Template APP — White-label
+# Template de Projeto Multiplataforma
 
-Este repositório mantém um template agnóstico de domínio para aplicativos white-label. Toda a documentação segue o ciclo RUP (Rational Unified Process) e prioriza linguagem neutra, permitindo que times adaptem requisitos, riscos e operações a produtos ou serviços genéricos sem herdar marcas ou narrativas anteriores.
+O **Template de Projeto Multiplataforma** é uma estrutura base para desenvolvimento de aplicações corporativas, seguindo as melhores práticas de engenharia de software. Este repositório concentra os artefatos oficiais do ciclo RUP (Rational Unified Process), assegurando rastreabilidade, governança técnica e conformidade regulatória.
 
 ## Panorama geral
 
@@ -47,13 +47,22 @@ A documentação e os ativos técnicos estão organizados em diretórios especia
   - Subdocumentos: [`glossario.md`](./docs/rup/99-anexos/glossario.md), [`referencias.md`](./docs/rup/99-anexos/referencias.md).
 - [`docs/rup/README.md`](./docs/rup/README.md) – índice raiz do acervo RUP e instruções gerais.
 
+### Estrutura do projeto (`app/`)
+
+O projeto está organizado como um monorepo com os seguintes serviços principais:
+
+- [`app/api/`](./app/api/) – API backend NestJS com autenticação Google SSO, integração Gmail API e processamento de dados
+- [`app/ui/`](./app/ui/) – Interface frontend React/Vite com autenticação Google e integração com a API
+- [`app/db/`](./app/db/) – Banco de dados PostgreSQL com migrações e seeds
+- [`app/job/`](./app/job/) – Worker NestJS para processamento assíncrono (ex: onboarding de CSV)
+- [`app/caddy/`](./app/caddy/) – Proxy reverso Caddy com HTTPS automático via Let's Encrypt
+
 ### Outros diretórios relevantes
 
-- [`docs/checklists/`](./docs/checklists/) – checklists operacionais e de QA referenciados nos planos de auditoria, mantendo rastreabilidade direta com as diretrizes de governança descritas em [`AGENTS.md`](./AGENTS.md).
-- [`landing/`](./landing/) – front-end de divulgação e experimentação, documentado em [`landing/README.md`](./landing/README.md).
-- [`holding-page/`](./holding-page/) – página estática temporária com mensagem neutra de lançamento.
-- [`CHANGELOG`](./CHANGELOG) – registro resumido das alterações efetuadas.
-- [`prompt-codex-app.md`](./prompt-codex-app.md) – instruções para agentes automatizados.
+- [`branding/`](./branding/) – Assets de identidade visual e tokens de design para white-label
+- [`scripts/`](./scripts/) – Scripts utilitários para automação e manutenção
+- [`CHANGELOG/`](./CHANGELOG/) – Registro cronológico das alterações efetuadas
+- [`docs/rup/99-anexos/checklists/`](./docs/rup/99-anexos/checklists/) – Checklists operacionais e de QA que devem ser referenciados nos planos de auditoria, mantendo rastreabilidade direta com as diretrizes de governança descritas em [`AGENTS.md`](./AGENTS.md)
 
 ## Onde registrar novos requisitos
 
@@ -63,16 +72,65 @@ A documentação e os ativos técnicos estão organizados em diretórios especia
 - Critérios e planos de teste derivados de novos requisitos devem ser refletidos em [`docs/rup/04-testes-e-validacao/`](./docs/rup/04-testes-e-validacao/), garantindo cobertura desde estratégia geral até cenários ponta a ponta e validação de marcos.
 - Sempre que o requisito implicar em processos de entrega, governança ou UX, vincule atualizações adicionais nos diretórios correspondentes ([`docs/rup/05-entrega-e-implantacao`](./docs/rup/05-entrega-e-implantacao/), [`docs/rup/06-governanca-tecnica-e-controle-de-qualidade`](./docs/rup/06-governanca-tecnica-e-controle-de-qualidade/), [`docs/rup/06-ux-brand`](./docs/rup/06-ux-brand/)) para manter a rastreabilidade completa do ciclo de vida.
 
-## Orientação para o plano de limpeza
+## Plano de Limpeza Executado
 
-- Siga o roteiro em [`docs/rup/99-anexos/MVP/plano-limpeza.md`](./docs/rup/99-anexos/MVP/plano-limpeza.md) para remover referências legadas e padronizar requisitos e riscos.
-- Registre inventários, substituições e reclassificações nos artefatos indicados pelo plano, mantendo os cabeçalhos de caminho intactos em cada arquivo atualizado.
-- Ao concluir cada etapa, documente evidências no changelog e sincronize o `README.md` com orientações de uso para o time, garantindo que novos membros encontrem rapidamente o processo de limpeza e governança vigente.
+**Status:** ✅ Concluído em 2025-11-17
+
+### O que foi limpo
+- **Nomes legados:** "App — CLImate INvestment" → "Template de Projeto Multiplataforma"
+- **Organização:** "Millennium Brasil (MBRA)" → "Template Corporation"  
+- **Domínios:** "dominio.com.br" → "template-monorepo.cranio.dev"
+- **Termos específicos:** "marketplace de resíduos", "créditos de carbono", "plataforma bancária climática" → descrições genéricas
+- **Estrutura:** Removidos serviços legados (landing, holding-page) e consolidada estrutura em monorepo com api, ui, db, job e caddy
+
+### Arquivos principais atualizados
+- Documentação: README.md, docs/rup/README*.md, especificações de requisitos
+- Configuração: `app/docker-compose.yml`, `app/.env.example`, `app/api/.env.example`, `app/caddy/Caddyfile`
+- Código: serviços de e-mail (`app/api/src/modules/mailing/`, `app/api/src/modules/gmail/`), agentes de IA, templates de comunicação
+- Frontend: componentes React em `app/ui/src/` com integração Google SSO
+- Checklists: referências corporativas e de governança em `docs/rup/99-anexos/checklists/`
+
+### Como usar este template
+1. **Clone o repositório** para seu novo projeto
+2. **Substitua "Template Corporation"** pelo nome da sua organização
+3. **Configure o domínio** atualizando `APP_CADDY_DOMAIN` e variáveis relacionadas em `app/.env` (padrão: `template-monorepo.cranio.dev`)
+4. **Configure autenticação Google** adicionando `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` no `app/.env`
+5. **Adapte os requisitos genéricos** (REQ-###) para seu caso de uso específico
+6. **Configure as variáveis de ambiente** conforme sua infraestrutura (consulte `app/.env.example`)
+
+### Início rápido
+
+1. **Configure as variáveis de ambiente:**
+   ```bash
+   cd app
+   cp .env.example .env
+   # Edite .env e configure GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET e outras variáveis necessárias
+   ```
+
+2. **Inicie os serviços:**
+   ```bash
+   cd app
+   make build    # Build de todas as imagens Docker
+   make start    # Inicia todos os serviços em modo detached
+   make logs     # Visualiza logs de todos os serviços
+   ```
+
+3. **Acesse a aplicação:**
+   - Frontend: `http://localhost:5174` (desenvolvimento) ou `https://template-monorepo.cranio.dev` (produção via Caddy)
+   - API: `http://localhost:3001/app/api/health`
+   - Banco de dados: `localhost:5432`
+
+Para mais detalhes sobre cada serviço, consulte os READMEs individuais em `app/api/README.md`, `app/ui/README.md`, etc.
+
+### Para novos times
+- Consulte o changelog completo: [`CHANGELOG/20251117204729.md`](./CHANGELOG/20251117204729.md)
+- Siga as diretrizes em [`AGENTS.md`](./AGENTS.md) para desenvolvimento
+- Use os checklists em [`docs/rup/99-anexos/checklists/`](./docs/rup/99-anexos/checklists/) para validação
 
 ## Governança e contribuição
 
-Todos os artefatos devem seguir as políticas descritas em [`AGENTS.md`](./AGENTS.md). Para sugestões ou ajustes, consulte as diretrizes na [seção de contribuição](./docs/rup/07-contribuicao/README.md) antes de abrir mudanças. Lembre-se de atualizar o [`CHANGELOG`](./CHANGELOG) e, quando aplicável, os checklists em [`docs/checklists/`](./docs/checklists/) para refletir alterações aprovadas.
+Todos os artefatos devem seguir as políticas descritas em [`AGENTS.md`](./AGENTS.md). Para sugestões ou ajustes, consulte as diretrizes na [seção de contribuição](./docs/rup/07-contribuicao/README.md) antes de abrir mudanças. Lembre-se de atualizar o [`CHANGELOG`](./CHANGELOG) e, quando aplicável, os checklists em [`docs/rup/99-anexos/checklists/`](./docs/rup/99-anexos/checklists/) para refletir alterações aprovadas.
 
 ---
 
-© Template APP — uso interno para inicialização de produtos white-label.
+© Template Corporation — uso corporativo restrito. A documentação deve ser mantida atualizada conforme auditorias e revisões periódicas do programa.

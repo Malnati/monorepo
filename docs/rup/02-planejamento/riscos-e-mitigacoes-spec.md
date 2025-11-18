@@ -6,7 +6,7 @@
 > Changelog: [/CHANGELOG.md#2025-10-25](/CHANGELOG.md#2025-10-25)
 > Referências correlatas: [Arquitetura da plataforma](../01-arquitetura/arquitetura-da-extensao-spec.md) · [Design geral](../02-design/design-geral-spec.md) · [Testes end-to-end](../04-testes-e-validacao/testes-end-to-end-spec.md)
 
-Este capítulo consolida a gestão de riscos do programa RUP do template white-label. Ele unifica a matriz geral de riscos anteriormente mantida em `RISKS.md` com os riscos específicos do plano de requisitos UI/UX versão 5, garantindo rastreabilidade única para qualquer implementação.
+Este capítulo consolida a gestão de riscos do programa RUP da plataforma Template de Projeto Multiplataforma. Ele unifica a matriz geral de riscos anteriormente mantida em `RISKS.md` com os riscos específicos do plano de requisitos UI/UX versão 5, garantindo rastreabilidade única.
 
 - **Matriz geral (IDs `RISK-###`):** migrada do documento `RISKS.md`, preservando categorias, impactos e referências cruzadas com requisitos, pipelines e relatórios.
 - **Riscos específicos de UI/UX (IDs `R1`–`R8`):** mantidos do plano de requisitos UI/UX v5 para monitorar divergências de design e operação.
@@ -71,7 +71,7 @@ A matriz abaixo reflete a consolidação realizada pelo comitê de governança t
 | ID | Descrição | Impacto | Prob. | Mitigação | Rastreio | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | RISK-016 | Indisponibilidade das APIs de parceiros logísticos ou financeiros durante operações críticas. | 🟥 Alto | Média | Implementar retries, circuit breaker e fallback de status offline. | [REQ-003](requisitos-spec.md#req-003), [REQ-004](requisitos-spec.md#req-004) | Ativo |
-| RISK-017 | Alterações não anunciadas nas APIs internas do marketplace climático. | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`) e testes de contrato. | [REQ-003](requisitos-spec.md#req-003), [REQ-046](requisitos-spec.md#req-046) | Ativo |
+| RISK-017 | Alterações não anunciadas nas APIs internas do marketplace. | 🟧 Médio | Média | Utilizar versionamento de endpoint (`/v1`, `/v2`) e testes de contrato. | [REQ-003](requisitos-spec.md#req-003), [REQ-046](requisitos-spec.md#req-046) | Ativo |
 | RISK-018 | Incompatibilidade com provedores de modelos IA devido a mudanças de versão. | 🟧 Médio | Alta | Registrar versões de modelo em [`../../AGENTS.md`](../../AGENTS.md) e prever rollback rápido. | Ativo |
 | RISK-019 | Falhas de autenticação com o provedor SSO federado. | 🟥 Alto | Baixa | Exibir erro informativo e reautenticação automática. | [REQ-101](requisitos-spec.md#req-101) | Ativo |
 

@@ -25,9 +25,9 @@ export default defineConfig({
         'offline.html'
       ],
       manifest: {
-        name: 'APP Mercado de Resíduos',
+        name: 'APP Marketplace',
         short_name: 'APP',
-        description: 'Plataforma de negociação de resíduos recicláveis',
+        description: 'Plataforma de negociação de produtos e serviços',
         theme_color: '#28a745',
         background_color: '#f6f8f6',
         display: 'standalone',
@@ -100,10 +100,10 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/api\/lotes/i,
+            urlPattern: /\/api\/offers/i,
             handler: 'NetworkFirst',
             options: {
-              cacheName: 'lotes-api-cache',
+              cacheName: 'offers-api-cache',
               expiration: {
                 maxEntries: 50,
                 maxAgeSeconds: 60 * 5, // 5 minutos
@@ -113,7 +113,6 @@ export default defineConfig({
           },
         ],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/app/api/],
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
@@ -126,7 +125,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@dominio/shared-constants': path.resolve(__dirname, './shared-constants/src/index.ts'),
     },
   },
   server: {
@@ -145,13 +143,12 @@ export default defineConfig({
     strictPort: false,
     // Configuração dinâmica de hosts permitidos
     // Strings começando com '.' são tratadas como wildcards de domínio
-    // Permite qualquer subdomínio de dominio.com.br, dominio.com e dominio.com.br
+    // Permite qualquer subdomínio de cranio.dev
     allowedHosts: [
       'localhost',
       '127.0.0.1',
-      '.dominio.com.br',
-      '.dominio.com',
-      '.dominio.com.br',
+      '.cranio.dev',
+      'template-monorepo.cranio.dev',
     ],
   },
 });

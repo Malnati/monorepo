@@ -7,7 +7,7 @@ import * as path from 'path';
 const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || '';
 const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || '';
 const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || '';
-const GMAIL_SENDER = process.env.GMAIL_SENDER || 'noreply@dominio.com.br';
+const GMAIL_SENDER = process.env.GMAIL_SENDER || 'noreply@example.com';
 const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:5174';
 
 interface EmailOptions {
@@ -199,7 +199,7 @@ Este link expira em 24 horas. Se você não solicitou esta conta, ignore este e-
 Precisa de ajuda? Entre em contato com nosso suporte.
 
 ---
-APP - CLImate INvestment
+APP - Template Corporation
     `.trim();
   }
 
@@ -244,7 +244,7 @@ APP - CLImate INvestment
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Olá, ${nome}!</p>
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Recebemos sua tentativa de cadastro, mas apenas e-mails <strong>Gmail</strong> ou <strong>Google Workspace</strong> são aceitos atualmente.</p>
                             <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Para se cadastrar, por favor acesse:</p>
-                            <a href="https://dominio.com.br" style="display: inline-block; padding: 16px 32px; background-color: #00B5B8; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Acessar APP</a>
+                            <a href="${APP_BASE_URL || 'https://template-monorepo.cranio.dev'}" style="display: inline-block; padding: 16px 32px; background-color: #00B5B8; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Acessar APP</a>
                             <p style="margin: 32px 0 0; font-size: 12px; line-height: 1.4; color: #6B7280;">Use um e-mail Gmail ou Google Workspace para criar sua conta.</p>
                         </td>
                     </tr>
@@ -273,14 +273,14 @@ Olá, ${nome}!
 
 Recebemos sua tentativa de cadastro, mas apenas e-mails Gmail ou Google Workspace são aceitos atualmente.
 
-Para se cadastrar, por favor acesse: https://dominio.com.br
+Para se cadastrar, por favor acesse: ${APP_BASE_URL || 'https://template-monorepo.cranio.dev'}
 
 Use um e-mail Gmail ou Google Workspace para criar sua conta.
 
 Precisa de ajuda? Entre em contato com nosso suporte.
 
 ---
-APP - CLImate INvestment
+APP - Template Corporation
     `.trim();
   }
 
@@ -370,7 +370,7 @@ APP - CLImate INvestment
                                 <h2 style="margin: 0 0 12px; font-size: 18px; font-weight: 600; color: #1C1D22;">O que fazer agora:</h2>
                                 <ul style="margin: 0; padding-left: 20px; color: #1C1D22;">
                                     <li style="margin-bottom: 8px;">Revise sua publicação e remova informações pessoais (telefone, e-mail, endereço completo)</li>
-                                    <li style="margin-bottom: 8px;">Use apenas informações comerciais permitidas (nome do fornecedor, tipo de resíduo, quantidade, preço)</li>
+                                    <li style="margin-bottom: 8px;">Use apenas informações comerciais permitidas (nome do fornecedor, tipo de produto, quantidade, preço)</li>
                                     <li style="margin-bottom: 8px;">Tente publicar novamente após fazer as correções</li>
                                 </ul>
                             </div>
@@ -380,7 +380,7 @@ APP - CLImate INvestment
                     </tr>
                     <tr>
                         <td style="padding: 24px 32px; background-color: #F4F5FB; text-align: center;">
-                            <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #6B7280;">APP - CLImate INvestment</p>
+                            <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #6B7280;">APP - Template Corporation</p>
                         </td>
                     </tr>
                 </table>
@@ -431,12 +431,12 @@ ${reason}
 
     text += `O que fazer agora:\n`;
     text += `- Revise sua publicação e remova informações pessoais (telefone, e-mail, endereço completo)\n`;
-    text += `- Use apenas informações comerciais permitidas (nome do fornecedor, tipo de resíduo, quantidade, preço)\n`;
+    text += `- Use apenas informações comerciais permitidas (nome do fornecedor, tipo de produto, quantidade, preço)\n`;
     text += `- Tente publicar novamente após fazer as correções\n\n`;
 
     text += `Precisa de ajuda? Entre em contato com nosso suporte.\n\n`;
     text += `---\n`;
-    text += `APP - CLImate INvestment\n`;
+    text += `APP - Template Corporation\n`;
 
     return text.trim();
   }
