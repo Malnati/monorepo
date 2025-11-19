@@ -1,5 +1,5 @@
-# scripts/format-prettier.sh
 #!/bin/bash
+# scripts/format-prettier.sh
 
 # Script para executar Prettier localmente, replicando a lógica do workflow
 # .github/workflows/prettier.yml
@@ -43,17 +43,13 @@ fi
 
 echo -e "${GREEN}✅ Projetos Node.js encontrados: $PROJECT_DIRS${NC}"
 
-# Verifica se o arquivo .prettierignore existe na raiz (preferencial)
-# Fallback para .github/workflows/.prettierignore se não existir na raiz
+# Verifica se o arquivo .prettierignore existe em .github/workflows/
 IGNORE_PATH=""
-if [ -f ".prettierignore" ]; then
-  IGNORE_PATH=".prettierignore"
-  echo -e "${GREEN}✅ Usando .prettierignore da raiz${NC}"
-elif [ -f ".github/workflows/.prettierignore" ]; then
+if [ -f ".github/workflows/.prettierignore" ]; then
   IGNORE_PATH=".github/workflows/.prettierignore"
-  echo -e "${YELLOW}⚠️  Usando .prettierignore de .github/workflows/ (fallback)${NC}"
+  echo -e "${GREEN}✅ Usando .prettierignore de .github/workflows/${NC}"
 else
-  echo -e "${YELLOW}⚠️  Nenhum arquivo .prettierignore encontrado. Continuando sem ignore path.${NC}"
+  echo -e "${YELLOW}⚠️  Nenhum arquivo .prettierignore encontrado em .github/workflows/. Continuando sem ignore path.${NC}"
 fi
 
 if [ -n "$IGNORE_PATH" ]; then
@@ -107,7 +103,7 @@ if [ -n "$DIRS_FOR_PRETTIER" ]; then
   # Prettier pode retornar código de saída diferente de 0 mesmo quando funciona
   # Por isso não verificamos o código de saída diretamente
   echo -e "${BLUE}   Diretórios: $DIRS_FOR_PRETTIER${NC}"
-  $PRETTIER_CMD $IGNORE_OPTION --ignore-unknown --write $DIRS_FOR_PRETTIER || true
+  $PRETTIER_CMD "$IGNORE_OPTION" --ignore-unknown --write $DIRS_FOR_PRETTIER
   EXIT_CODE=$?
   if [ $EXIT_CODE -eq 0 ]; then
     echo -e "${GREEN}✅ Formatação concluída com sucesso!${NC}"
