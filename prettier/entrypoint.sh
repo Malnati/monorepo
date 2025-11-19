@@ -1,5 +1,5 @@
-# prettier/entrypoint.sh
 #!/bin/bash
+# prettier/entrypoint.sh
 
 # Executar script de formatação Prettier
 # Este script é chamado pelo Docker Compose quando o serviço prettier é executado
