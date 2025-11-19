@@ -1,0 +1,71 @@
+<!-- .github/workflow/agent-engineering-automacao-scripts.yml -->
+
+name: Engineering Automação & Scripts Agent Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+      - staging
+      - development
+
+jobs:
+  agent-engineering-automacao-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check relevant PR files (inline shell)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          REPO="${GITHUB_REPOSITORY}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          TOKEN="${GITHUB_TOKEN}"
+
+          files=$(curl -s -H "Authorization: token $TOKEN" \
+            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | grep -oP '"filename": "\K[^"]+')
+
+          found=0
+          for file in $files; do
+            if [[ "$file" =~ (^|/)docker-compose(\.ya?ml)?$ ]] || \
+               [[ "$file" =~ (^|/)Dockerfile.*$ ]]     || \
+               [[ "$file" == "package.json" ]]         || \
+               [[ "$file" =~ \.sh$ ]]; then
+              found=1
+              echo "Arquivo relevante encontrado: $file"
+              break
+            fi
+          done
+
+          if [[ $found -eq 0 ]]; then
+            echo "Nenhum arquivo relevante encontrado (docker, package.json ou *.sh). Interrompendo o workflow com sucesso."
+            exit 78
+          else
+            echo "Arquivo relevante presente. Prosseguindo com workflow."
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm ci || yarn install
+
+      - name: Run Engineering Automação & Scripts Agent
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+        run: |
+          node scripts/run-agent-engineering-automacao-scripts.js \
+            --pr $PR_NUMBER \
+            --head $PR_BRANCH \
+            --base $BASE_BRANCH \
+            --config .github/agents/agent-engineering-automacao-scripts.md
