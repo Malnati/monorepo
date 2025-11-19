@@ -1,5 +1,5 @@
-# scripts/install-git-hooks.sh
 #!/bin/bash
+# scripts/install-git-hooks.sh
 
 # Script para instalar git hooks no repositório
 # Instala o hook pre-push que executa Prettier via Docker antes de cada push
