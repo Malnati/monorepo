@@ -1,5 +1,5 @@
-# install-hooks.sh
 #!/bin/bash
+# install-hooks.sh
 
 # Wrapper script para instalar git hooks
 # Pode ser executado diretamente sem necessidade do make
