@@ -31,9 +31,9 @@ Este agente assegura que toda automação seja feita exclusivamente via Makefile
 
 1. **Proibições:**
    - Criar shell scripts (`.sh`, `.bash`) para automação de tarefas
-   - Adicionar shebangs (`#!/bin/bash`) exceto em entrypoints Docker
+   - Adicionar shebangs (`#!/bin/bash`) quando já existir
    - Criar novos targets no Makefile sem solicitação explícita
-   - Scripts de teste E2E devem usar JavaScript/TypeScript + Puppeteer
+   - Scripts de teste E2E devem usar JavaScript/TypeScript + Puppeteer ou Playwright
 
 2. **Permitidos:**
    - Entrypoints Docker: `entrypoint.sh` referenciado por Dockerfile
