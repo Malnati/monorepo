@@ -6,6 +6,11 @@ on:
       - main
       - staging
       - development
+  pull_request:
+    branches:
+      - main
+      - staging
+      - development
 
 jobs:
   agent-engineering-automacao-scripts:
@@ -14,52 +19,105 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: ${{ github.event_name == 'pull_request' && '0' || '2' }}
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
       - name: Check relevant changed files
+        id: check-files
         run: |
           set -e
           
-          # Obter arquivos alterados comparando com o commit anterior
-          # Em eventos de push, github.event.before contém o SHA do commit anterior
-          if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
-            files=$(git diff --name-only ${{ github.event.before }}..${{ github.sha }})
-          elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-            files=$(git diff --name-only HEAD~1..HEAD)
+          # Detectar tipo de evento
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "Evento: Pull Request"
+            echo "Base SHA: ${{ github.event.pull_request.base.sha }}"
+            echo "Head SHA: ${{ github.event.pull_request.head.sha }}"
+            echo "Base ref: ${{ github.event.pull_request.base.ref }}"
+            echo "Head ref: ${{ github.event.pull_request.head.ref }}"
+            
+            # Para PRs, comparar com a branch base usando os SHAs fornecidos pelo GitHub
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            head_sha="${{ github.event.pull_request.head.sha }}"
+            
+            # Fetch da branch base para garantir que temos o commit base
+            git fetch origin "${{ github.event.pull_request.base.ref }}" --depth=1 || true
+            
+            # Tentar usar os SHAs diretamente
+            if git rev-parse --verify "$base_sha" >/dev/null 2>&1 && git rev-parse --verify "$head_sha" >/dev/null 2>&1; then
+              files=$(git diff --name-only "$base_sha".."$head_sha")
+            elif git rev-parse --verify "origin/${{ github.event.pull_request.base.ref }}" >/dev/null 2>&1; then
+              # Fallback: comparar com origin/base_ref
+              files=$(git diff --name-only "origin/${{ github.event.pull_request.base.ref }}"..HEAD)
+            else
+              # Último fallback: comparar com HEAD~1 se disponível
+              if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+                files=$(git diff --name-only HEAD~1..HEAD)
+              else
+                files=$(git diff-tree --no-commit-id --name-only -r HEAD)
+              fi
+            fi
           else
-            # Primeiro commit: lista apenas arquivos do commit atual
-            files=$(git diff-tree --no-commit-id --name-only -r HEAD)
+            echo "Evento: Push"
+            # Para eventos push, usar lógica original
+            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+              files=$(git diff --name-only ${{ github.event.before }}..${{ github.sha }})
+            elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+              files=$(git diff --name-only HEAD~1..HEAD)
+            else
+              # Primeiro commit: lista apenas arquivos do commit atual
+              files=$(git diff-tree --no-commit-id --name-only -r HEAD)
+            fi
           fi
           
+          # Debug: listar todos os arquivos alterados
+          echo "=== Arquivos alterados detectados ==="
+          if [ -z "$files" ]; then
+            echo "(nenhum arquivo alterado)"
+          else
+            echo "$files" | while read -r file; do
+              echo "  - $file"
+            done
+          fi
+          echo "===================================="
+          
+          # Verificar arquivos relevantes
           found=0
+          relevant_files=""
           for file in $files; do
             if [[ "$file" =~ (^|/)docker-compose(\.ya?ml)?$ ]] || \
                [[ "$file" =~ (^|/)Dockerfile.*$ ]]     || \
                [[ "$file" == "package.json" ]]         || \
                [[ "$file" =~ \.sh$ ]]; then
               found=1
-              echo "Arquivo relevante encontrado: $file"
-              break
+              relevant_files="${relevant_files}${file}\n"
+              echo "✅ Arquivo relevante encontrado: $file"
             fi
           done
-
+          
+          # Salvar resultado em output
           if [[ $found -eq 0 ]]; then
-            echo "Nenhum arquivo relevante encontrado (docker, package.json ou *.sh). Interrompendo o workflow com sucesso."
-            exit 78
+            echo "⚠️ Nenhum arquivo relevante encontrado (docker-compose, Dockerfile, package.json ou *.sh)."
+            echo "O workflow será interrompido com sucesso (sem erro)."
+            echo "has_relevant_files=false" >> $GITHUB_OUTPUT
           else
-            echo "Arquivo relevante presente. Prosseguindo com workflow."
+            echo "✅ Arquivos relevantes presentes. Prosseguindo com workflow."
+            echo "has_relevant_files=true" >> $GITHUB_OUTPUT
+            echo -e "$relevant_files" >> $GITHUB_OUTPUT
           fi
 
       - name: Set up Node.js
+        if: steps.check-files.outputs.has_relevant_files == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - name: Install dependencies
+        if: steps.check-files.outputs.has_relevant_files == 'true'
         run: |
           npm ci || yarn install
 
       - name: Run Engineering Automação & Scripts Agent
+        if: steps.check-files.outputs.has_relevant_files == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH_NAME: ${{ github.ref_name }}
