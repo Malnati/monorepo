@@ -13,19 +13,24 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-      - name: Check relevant PR files (inline shell)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check relevant changed files
         run: |
           set -e
-          REPO="${GITHUB_REPOSITORY}"
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          TOKEN="${GITHUB_TOKEN}"
-
-          files=$(curl -s -H "Authorization: token $TOKEN" \
-            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | grep -oP '"filename": "\K[^"]+')
-
+          
+          # Obter arquivos alterados comparando com o commit anterior
+          # Em eventos de push, github.event.before contém o SHA do commit anterior
+          if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            files=$(git diff --name-only ${{ github.event.before }}..${{ github.sha }})
+          elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            files=$(git diff --name-only HEAD~1..HEAD)
+          else
+            # Primeiro commit: lista apenas arquivos do commit atual
+            files=$(git diff-tree --no-commit-id --name-only -r HEAD)
+          fi
+          
           found=0
           for file in $files; do
             if [[ "$file" =~ (^|/)docker-compose(\.ya?ml)?$ ]] || \
@@ -57,12 +62,12 @@ jobs:
       - name: Run Engineering Automação & Scripts Agent
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
-          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
-          node scripts/run-agent-engineering-automacao-scripts.js \
-            --pr $PR_NUMBER \
-            --head $PR_BRANCH \
-            --base $BASE_BRANCH \
-            --config .github/agents/agent-engineering-automacao-scripts.md
+          # Script temporariamente desabilitado até implementação completa
+          # node scripts/run-agent-engineering-automacao-scripts.js \
+          #   --branch $BRANCH_NAME \
+          #   --commit $COMMIT_SHA \
+          #   --config .github/agents/agent-engineering-automacao-scripts.md
+          echo "Step de execução do agente será implementado futuramente"
