@@ -1,10 +1,7 @@
-<!-- .github/workflow/agent-engineering-automacao-scripts.yml -->
-
 name: Engineering Automação & Scripts Agent Check
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+  push:
     branches:
       - main
       - staging
