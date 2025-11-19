@@ -1,5 +1,5 @@
 # .github/workflows/prettier.yml
-name: Prettier Formatting
+name: 🎨 Prettier Formatting
 
 on:
   push:
