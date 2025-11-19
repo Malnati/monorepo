@@ -7,12 +7,12 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
-    image: "${APP_DB_IMAGE_NAME:-db}"
-    container_name: "${APP_DB_CONTAINER_NAME:-db}"
+    image: "${APP_DB_IMAGE_NAME:-monorepo-db}"
+    container_name: "${APP_DB_CONTAINER_NAME:-monorepo-db}"
     environment:
-      POSTGRES_DB: "${APP_DB_NAME:-db}"
-      POSTGRES_USER: "${APP_DB_USER:-postgres}"
-      POSTGRES_PASSWORD: "${APP_DB_PASSWORD:-postgres}"
+      POSTGRES_DB: "${APP_DB_NAME:-monorepo-db}"
+      POSTGRES_USER: "${APP_DB_USER:-monorepo-postgres}"
+      POSTGRES_PASSWORD: "${APP_DB_PASSWORD:-monorepo-postgres}"
       PGTZ: "${APP_DB_TZ:-Etc/UTC}"
       LANG: "${APP_DB_LANG:-C.UTF-8}"
       LC_ALL: "${APP_DB_LC_ALL:-C.UTF-8}"
@@ -26,7 +26,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${APP_DB_USER:-postgres} -d ${APP_DB_NAME:-db}",
+          "pg_isready -U ${APP_DB_USER:-postgres} -d ${APP_DB_NAME:-monorepo-db}",
         ]
       interval: 30s
       timeout: 5s
@@ -38,21 +38,21 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    image: "${APP_API_IMAGE_NAME:-api}"
-    container_name: "${APP_API_CONTAINER_NAME:-api}"
+    image: "${APP_API_IMAGE_NAME:-monorepo-api}"
+    container_name: "${APP_API_CONTAINER_NAME:-monorepo-api}"
     depends_on:
       db:
         condition: service_healthy
     environment:
-      NODE_ENV: "${APP_API_NODE_ENV:-development}"
+      NODE_ENV: "${APP_API_NODE_ENV:-monorepo-development}"
       PORT: "${APP_API_PORT:-3001}"
       HOST: "${APP_API_HOST:-0.0.0.0}"
       CORS_ORIGIN: "${APP_API_CORS_ORIGIN:-*}"
-      DATABASE_HOST: "${APP_DB_HOST:-db}"
+      DATABASE_HOST: "${APP_DB_HOST:-monorepo-db}"
       DATABASE_PORT: "5432"
       DATABASE_USER: "${APP_DB_USER:-postgres}"
       DATABASE_PASSWORD: "${APP_DB_PASSWORD:-postgres}"
-      DATABASE_NAME: "${APP_DB_NAME:-db}"
+      DATABASE_NAME: "${APP_DB_NAME:-monorepo-db}"
       GOOGLE_MAPS_SERVER_KEY: "${GOOGLE_MAPS_SERVER_KEY:-}"
       GOOGLE_CLIENT_ID: "${APP_GOOGLE_CLIENT_ID:-}"
       GOOGLE_CLIENT_SECRET: "${APP_GOOGLE_CLIENT_SECRET:-}"
@@ -90,8 +90,8 @@ services:
         VITE_GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY:-}"
         VITE_API_BASE_URL: "${APP_UI_VITE_API_BASE_URL:-http://localhost:3001}"
         VITE_GOOGLE_CLIENT_ID: "${APP_UI_VITE_GOOGLE_CLIENT_ID:-}"
-    image: "${APP_UI_IMAGE_NAME:-ui}"
-    container_name: "${APP_UI_CONTAINER_NAME:-ui}"
+    image: "${APP_UI_IMAGE_NAME:-monorepo-ui}"
+    container_name: "${APP_UI_CONTAINER_NAME:-monorepo-ui}"
     depends_on:
       api:
         condition: service_started
@@ -107,8 +107,8 @@ services:
     build:
       context: ./job
       dockerfile: Dockerfile
-    image: "${APP_JOB_IMAGE_NAME:-job}"
-    container_name: "${APP_JOB_CONTAINER_NAME:-job}"
+    image: "${APP_JOB_IMAGE_NAME:-monorepo-job}"
+    container_name: "${APP_JOB_CONTAINER_NAME:-monorepo-job}"
     depends_on:
       api:
         condition: service_started
@@ -142,14 +142,14 @@ services:
     build:
       context: ./caddy
       dockerfile: Dockerfile
-    image: "${APP_CADDY_IMAGE_NAME:-caddy}"
-    container_name: "${APP_CADDY_CONTAINER_NAME:-caddy}"
+    image: "${APP_CADDY_IMAGE_NAME:-monorepo-caddy}"
+    container_name: "${APP_CADDY_CONTAINER_NAME:-monorepo-caddy}"
     network_mode: host
     volumes:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      CADDY_DOMAIN: "${APP_CADDY_DOMAIN:-template-monorepo.cranio.dev}"
+      CADDY_DOMAIN: "${APP_CADDY_DOMAIN:-monorepo.cranio.dev}"
       CADDY_EMAIL: "${APP_CADDY_EMAIL:-admin@cranio.dev}"
       CADDY_LISTEN_HOST: "${APP_CADDY_LISTEN_HOST:-2a02:c207:2288:9919::10}"
     depends_on:
@@ -161,8 +161,8 @@ services:
     build:
       context: ..
       dockerfile: prettier/Dockerfile
-    image: "${APP_PRETTIER_IMAGE_NAME:-prettier}"
-    container_name: "${APP_PRETTIER_CONTAINER_NAME:-prettier}"
+    image: "${APP_PRETTIER_IMAGE_NAME:-monorepo-prettier}"
+    container_name: "${APP_PRETTIER_CONTAINER_NAME:-monorepo-prettier}"
     volumes:
       - ..:/workspace:rw
     environment:
