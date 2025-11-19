@@ -103,7 +103,7 @@ if [ -n "$DIRS_FOR_PRETTIER" ]; then
   # Prettier pode retornar código de saída diferente de 0 mesmo quando funciona corretamente
   # Por isso capturamos e reportamos o código de saída, mas não tratamos como erro fatal
   echo -e "${BLUE}   Diretórios: $DIRS_FOR_PRETTIER${NC}"
-  $PRETTIER_CMD $IGNORE_OPTION --ignore-unknown --write "$DIRS_FOR_PRETTIER"
+  $PRETTIER_CMD $IGNORE_OPTION --ignore-unknown --write $DIRS_FOR_PRETTIER
   EXIT_CODE=$?
   if [ $EXIT_CODE -eq 0 ]; then
     echo -e "${GREEN}✅ Formatação concluída com sucesso!${NC}"
