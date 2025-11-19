@@ -82,14 +82,12 @@ jobs:
           
           # Verificar arquivos relevantes
           found=0
-          relevant_files=""
           for file in $files; do
             if [[ "$file" =~ (^|/)docker-compose(\.ya?ml)?$ ]] || \
                [[ "$file" =~ (^|/)Dockerfile.*$ ]]     || \
                [[ "$file" == "package.json" ]]         || \
                [[ "$file" =~ \.sh$ ]]; then
               found=1
-              relevant_files="${relevant_files}${file}\n"
               echo "✅ Arquivo relevante encontrado: $file"
             fi
           done
@@ -102,7 +100,6 @@ jobs:
           else
             echo "✅ Arquivos relevantes presentes. Prosseguindo com workflow."
             echo "has_relevant_files=true" >> $GITHUB_OUTPUT
-            echo -e "$relevant_files" >> $GITHUB_OUTPUT
           fi
 
       - name: Set up Node.js
