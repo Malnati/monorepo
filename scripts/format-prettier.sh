@@ -100,8 +100,8 @@ done
 # --ignore-unknown: ignora arquivos desconhecidos
 # --write: escreve as mudanças nos arquivos
 if [ -n "$DIRS_FOR_PRETTIER" ]; then
-  # Prettier pode retornar código de saída diferente de 0 mesmo quando funciona
-  # Por isso não verificamos o código de saída diretamente
+  # Prettier pode retornar código de saída diferente de 0 mesmo quando funciona corretamente
+  # Por isso capturamos e reportamos o código de saída, mas não tratamos como erro fatal
   echo -e "${BLUE}   Diretórios: $DIRS_FOR_PRETTIER${NC}"
   $PRETTIER_CMD $IGNORE_OPTION --ignore-unknown --write $DIRS_FOR_PRETTIER
   EXIT_CODE=$?
