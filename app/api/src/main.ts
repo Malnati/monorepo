@@ -66,7 +66,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api/docs", app, document, {
     customSiteTitle: "API Documentation",
-    customfavIcon: "/favicon.ico",
+    customFavIcon: "/favicon.ico",
     customCss: ".swagger-ui .topbar { display: none }",
   });
 
