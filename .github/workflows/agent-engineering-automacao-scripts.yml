@@ -1,16 +1,16 @@
+<!-- .github/workflow/agent-engineering-automacao-scripts.yml -->
+
+<!--
+Desabilitado até que o GitHub lance uma maneira de automatizar os agentes através de GitHub Actions.
+-->
+
 name: Engineering Automação & Scripts Agent Check
 
 on:
-  push:
-    branches:
-      - main
-      - staging
-      - development
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches:
-      - main
-      - staging
-      - development
+      - none
 
 jobs:
   agent-engineering-automacao-scripts:
@@ -18,69 +18,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: ${{ github.event_name == 'pull_request' && '0' || '2' }}
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
-      - name: Check relevant changed files
-        id: check-files
+      - name: Check relevant PR files (inline shell)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          
-          # Detectar tipo de evento
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "Evento: Pull Request"
-            echo "Base SHA: ${{ github.event.pull_request.base.sha }}"
-            echo "Head SHA: ${{ github.event.pull_request.head.sha }}"
-            echo "Base ref: ${{ github.event.pull_request.base.ref }}"
-            echo "Head ref: ${{ github.event.pull_request.head.ref }}"
-            
-            # Para PRs, comparar com a branch base usando os SHAs fornecidos pelo GitHub
-            base_sha="${{ github.event.pull_request.base.sha }}"
-            head_sha="${{ github.event.pull_request.head.sha }}"
-            
-            # Fetch da branch base para garantir que temos o commit base
-            git fetch origin "${{ github.event.pull_request.base.ref }}" --depth=1 || true
-            
-            # Tentar usar os SHAs diretamente
-            if git rev-parse --verify "$base_sha" >/dev/null 2>&1 && git rev-parse --verify "$head_sha" >/dev/null 2>&1; then
-              files=$(git diff --name-only "$base_sha".."$head_sha")
-            elif git rev-parse --verify "origin/${{ github.event.pull_request.base.ref }}" >/dev/null 2>&1; then
-              # Fallback: comparar com origin/base_ref
-              files=$(git diff --name-only "origin/${{ github.event.pull_request.base.ref }}"..HEAD)
-            else
-              # Último fallback: comparar com HEAD~1 se disponível
-              if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-                files=$(git diff --name-only HEAD~1..HEAD)
-              else
-                files=$(git diff-tree --no-commit-id --name-only -r HEAD)
-              fi
-            fi
-          else
-            echo "Evento: Push"
-            # Para eventos push, usar lógica original
-            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
-              files=$(git diff --name-only ${{ github.event.before }}..${{ github.sha }})
-            elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-              files=$(git diff --name-only HEAD~1..HEAD)
-            else
-              # Primeiro commit: lista apenas arquivos do commit atual
-              files=$(git diff-tree --no-commit-id --name-only -r HEAD)
-            fi
-          fi
-          
-          # Debug: listar todos os arquivos alterados
-          echo "=== Arquivos alterados detectados ==="
-          if [ -z "$files" ]; then
-            echo "(nenhum arquivo alterado)"
-          else
-            echo "$files" | while read -r file; do
-              echo "  - $file"
-            done
-          fi
-          echo "===================================="
-          
-          # Verificar arquivos relevantes
+          REPO="${GITHUB_REPOSITORY}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          TOKEN="${GITHUB_TOKEN}"
+
+          files=$(curl -s -H "Authorization: token $TOKEN" \
+            "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | grep -oP '"filename": "\K[^"]+')
+
           found=0
           for file in $files; do
             if [[ "$file" =~ (^|/)docker-compose(\.ya?ml)?$ ]] || \
@@ -88,24 +38,36 @@ jobs:
                [[ "$file" == "package.json" ]]         || \
                [[ "$file" =~ \.sh$ ]]; then
               found=1
-              echo "✅ Arquivo relevante encontrado: $file"
+              echo "Arquivo relevante encontrado: $file"
+              break
             fi
           done
-          
-          # Salvar resultado em output
+
           if [[ $found -eq 0 ]]; then
-            echo "⚠️ Nenhum arquivo relevante encontrado (docker-compose, Dockerfile, package.json ou *.sh)."
-            echo "O workflow será interrompido com sucesso (sem erro)."
-            echo "has_relevant_files=false" >> $GITHUB_OUTPUT
+            echo "Nenhum arquivo relevante encontrado (docker, package.json ou *.sh). Interrompendo o workflow com sucesso."
+            exit 78
           else
-            echo "✅ Arquivos relevantes presentes. Prosseguindo com workflow."
-            echo "has_relevant_files=true" >> $GITHUB_OUTPUT
+            echo "Arquivo relevante presente. Prosseguindo com workflow."
           fi
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm ci || yarn install
+
       - name: Run Engineering Automação & Scripts Agent
-        if: steps.check-files.outputs.has_relevant_files == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
         run: |
-          gh auth setup-git
-          gh copilot run .github/agents/agent-engineering-automacao-scripts.md
+          node scripts/run-agent-engineering-automacao-scripts.js \
+            --pr $PR_NUMBER \
+            --head $PR_BRANCH \
+            --base $BASE_BRANCH \
+            --config .github/agents/agent-engineering-automacao-scripts.md
