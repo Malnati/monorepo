@@ -116,9 +116,9 @@ main() {
     log_info ""
     
     # Verificar prerequisitos
-    if [[ ! -d "init/migrations/modular/ddl" ]]; then
+    if [[ ! -d "init/ddl" ]] || [[ ! -d "init/seeds/data" ]]; then
         log_error "Execute este script do diretório app/db"
-        log_error "Estrutura modular não encontrada em init/migrations/modular/"
+        log_error "Estrutura modular não encontrada em init/ddl/ ou init/seeds/data/"
         exit 1
     fi
     
