@@ -1,6 +1,11 @@
 # docker-compose.yml
 # Template de Projeto Multiplataforma Docker Compose
 
+networks:
+  caddy_mesh:
+    external: true
+    name: vmi2889919_caddy_mesh
+
 services:
 
   db:
@@ -33,6 +38,8 @@ services:
       retries: 3
       start_period: 30s
     restart: unless-stopped
+    networks:
+      - caddy_mesh
 
   api:
     build:
@@ -73,6 +80,8 @@ services:
     ports:
       - "${APP_API_PORT:-3001}:3001"
     restart: unless-stopped
+    networks:
+      - caddy_mesh
     healthcheck:
       test: ["CMD", "sh", "-c", "response=$$(curl -sf $${API_HEALTHCHECK_URL:-http://localhost:3001/app/apihealth}) && echo \"$$response\" | grep -q '\"status\":\"ok\"' && echo \"$$response\" | grep -q '\"database\":\"connected\"'"]
       interval: 30s
@@ -102,6 +111,8 @@ services:
     ports:
       - "${APP_UI_PORT:-5174}:80"
     restart: unless-stopped
+    networks:
+      - caddy_mesh
 
   job:
     build:
@@ -131,31 +142,14 @@ services:
       - job_processed:/var/data/processed
       - job_failed:/var/data/failed
     restart: unless-stopped
+    networks:
+      - caddy_mesh
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:3002/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
-  caddy:
-    build:
-      context: ./caddy
-      dockerfile: Dockerfile
-    image: "${APP_CADDY_IMAGE_NAME:-caddy}"
-    container_name: "${APP_CADDY_CONTAINER_NAME:-caddy}"
-    network_mode: host
-    volumes:
-      - caddy_data:/data
-      - caddy_config:/config
-    environment:
-      CADDY_DOMAIN: "${APP_CADDY_DOMAIN:-template-monorepo.cranio.dev}"
-      CADDY_EMAIL: "${APP_CADDY_EMAIL:-admin@cranio.dev}"
-      CADDY_LISTEN_HOST: "${APP_CADDY_LISTEN_HOST:-2a02:c207:2288:9919::10}"
-    depends_on:
-      - ui
-      - api
-    restart: unless-stopped
 
   prettier:
     build:
