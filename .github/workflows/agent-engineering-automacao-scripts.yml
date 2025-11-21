@@ -1,14 +1,16 @@
 <!-- .github/workflow/agent-engineering-automacao-scripts.yml -->
 
+<!--
+Desabilitado até que o GitHub lance uma maneira de automatizar os agentes através de GitHub Actions.
+-->
+
 name: Engineering Automação & Scripts Agent Check
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
-      - main
-      - staging
-      - development
+      - none
 
 jobs:
   agent-engineering-automacao-scripts:
