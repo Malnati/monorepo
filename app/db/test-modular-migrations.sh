@@ -23,9 +23,9 @@ log_error() {
 }
 
 # Verificar se estamos no diretório correto
-if [[ ! -d "init/migrations/modular/ddl" ]] || [[ ! -d "init/migrations/modular/seeds" ]]; then
+if [[ ! -d "init/ddl" ]] || [[ ! -d "init/seeds/data" ]]; then
     log_error "Este script deve ser executado do diretório app/db"
-    log_error "Estrutura modular não encontrada em init/migrations/modular/"
+    log_error "Estrutura modular não encontrada em init/ddl/ ou init/seeds/data/"
     exit 1
 fi
 
@@ -55,7 +55,7 @@ EOF
     
     # Concatenar DDL files (001-007)
     log_info "Adicionando DDL files (001-007)..."
-    for ddl_file in init/migrations/modular/ddl/0*.sql; do
+    for ddl_file in init/ddl/0*.sql; do
         if [[ -f "$ddl_file" ]]; then
             log_info "  → $(basename "$ddl_file")"
             echo "" >> "$output_file"
@@ -66,7 +66,7 @@ EOF
     
     # Concatenar Seed files (008+)
     log_info "Adicionando Seed files (008+)..."
-    for seed_file in init/migrations/modular/seeds/0*.sql; do
+    for seed_file in init/seeds/data/0*.sql; do
         if [[ -f "$seed_file" ]]; then
             log_info "  → $(basename "$seed_file")"
             echo "" >> "$output_file"
