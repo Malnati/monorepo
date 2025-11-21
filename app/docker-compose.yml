@@ -78,14 +78,14 @@ services:
       OPENROUTER_HTTP_REFERER: "${OPENROUTER_HTTP_REFERER:-}"
       OPENROUTER_APP_TITLE: "${OPENROUTER_APP_TITLE:-APP}"
       APP_JOB_SERVICE_TOKEN: "${APP_JOB_SERVICE_TOKEN:-default-service-token}"
-      API_HEALTHCHECK_URL: "${APP_API_HEALTHCHECK_URL:-http://localhost:3001/app/apihealth}"
+      API_HEALTHCHECK_URL: "${APP_API_HEALTHCHECK_URL:-http://localhost:3001/api/health}"
     ports:
       - "${APP_API_PORT:-3001}:3001"
     restart: unless-stopped
     networks:
       - app_internal
     healthcheck:
-      test: ["CMD", "sh", "-c", "response=$$(curl -sf $${API_HEALTHCHECK_URL:-http://localhost:3001/app/apihealth}) && echo \"$$response\" | grep -q '\"status\":\"ok\"' && echo \"$$response\" | grep -q '\"database\":\"connected\"'"]
+      test: ["CMD", "sh", "-c", "response=$$(curl -sf $${API_HEALTHCHECK_URL:-http://localhost:3001/api/health}) && echo \"$$response\" | grep -q '\"status\":\"ok\"' && echo \"$$response\" | grep -q '\"database\":\"connected\"'"]
       interval: 30s
       timeout: 10s
       retries: 3
