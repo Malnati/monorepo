@@ -94,13 +94,13 @@ services:
       retries: 3
       start_period: 60s
 
-  oauth2-proxy:
+  monorepo-oauth2:
     build:
       context: ./oauth2
       dockerfile: Dockerfile
-    image: "${APP_OAUTH2_PROXY_IMAGE_NAME:-oauth2-proxy}"
-    container_name: "${APP_OAUTH2_PROXY_CONTAINER_NAME:-oauth2-proxy}"
-    hostname: "${APP_OAUTH2_PROXY_HOSTNAME:-oauth2-proxy}"
+    image: "${APP_OAUTH2_PROXY_IMAGE_NAME:-monorepo-oauth2}"
+    container_name: "${APP_OAUTH2_PROXY_CONTAINER_NAME:-monorepo-oauth2}"
+    hostname: "${APP_OAUTH2_PROXY_HOSTNAME:-monorepo-oauth2}"
     depends_on:
       monorepo-ui:
         condition: service_started
