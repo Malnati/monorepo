@@ -10,6 +10,13 @@ const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "0.0.0.0";
 const JSON_PAYLOAD_LIMIT = process.env.JSON_PAYLOAD_LIMIT || "10mb";
 const API_BASE_URL = process.env.API_BASE_URL || `http://${HOST}:${PORT}`;
+
+// Ensure API_PRODUCTION_URL is set in production
+if (process.env.NODE_ENV === "production" && !process.env.API_PRODUCTION_URL) {
+  throw new Error(
+    "API_PRODUCTION_URL environment variable must be set in production."
+  );
+}
 const API_PRODUCTION_URL = process.env.API_PRODUCTION_URL || API_BASE_URL;
 
 async function bootstrap() {
