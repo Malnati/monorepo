@@ -1,0 +1,264 @@
+# allowlist.yml
+# Lista de comandos permitidos que apenas realizam leitura e execução segura
+# Este arquivo define comandos que podem ser executados com segurança pois
+# não modificam o sistema, apenas leem informações ou executam operações não-destrutivas
+
+# Comandos de leitura de arquivos e diretórios
+read_commands:
+  - cat
+  - head
+  - tail
+  - less
+  - more
+  - grep
+  - find
+  - ls
+  - pwd
+  - read
+  - readlink
+  - realpath
+  - basename
+  - dirname
+  - stat
+  - file
+  - md5sum
+  - sha256sum
+  - sha512sum
+  - wc
+  - sort
+  - uniq
+  - cut
+  - awk
+  - sed  # apenas modo leitura (sem -i)
+  - diff
+  - cmp
+
+# Comandos de execução e verificação
+exec_commands:
+  - echo
+  - test
+  - which
+  - type
+  - command
+  - hash
+  - true
+  - false
+  - [  # comando test alternativo
+
+# Comandos de sistema (leitura apenas)
+system_read_commands:
+  - uname
+  - hostname
+  - date
+  - uptime
+  - whoami
+  - id
+  - groups
+  - env
+  - printenv
+  - locale
+  - locale -a
+  - getconf
+
+# Comandos de rede (leitura apenas)
+network_read_commands:
+  - curl  # apenas GET, sem modificação
+  - wget  # apenas GET, sem modificação
+  - ping
+  - nslookup
+  - dig
+  - host
+  - getent
+  - lsof  # leitura de portas/processos
+
+# Comandos de processo (leitura apenas)
+process_read_commands:
+  - ps
+  - pgrep
+  - pidof
+  - top  # modo leitura
+  - htop  # modo leitura
+  - jobs
+  - fg
+  - bg
+
+# Comandos de variáveis e ambiente
+env_commands:
+  - export  # apenas leitura de variáveis existentes
+  - set  # apenas leitura
+  - declare  # apenas leitura
+
+# Comandos de Git (leitura apenas)
+git_read_commands:
+  - git status
+  - git log
+  - git show
+  - git diff
+  - git branch
+  - git tag
+  - git ls-files
+  - git ls-tree
+  - git cat-file
+  - git rev-parse
+  - git describe
+  - git config  # apenas --get, --list, --show-origin
+  - git remote
+  - git remote show
+  - git ls-remote
+
+# Comandos de Docker (leitura apenas)
+docker_read_commands:
+  - docker ps
+  - docker images
+  - docker logs
+  - docker inspect
+  - docker stats
+  - docker top
+  - docker exec  # apenas leitura (sem modificação)
+  - docker-compose config
+  - docker-compose ps
+  - docker-compose logs
+
+# Comandos de Make (leitura apenas)
+make_read_commands:
+  - make help
+  - make -n  # dry-run
+  - make -p  # print database
+
+# Comandos de verificação e validação
+validation_commands:
+  - test
+  - [
+  - [[
+  - timeout  # apenas para limitar tempo de execução
+  - strace  # apenas leitura de syscalls
+  - ltrace  # apenas leitura de library calls
+
+# Comandos de compressão (leitura apenas)
+archive_read_commands:
+  - tar -t  # listar conteúdo
+  - tar -x  # extrair (leitura de arquivo)
+  - zip -l  # listar conteúdo
+  - unzip -l  # listar conteúdo
+  - gzip -l  # listar
+  - zcat
+  - zless
+  - zmore
+
+# Comandos de texto e formatação
+text_commands:
+  - fmt
+  - fold
+  - nl
+  - pr
+  - column
+  - paste
+  - join
+  - tr  # apenas transformação de saída
+
+# Comandos de busca e localização
+search_commands:
+  - locate
+  - whereis
+  - which
+  - type
+  - command -v
+
+# Comandos de histórico e informações
+info_commands:
+  - history  # apenas leitura
+  - man
+  - info
+  - help
+  - apropos
+  - whatis
+
+# Comandos de sistema de arquivos (leitura)
+filesystem_read_commands:
+  - df
+  - du
+  - mount  # apenas leitura (sem -o)
+  - umount  # não permitido (modificação)
+  - lsblk
+  - blkid
+  - fdisk -l  # apenas listar
+  - parted -l  # apenas listar
+
+# Comandos de rede avançados (leitura)
+network_advanced_read_commands:
+  - netstat
+  - ss
+  - ip addr show
+  - ip route show
+  - ip link show
+  - ifconfig  # apenas leitura
+  - route -n  # apenas leitura
+  - arp -a  # apenas leitura
+  - tcpdump  # apenas captura (sem modificação)
+  - wireshark  # apenas captura (sem modificação)
+
+# Comandos de monitoramento (leitura)
+monitoring_commands:
+  - vmstat
+  - iostat
+  - mpstat
+  - sar
+  - free
+  - swapon --show
+  - systemctl status  # apenas status
+  - systemctl list-units  # apenas listar
+  - journalctl  # apenas leitura de logs
+
+# Comandos de desenvolvimento (leitura)
+dev_read_commands:
+  - npm list  # apenas listar
+  - npm view  # apenas visualizar
+  - npm outdated  # apenas verificar
+  - node --version
+  - npm --version
+  - python --version
+  - python3 --version
+  - pip list  # apenas listar
+  - pip show  # apenas visualizar
+  - git --version
+  - docker --version
+  - docker-compose --version
+
+# Comandos de validação de arquivos de configuração
+config_validation_commands:
+  - yamllint  # apenas validação
+  - jsonlint  # apenas validação
+  - jq  # apenas leitura/transformação de JSON
+  - yq  # apenas leitura/transformação de YAML
+  - xmlstarlet  # apenas leitura de XML
+
+# Comandos de shell built-in seguros
+shell_safe_builtins:
+  - :
+  - .
+  - alias  # apenas listar
+  - bind  # apenas listar
+  - compgen
+  - complete
+  - compopt
+  - dirs
+  - disown  # apenas listar processos
+  - enable  # apenas listar
+  - fc  # apenas listar histórico
+  - getopts
+  - kill  # apenas com sinais de leitura (SIGUSR1, SIGUSR2)
+  - mapfile  # apenas leitura
+  - popd  # não permitido (modifica diretório)
+  - pushd  # não permitido (modifica diretório)
+  - readarray  # apenas leitura
+  - shopt  # apenas listar
+  - trap  # apenas listar
+  - ulimit  # apenas mostrar limites
+  - umask  # apenas mostrar máscara
+
+# Notas importantes:
+# - Comandos que modificam arquivos, diretórios ou configurações NÃO estão incluídos
+# - Comandos que criam, deletam ou alteram dados NÃO estão incluídos
+# - Comandos de instalação (apt, yum, npm install, etc.) NÃO estão incluídos
+# - Comandos de escrita (echo >, tee, redirecionamento >) devem ser validados separadamente
+# - Comandos com flags de modificação (-i, --write, etc.) devem ser bloqueados mesmo que o comando base esteja na lista
