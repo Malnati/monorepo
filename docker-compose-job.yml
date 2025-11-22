@@ -41,3 +41,14 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      monorepo_net:
+        ipv4_address: 172.30.0.31
+
+networks:
+  monorepo_net:
+    name: monorepo_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
