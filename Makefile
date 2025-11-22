@@ -1,19 +1,6 @@
-.PHONY: help build start stop clean format-prettier install-hooks
+.PHONY: format-prettier install-hooks
 
-help:
-	@echo "Available targets: build start stop clean format-prettier install-hooks"
-
-build:
-	@echo "No build pipeline is defined yet; add project-specific steps when components are introduced."
-
-start:
-	@echo "No runtime services are defined yet; configure start commands once applications are added."
-
-stop:
-	@echo "No runtime services are running; add stop commands alongside future start targets."
-
-clean:
-	@echo "No build artifacts to clean; extend this target when build outputs are created."
+include Makefile.docker
 
 format-prettier:
 	@if docker info >/dev/null 2>&1 && docker compose version >/dev/null 2>&1 2>/dev/null && [ -f "docker-compose-prettier.yml" ]; then \
