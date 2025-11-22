@@ -14,6 +14,7 @@ WORKDIR /app
 ARG VITE_GOOGLE_MAPS_API_KEY
 ARG VITE_API_BASE_URL
 ARG VITE_GOOGLE_CLIENT_ID
+ARG VITE_SITE_DOMAIN
 
 # Instalar dependências
 COPY package*.json ./
@@ -31,6 +32,7 @@ COPY . .
 RUN VITE_GOOGLE_MAPS_API_KEY="${VITE_GOOGLE_MAPS_API_KEY}" \
     VITE_API_BASE_URL="${VITE_API_BASE_URL}" \
     VITE_GOOGLE_CLIENT_ID="${VITE_GOOGLE_CLIENT_ID}" \
+    VITE_SITE_DOMAIN="${VITE_SITE_DOMAIN}" \
     npm run build
 
 # Configuração de variáveis, volumes, healthcheck e comandos

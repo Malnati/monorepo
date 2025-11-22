@@ -1,8 +1,11 @@
 // app/uisrc/services/auth.service.ts
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
+// VITE_API_BASE_URL é obrigatória em produção, mas pode ter fallback em desenvolvimento
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:3001" : "");
+if (!API_BASE_URL && !import.meta.env.DEV) {
+  throw new Error("VITE_API_BASE_URL não está configurada. Configure no docker-compose.yml ou .env");
+}
 
 // Remove /api do final da API_BASE_URL se existir para evitar duplicação
 // A API_BASE_URL já contém /api quando configurada para produção

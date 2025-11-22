@@ -8,8 +8,10 @@ const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || "";
 const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || "";
 const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 const GMAIL_SENDER = process.env.GMAIL_SENDER || "noreply@example.com";
-const DEFAULT_APP_BASE_URL = "http://localhost:5174";
-const APP_BASE_URL = process.env.APP_BASE_URL || DEFAULT_APP_BASE_URL;
+const APP_BASE_URL = process.env.APP_BASE_URL || "";
+if (!APP_BASE_URL) {
+  throw new Error("APP_BASE_URL não está configurada. Configure no docker-compose.yml ou .env");
+}
 
 interface EmailOptions {
   to: string;

@@ -7,7 +7,11 @@
  * de persistência estão funcionando corretamente antes de aceitar requisições.
  */
 
-const API_URL = process.env.API_URL || "http://localhost:3001/api";
+const API_URL = process.env.API_URL || "";
+if (!API_URL) {
+  console.error("ERRO: API_URL não está configurada. Configure no docker-compose.yml ou .env");
+  process.exit(1);
+}
 const MAX_RETRIES = 30;
 const RETRY_DELAY = 2000; // 2 segundos
 const JWT_SECRET = process.env.JWT_SECRET || "default-secret-key";

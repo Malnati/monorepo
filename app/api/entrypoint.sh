@@ -51,9 +51,9 @@ fi
 # npm run migration:run || true
 
 # Configurar variáveis de ambiente para testes
-export API_URL="http://localhost:${PORT:-3001}/api"
 export HOST="${HOST:-0.0.0.0}"
 export PORT="${PORT:-3001}"
+export API_URL="${API_URL:-http://${HOST}:${PORT}/api}"
 
 # Mockar serviços externos para testes (se não configurados)
 export GOOGLE_MAPS_SERVER_KEY="${GOOGLE_MAPS_SERVER_KEY:-mock-key-for-tests}"

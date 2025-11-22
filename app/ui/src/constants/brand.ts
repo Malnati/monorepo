@@ -6,5 +6,5 @@ export const brandTokens = {
   accentEmphasis: "#22C55E",
   backgroundSoft: "#ECFDF3",
   supportEmail: "contato@example.com",
-  siteDomain: "app.localhost",
+  siteDomain: import.meta.env.VITE_SITE_DOMAIN || "app.localhost",
 };

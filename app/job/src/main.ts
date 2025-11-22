@@ -22,12 +22,13 @@ async function bootstrap() {
   );
 
   const port = process.env.PORT || DEFAULT_PORT;
+  const baseUrl = process.env.APP_JOB_BASE_URL || `http://localhost:${port}`;
   await app.listen(port);
 
-  logger.log(`Application is running on: http://localhost:${port}`);
-  logger.log(`Health check: http://localhost:${port}/health`);
-  logger.log(`Metrics: http://localhost:${port}/metrics`);
-  logger.log(`Prometheus metrics: http://localhost:${port}/metrics/prometheus`);
+  logger.log(`Application is running on: ${baseUrl}`);
+  logger.log(`Health check: ${baseUrl}/health`);
+  logger.log(`Metrics: ${baseUrl}/metrics`);
+  logger.log(`Prometheus metrics: ${baseUrl}/metrics/prometheus`);
 }
 
 bootstrap();

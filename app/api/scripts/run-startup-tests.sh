@@ -16,9 +16,13 @@ error() {
 log "Iniciando testes de inicialização da API..."
 
 # Variáveis de ambiente
-API_URL="${API_URL:-http://localhost:3001/api}"
+API_URL="${API_URL}"
 API_PORT="${PORT:-3001}"
 API_HOST="${HOST:-0.0.0.0}"
+
+if [ -z "${API_URL}" ]; then
+  error "API_URL não está configurada. Configure no docker-compose.yml ou .env"
+fi
 
 # Aguardar API estar disponível (máximo 60 segundos)
 log "Aguardando API estar disponível em ${API_URL}..."
