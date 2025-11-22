@@ -4,7 +4,7 @@
 Desabilitado até que o GitHub lance uma maneira de automatizar os agentes através de GitHub Actions.
 -->
 
-name: Engineering Automação & Scripts Agent Check
+name: 🐳 Engineering Automação & Scripts Agent Check
 
 on:
   pull_request:
