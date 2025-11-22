@@ -10,6 +10,7 @@ services:
       context: ./app/db
       dockerfile: Dockerfile
     image: "${APP_DB_IMAGE_NAME:-db}"
+    pull_policy: build
     container_name: "${APP_DB_CONTAINER_NAME:-db}"
     hostname: "${APP_DB_HOSTNAME:-db}"
     environment:

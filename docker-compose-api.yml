@@ -7,6 +7,7 @@ services:
       context: ./app/api
       dockerfile: Dockerfile
     image: "${APP_API_IMAGE_NAME:-api}"
+    pull_policy: build
     container_name: "${APP_API_CONTAINER_NAME:-api}"
     hostname: "${APP_API_HOSTNAME:-api}"
     environment:

@@ -14,6 +14,7 @@ services:
         VITE_GOOGLE_CLIENT_ID: "${APP_UI_VITE_GOOGLE_CLIENT_ID:-}"
         VITE_SITE_DOMAIN: "${APP_UI_SITE_DOMAIN:-app.localhost}"
     image: "${APP_UI_IMAGE_NAME:-ui}"
+    pull_policy: build
     container_name: "${APP_UI_IMAGE_NAME:-ui}"
     hostname: "${APP_UI_HOSTNAME:-ui}"
     environment:

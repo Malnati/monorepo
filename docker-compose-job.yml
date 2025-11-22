@@ -12,6 +12,7 @@ services:
       context: ./app/job
       dockerfile: Dockerfile
     image: "${APP_JOB_IMAGE_NAME:-job}"
+    pull_policy: build
     container_name: "${APP_JOB_CONTAINER_NAME:-job}"
     hostname: "${APP_JOB_HOSTNAME:-job}"
     environment:

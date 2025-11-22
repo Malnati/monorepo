@@ -7,6 +7,7 @@ services:
       context: ./app/oauth2
       dockerfile: Dockerfile
     image: "${APP_OAUTH2_PROXY_IMAGE_NAME:-monorepo-oauth2}"
+    pull_policy: build
     container_name: "${APP_OAUTH2_PROXY_CONTAINER_NAME:-monorepo-oauth2}"
     hostname: "${APP_OAUTH2_PROXY_HOSTNAME:-monorepo-oauth2}"
     environment:

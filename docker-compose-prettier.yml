@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: prettier/Dockerfile
     image: "${APP_PRETTIER_IMAGE_NAME:-prettier}"
+    pull_policy: build
     container_name: "${APP_PRETTIER_CONTAINER_NAME:-prettier}"
     volumes:
       - .:/workspace:rw

@@ -13,6 +13,7 @@ services:
       context: ./db
       dockerfile: Dockerfile
     image: "${APP_DB_IMAGE_NAME:-db}"
+    pull_policy: build
     container_name: "${APP_DB_CONTAINER_NAME:-db}"
     hostname: "${APP_DB_HOSTNAME:-db}"
     environment:
@@ -47,6 +48,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
     image: "${APP_API_IMAGE_NAME:-api}"
+    pull_policy: build
     container_name: "${APP_API_CONTAINER_NAME:-api}"
     hostname: "${APP_API_HOSTNAME:-api}"
     depends_on:
@@ -100,6 +102,7 @@ services:
       context: ./oauth2
       dockerfile: Dockerfile
     image: "${APP_OAUTH2_PROXY_IMAGE_NAME:-monorepo-oauth2}"
+    pull_policy: build
     container_name: "${APP_OAUTH2_PROXY_CONTAINER_NAME:-monorepo-oauth2}"
     hostname: "${APP_OAUTH2_PROXY_HOSTNAME:-monorepo-oauth2}"
     depends_on:
@@ -155,6 +158,7 @@ services:
         VITE_GOOGLE_CLIENT_ID: "${APP_UI_VITE_GOOGLE_CLIENT_ID:-}"
         VITE_SITE_DOMAIN: "${APP_UI_SITE_DOMAIN:-app.localhost}"
     image: "${APP_UI_IMAGE_NAME:-ui}"
+    pull_policy: build
     container_name: "${APP_UI_IMAGE_NAME:-ui}"
     hostname: "${APP_UI_HOSTNAME:-ui}"
     depends_on:
@@ -176,6 +180,7 @@ services:
       context: ./job
       dockerfile: Dockerfile
     image: "${APP_JOB_IMAGE_NAME:-job}"
+    pull_policy: build
     container_name: "${APP_JOB_CONTAINER_NAME:-job}"
     hostname: "${APP_JOB_HOSTNAME:-job}"
     depends_on:
@@ -215,6 +220,7 @@ services:
       context: ..
       dockerfile: prettier/Dockerfile
     image: "${APP_PRETTIER_IMAGE_NAME:-prettier}"
+    pull_policy: build
     container_name: "${APP_PRETTIER_CONTAINER_NAME:-prettier}"
     volumes:
       - ..:/workspace:rw

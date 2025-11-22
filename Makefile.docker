@@ -39,7 +39,21 @@ logs: ## Show logs for all services
 	$(COMPOSE) $(COMPOSE_FILES) logs -f
 
 clean: ## Stop and remove all containers, networks, images and volumes
-	$(COMPOSE) $(COMPOSE_FILES) down -v --rmi all --remove-orphans
+	@echo "Limpando containers, volumes e imagens..."
+	@# Parar e remover containers por nome (caso não estejam nos arquivos compose)
+	@for container in $$(docker ps -a --filter "name=monorepo-" --format "{{.Names}}" 2>/dev/null); do \
+		docker stop $$container 2>/dev/null || true; \
+		docker rm -f $$container 2>/dev/null || true; \
+	done
+	@for container in $$(docker ps -a --filter "name=prettier" --format "{{.Names}}" 2>/dev/null); do \
+		docker stop $$container 2>/dev/null || true; \
+		docker rm -f $$container 2>/dev/null || true; \
+	done
+	@# Limpar via docker compose (remove containers, volumes, imagens e órfãos)
+	@$(COMPOSE) $(COMPOSE_FILES) down -v --rmi all --remove-orphans 2>/dev/null || true
+	@# Limpar containers órfãos restantes
+	@docker container prune -f 2>/dev/null || true
+	@echo "Limpeza concluida"
 
 # ========================================
 # Targets por serviço
