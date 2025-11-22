@@ -311,7 +311,7 @@ export class GmailService implements OnModuleInit {
                 Este é um e-mail automático da plataforma APP.
               </p>
               <p style="margin: 0 0 16px 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
-                Para dúvidas ou suporte, acesse: <a href="${process.env.APP_BASE_URL || "https://template-monorepo.cranio.dev"}" style="color: #00B5B8; text-decoration: none;">${process.env.APP_BASE_URL || "https://template-monorepo.cranio.dev"}</a>
+                Para dúvidas ou suporte, acesse: <a href="${process.env.APP_BASE_URL || "https://monorepo.cranio.dev"}" style="color: #00B5B8; text-decoration: none;">${process.env.APP_BASE_URL || "https://monorepo.cranio.dev"}</a>
               </p>
               <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #6B7280;">
                 <strong>APP</strong> - Template Corporation<br>

@@ -60,7 +60,7 @@ async function bootstrap() {
       "JWT-auth",
     )
     .addServer(`http://localhost:${PORT}`, "Desenvolvimento Local")
-    .addServer("https://template-monorepo.cranio.dev", "Produção")
+    .addServer("https://monorepo.cranio.dev", "Produção")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
