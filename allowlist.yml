@@ -1,4 +1,30 @@
 # allowlist.yml
+#
+# Purpose:
+#   This file defines an allowlist of shell commands that are considered safe to execute.
+#   Only commands that perform read-only or non-destructive operations are included.
+#
+# Usage:
+#   This allowlist is consumed by the [INSERT SYSTEM/COMPONENT NAME HERE] component of the project,
+#   which loads this file to determine which commands can be safely executed by users or automated processes.
+#   The system checks user-requested commands against the lists defined below and only permits execution
+#   if the command is present in the appropriate category.
+#
+# Format:
+#   The file is organized into categories (e.g., read_commands, exec_commands, etc.), each listing
+#   allowed commands as YAML arrays. Comments indicate any restrictions (e.g., "sed" only in read mode).
+#
+# Security Considerations:
+#   Only commands that do not modify the system or user data should be included.
+#   Review and update this file carefully to avoid introducing security risks.
+#
+# To update:
+#   Add or remove commands from the appropriate section, and ensure that any new commands are safe
+#   and comply with project security policies.
+#
+# For more information, see [INSERT LINK TO MAIN PROJECT README OR DOCS].
+#
+# (Below: original comments in Portuguese for reference)
 # Lista de comandos permitidos que apenas realizam leitura e execução segura
 # Este arquivo define comandos que podem ser executados com segurança pois
 # não modificam o sistema, apenas leem informações ou executam operações não-destrutivas
