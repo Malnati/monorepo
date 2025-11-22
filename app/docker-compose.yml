@@ -125,7 +125,6 @@ services:
       OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST: "${APP_OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST:-false}"
       OAUTH2_PROXY_PASS_HOST_HEADER: "${APP_OAUTH2_PROXY_PASS_HOST_HEADER:-true}"
       OAUTH2_PROXY_PASS_USER_HEADERS: "${APP_OAUTH2_PROXY_PASS_USER_HEADERS:-true}"
-      GODEBUG: "netdns=cgo"
     ports:
       - "${APP_OAUTH2_PROXY_PORT:-5180}:4180"
     dns:
@@ -133,9 +132,6 @@ services:
       - 8.8.4.4
       - 1.1.1.1
     dns_search: []
-    dns_opt:
-      - use-vc
-      - no-tld-query
     restart: unless-stopped
     networks:
       - monorepo-internal
