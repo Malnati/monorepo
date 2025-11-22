@@ -1,0 +1,38 @@
+# docker-compose-db.yml
+# Serviço de Banco de Dados PostgreSQL
+
+volumes:
+  db-data:
+
+services:
+  monorepo-db:
+    build:
+      context: ./app/db
+      dockerfile: Dockerfile
+    image: "${APP_DB_IMAGE_NAME:-db}"
+    container_name: "${APP_DB_CONTAINER_NAME:-db}"
+    hostname: "${APP_DB_HOSTNAME:-db}"
+    environment:
+      POSTGRES_DB: "${APP_DB_NAME:-db}"
+      POSTGRES_USER: "${APP_DB_USER:-postgres}"
+      POSTGRES_PASSWORD: "${APP_DB_PASSWORD:-postgres}"
+      PGTZ: "${APP_DB_TZ:-Etc/UTC}"
+      LANG: "${APP_DB_LANG:-C.UTF-8}"
+      LC_ALL: "${APP_DB_LC_ALL:-C.UTF-8}"
+    ports:
+      - "${APP_DB_PORT:-5432}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./app/db/init/migrations:/docker-entrypoint-initdb.d:ro
+    command: ["postgres"]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${APP_DB_USER:-postgres} -d ${APP_DB_NAME:-db}",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped

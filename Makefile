@@ -16,9 +16,9 @@ clean:
 	@echo "No build artifacts to clean; extend this target when build outputs are created."
 
 format-prettier:
-	@if docker info >/dev/null 2>&1 && docker compose version >/dev/null 2>&1 2>/dev/null && [ -f "app/docker-compose.yml" ]; then \
+	@if docker info >/dev/null 2>&1 && docker compose version >/dev/null 2>&1 2>/dev/null && [ -f "docker-compose-prettier.yml" ]; then \
 		echo "🐳 Executando Prettier via Docker Compose..."; \
-		docker compose -f app/docker-compose.yml run --rm prettier || true; \
+		docker compose -f docker-compose-prettier.yml run --rm prettier || true; \
 	elif docker info >/dev/null 2>&1; then \
 		echo "🐳 Executando Prettier via Docker..."; \
 		docker run --rm -it \

@@ -71,9 +71,9 @@ fi
 PROJECT_ROOT="$(git rev-parse --show-toplevel)"
 cd "$PROJECT_ROOT" || exit 1
 
-# Verificar se docker-compose.yml existe
-if [ ! -f "app/docker-compose.yml" ]; then
-  echo -e "${YELLOW}⚠️  docker-compose.yml não encontrado. Pulando validação Prettier.${NC}"
+# Verificar se docker-compose-prettier.yml existe
+if [ ! -f "docker-compose-prettier.yml" ]; then
+  echo -e "${YELLOW}⚠️  docker-compose-prettier.yml não encontrado. Pulando validação Prettier.${NC}"
   exit 0
 fi
 
@@ -84,7 +84,7 @@ GIT_STATUS=$(git status --porcelain 2>/dev/null || echo "")
 echo -e "${BLUE}🐳 Executando Prettier via Docker...${NC}"
 # Prettier pode retornar código diferente de 0 mesmo quando funciona
 # Por isso não verificamos o código de saída diretamente
-$COMPOSE_CMD -f app/docker-compose.yml run --rm prettier 2>&1 || true
+$COMPOSE_CMD -f docker-compose-prettier.yml run --rm prettier 2>&1 || true
 
 # Verificar se há mudanças após formatação
 NEW_GIT_STATUS=$(git status --porcelain 2>/dev/null || echo "")

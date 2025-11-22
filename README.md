@@ -85,7 +85,7 @@ O projeto está organizado como um monorepo com os seguintes serviços principai
 
 ### Arquivos principais atualizados
 - Documentação: README.md, docs/rup/README*.md, especificações de requisitos
-- Configuração: `app/docker-compose.yml`, `app/.env.example`, `app/api/.env.example`, `app/caddy/Caddyfile`
+- Configuração: `docker-compose-*.yml` (na raiz), `.env.example`, `app/api/.env.example`, `app/caddy/Caddyfile`
 - Código: serviços de e-mail (`app/api/src/modules/mailing/`, `app/api/src/modules/gmail/`), agentes de IA, templates de comunicação
 - Frontend: componentes React em `app/ui/src/` com integração Google SSO
 - Checklists: referências corporativas e de governança em `docs/rup/99-anexos/checklists/`
@@ -93,10 +93,10 @@ O projeto está organizado como um monorepo com os seguintes serviços principai
 ### Como usar este template
 1. **Clone o repositório** para seu novo projeto
 2. **Substitua "Template Corporation"** pelo nome da sua organização
-3. **Configure o domínio** atualizando `APP_CADDY_DOMAIN` e variáveis relacionadas em `app/.env` (padrão: `template-monorepo.cranio.dev`)
-4. **Configure autenticação Google** adicionando `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` no `app/.env`
+3. **Configure o domínio** atualizando `APP_CADDY_DOMAIN` e variáveis relacionadas em `.env` (padrão: `template-monorepo.cranio.dev`)
+4. **Configure autenticação Google** adicionando `GOOGLE_CLIENT_ID` e `GOOGLE_CLIENT_SECRET` no `.env`
 5. **Adapte os requisitos genéricos** (REQ-###) para seu caso de uso específico
-6. **Configure as variáveis de ambiente** conforme sua infraestrutura (consulte `app/.env.example`)
+6. **Configure as variáveis de ambiente** conforme sua infraestrutura (consulte `.env.example`)
 
 ### Início rápido
 
@@ -121,6 +121,125 @@ O projeto está organizado como um monorepo com os seguintes serviços principai
    - Banco de dados: `localhost:5432`
 
 Para mais detalhes sobre cada serviço, consulte os READMEs individuais em `app/api/README.md`, `app/ui/README.md`, etc.
+
+## Docker Compose - Estrutura de Serviços Separados
+
+Este projeto utiliza arquivos Docker Compose separados por serviço, localizados na raiz do repositório.
+
+### Arquivos Docker Compose
+
+- `docker-compose-db.yml` - Serviço de Banco de Dados PostgreSQL
+- `docker-compose-api.yml` - Serviço de API NestJS
+- `docker-compose-ui.yml` - Serviço de Interface React/Vite
+- `docker-compose-job.yml` - Serviço de Worker Job (CSV Onboarding)
+- `docker-compose-oauth2.yml` - Serviço de Proxy OAuth2
+- `docker-compose-prettier.yml` - Serviço de Formatação de Código (Prettier)
+
+### Configuração
+
+#### Variáveis de Ambiente
+
+Todas as variáveis de ambiente são definidas no arquivo `.env` na raiz do repositório. Consulte `.env.example` para ver todas as variáveis disponíveis.
+
+#### Comunicação entre Serviços
+
+Cada serviço é independente e usa seu próprio hostname e IP. A comunicação entre serviços é feita via portas expostas no host (`localhost:porta`) ou através de variáveis de ambiente configuráveis.
+
+**Exemplos de comunicação:**
+- API → DB: `localhost:5432` (porta exposta do DB)
+- UI → API: `localhost:3001` (porta exposta da API)
+- Job → API: `localhost:3001` (porta exposta da API)
+- OAuth2 → UI: `localhost:5174` (porta exposta da UI)
+
+### Uso
+
+#### Usando o Makefile
+
+O arquivo `Makefile.docker` contém todos os targets para gerenciar os serviços:
+
+```bash
+# Incluir o Makefile.docker
+include Makefile.docker
+
+# Ou usar diretamente
+make -f Makefile.docker start
+```
+
+#### Targets Principais
+
+- `make -f Makefile.docker build` - Build de todos os serviços
+- `make -f Makefile.docker start` - Iniciar todos os serviços
+- `make -f Makefile.docker stop` - Parar todos os serviços
+- `make -f Makefile.docker logs` - Ver logs de todos os serviços
+- `make -f Makefile.docker clean` - Remover containers, volumes e imagens
+
+#### Targets por Serviço
+
+Cada serviço possui targets individuais:
+
+- `make -f Makefile.docker build-db` - Build do banco de dados
+- `make -f Makefile.docker start-db` - Iniciar banco de dados
+- `make -f Makefile.docker logs-db` - Ver logs do banco de dados
+- `make -f Makefile.docker rebuild-db` - Rebuild completo do banco de dados
+
+(Substitua `db` por `api`, `ui`, `job`, `oauth2` conforme necessário)
+
+#### Usando Docker Compose Diretamente
+
+Para usar múltiplos arquivos docker-compose:
+
+```bash
+# Iniciar todos os serviços
+docker compose \
+  -f docker-compose-db.yml \
+  -f docker-compose-api.yml \
+  -f docker-compose-ui.yml \
+  -f docker-compose-job.yml \
+  -f docker-compose-oauth2.yml \
+  up -d
+
+# Iniciar apenas banco de dados e API
+docker compose \
+  -f docker-compose-db.yml \
+  -f docker-compose-api.yml \
+  up -d
+
+# Ver logs de um serviço específico
+docker compose -f docker-compose-api.yml logs -f
+```
+
+### Dependências entre Serviços
+
+As dependências são gerenciadas automaticamente quando múltiplos arquivos são usados juntos. Os arquivos docker-compose individuais contêm `depends_on` que funcionam quando os arquivos são combinados:
+
+- **API** depende de **DB** (healthcheck)
+- **UI** depende de **API** (service_started)
+- **Job** depende de **API** (service_started)
+- **OAuth2** depende de **UI** e **API** (service_started)
+
+**Nota:** Ao validar um arquivo isolado com `docker compose config`, você pode ver avisos sobre serviços dependentes não encontrados. Isso é esperado - os arquivos devem ser usados juntos para funcionar corretamente.
+
+### Troubleshooting
+
+#### Serviços não encontram uns aos outros
+
+Certifique-se de que:
+1. Os serviços dependentes foram iniciados antes (ex: DB antes de API)
+2. As variáveis de ambiente estão configuradas corretamente para usar `localhost:porta`
+3. As portas não estão em conflito com outros serviços no host
+4. Os serviços estão acessíveis via `localhost` (não via hostname de container)
+
+#### Ordem de inicialização
+
+Para garantir que as dependências sejam respeitadas, sempre inicie os serviços na ordem:
+
+1. DB
+2. API (depende de DB)
+3. UI (depende de API)
+4. Job (depende de API)
+5. OAuth2 (depende de UI e API)
+
+O Makefile.docker gerencia isso automaticamente.
 
 ### Para novos times
 - Consulte o changelog completo: [`CHANGELOG/20251117204729.md`](./CHANGELOG/20251117204729.md)

@@ -1,0 +1,193 @@
+# Makefile.docker
+# Automação Docker Compose para serviços separados
+# Cada serviço tem seu próprio arquivo docker-compose-<servico>.yml
+
+# Configuração padrão
+COMPOSE ?= docker compose
+PROJECT_NAME ?= app
+
+# Arquivos docker-compose por serviço
+COMPOSE_DB = docker-compose-db.yml
+COMPOSE_API = docker-compose-api.yml
+COMPOSE_UI = docker-compose-ui.yml
+COMPOSE_JOB = docker-compose-job.yml
+COMPOSE_OAUTH2 = docker-compose-oauth2.yml
+COMPOSE_PRETTIER = docker-compose-prettier.yml
+
+# Todos os arquivos compose (ordem de dependência)
+COMPOSE_FILES = -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_UI) -f $(COMPOSE_JOB) -f $(COMPOSE_OAUTH2)
+
+# ========================================
+# Targets principais
+# ========================================
+
+.PHONY: build start stop dev logs clean help
+
+build: ## Build all services
+	$(COMPOSE) $(COMPOSE_FILES) build
+
+start: ## Start all services
+	$(COMPOSE) $(COMPOSE_FILES) up -d
+
+stop: ## Stop all services
+	$(COMPOSE) $(COMPOSE_FILES) down
+
+dev: ## Start services in development mode with logs
+	$(COMPOSE) $(COMPOSE_FILES) up
+
+logs: ## Show logs for all services
+	$(COMPOSE) $(COMPOSE_FILES) logs -f
+
+clean: ## Stop and remove all containers, networks, images and volumes
+	$(COMPOSE) $(COMPOSE_FILES) down -v --rmi all --remove-orphans
+
+# ========================================
+# Targets por serviço
+# ========================================
+
+.PHONY: build-db start-db stop-db logs-db clean-db rebuild-db
+build-db: ## Build database service
+	$(COMPOSE) -f $(COMPOSE_DB) build
+
+start-db: ## Start database service
+	$(COMPOSE) -f $(COMPOSE_DB) up -d
+
+stop-db: ## Stop database service
+	$(COMPOSE) -f $(COMPOSE_DB) stop
+
+logs-db: ## Show database logs
+	$(COMPOSE) -f $(COMPOSE_DB) logs -f
+
+clean-db: ## Remove database container and volumes
+	$(COMPOSE) -f $(COMPOSE_DB) down -v
+
+rebuild-db: ## Rebuild database from scratch
+	$(COMPOSE) -f $(COMPOSE_DB) stop
+	$(COMPOSE) -f $(COMPOSE_DB) rm -f
+	$(COMPOSE) -f $(COMPOSE_DB) build --no-cache
+	$(COMPOSE) -f $(COMPOSE_DB) up -d --force-recreate
+
+.PHONY: build-api start-api stop-api logs-api clean-api rebuild-api
+build-api: ## Build API service
+	$(COMPOSE) -f $(COMPOSE_API) build
+
+start-api: ## Start API service (requires DB)
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) up -d
+
+stop-api: ## Stop API service
+	$(COMPOSE) -f $(COMPOSE_API) stop
+
+logs-api: ## Show API logs
+	$(COMPOSE) -f $(COMPOSE_API) logs -f
+
+clean-api: ## Remove API container
+	$(COMPOSE) -f $(COMPOSE_API) down
+
+rebuild-api: ## Rebuild API from scratch
+	$(COMPOSE) -f $(COMPOSE_API) stop
+	$(COMPOSE) -f $(COMPOSE_API) rm -f
+	$(COMPOSE) -f $(COMPOSE_API) build --no-cache
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) up -d --force-recreate
+
+.PHONY: build-ui start-ui stop-ui logs-ui clean-ui rebuild-ui
+build-ui: ## Build UI service
+	$(COMPOSE) -f $(COMPOSE_UI) build
+
+start-ui: ## Start UI service (requires API)
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_UI) up -d
+
+stop-ui: ## Stop UI service
+	$(COMPOSE) -f $(COMPOSE_UI) stop
+
+logs-ui: ## Show UI logs
+	$(COMPOSE) -f $(COMPOSE_UI) logs -f
+
+clean-ui: ## Remove UI container
+	$(COMPOSE) -f $(COMPOSE_UI) down
+
+rebuild-ui: ## Rebuild UI from scratch
+	$(COMPOSE) -f $(COMPOSE_UI) stop
+	$(COMPOSE) -f $(COMPOSE_UI) rm -f
+	$(COMPOSE) -f $(COMPOSE_UI) build --no-cache
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_UI) up -d --force-recreate
+
+.PHONY: build-job start-job stop-job logs-job clean-job rebuild-job
+build-job: ## Build job service
+	$(COMPOSE) -f $(COMPOSE_JOB) build
+
+start-job: ## Start job service (requires API)
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_JOB) up -d
+
+stop-job: ## Stop job service
+	$(COMPOSE) -f $(COMPOSE_JOB) stop
+
+logs-job: ## Show job logs
+	$(COMPOSE) -f $(COMPOSE_JOB) logs -f
+
+clean-job: ## Remove job container and volumes
+	$(COMPOSE) -f $(COMPOSE_JOB) down -v
+
+rebuild-job: ## Rebuild job from scratch
+	$(COMPOSE) -f $(COMPOSE_JOB) stop
+	$(COMPOSE) -f $(COMPOSE_JOB) rm -f
+	$(COMPOSE) -f $(COMPOSE_JOB) build --no-cache
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_JOB) up -d --force-recreate
+
+.PHONY: build-oauth2 start-oauth2 stop-oauth2 logs-oauth2 clean-oauth2 rebuild-oauth2
+build-oauth2: ## Build OAuth2 proxy service
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) build
+
+start-oauth2: ## Start OAuth2 proxy service (requires UI and API)
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_UI) -f $(COMPOSE_OAUTH2) up -d
+
+stop-oauth2: ## Stop OAuth2 proxy service
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) stop
+
+logs-oauth2: ## Show OAuth2 proxy logs
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) logs -f
+
+clean-oauth2: ## Remove OAuth2 container
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) down
+
+rebuild-oauth2: ## Rebuild OAuth2 from scratch
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) stop
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) rm -f
+	$(COMPOSE) -f $(COMPOSE_OAUTH2) build --no-cache
+	$(COMPOSE) -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_UI) -f $(COMPOSE_OAUTH2) up -d --force-recreate
+
+# ========================================
+# Utilitários
+# ========================================
+
+.PHONY: status health monitoring network-create
+status: ## Show container status
+	$(COMPOSE) $(COMPOSE_FILES) ps
+
+health: ## Check service health
+	@echo "=== Database Health ==="
+	docker exec -it ${APP_DB_CONTAINER_NAME:-db} 2>/dev/null pg_isready -U ${APP_DB_USER:-postgres} -d ${APP_DB_NAME:-db} || echo "Database not ready"
+	@echo "=== API Health ==="
+	curl -s -o /dev/null -w "%{http_code}" http://localhost:${APP_API_PORT:-3001}/api/health 2>/dev/null || echo "API not accessible"
+	@echo "=== UI Health ==="
+	curl -s -o /dev/null -w "%{http_code}" http://localhost:${APP_UI_PORT:-5174} 2>/dev/null || echo "UI not accessible"
+	@echo "=== Job Health ==="
+	curl -s -o /dev/null -w "%{http_code}" http://localhost:${APP_JOB_PORT:-3002}/health 2>/dev/null || echo "Job not accessible"
+	@echo "=== OAuth2 Health ==="
+	curl -s -o /dev/null -w "%{http_code}" http://localhost:${APP_OAUTH2_PROXY_PORT:-5180}/ping 2>/dev/null || echo "OAuth2 not accessible"
+
+monitoring: ## Show resource usage
+	docker stats --no-stream
+
+help: ## Show this help message
+	@echo "Docker Compose - Serviços Separados"
+	@echo "===================================="
+	@echo "Available targets:"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-20s %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Compose files:"
+	@echo "  - $(COMPOSE_DB)"
+	@echo "  - $(COMPOSE_API)"
+	@echo "  - $(COMPOSE_UI)"
+	@echo "  - $(COMPOSE_JOB)"
+	@echo "  - $(COMPOSE_OAUTH2)"
+	@echo "  - $(COMPOSE_PRETTIER)"

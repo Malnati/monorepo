@@ -1,0 +1,29 @@
+# docker-compose-ui.yml
+# Serviço de Interface React/Vite
+
+services:
+  monorepo-ui:
+    build:
+      context: ./app/ui
+      dockerfile: Dockerfile
+      args:
+        # Variáveis VITE_* são necessárias apenas em build-time
+        # Seguindo a cadeia: .env → docker-compose.yml → Dockerfile ARG
+        VITE_GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY:-}"
+        VITE_API_BASE_URL: "${APP_UI_VITE_API_BASE_URL:-http://localhost:3001}"
+        VITE_GOOGLE_CLIENT_ID: "${APP_UI_VITE_GOOGLE_CLIENT_ID:-}"
+        VITE_SITE_DOMAIN: "${APP_UI_SITE_DOMAIN:-app.localhost}"
+    image: "${APP_UI_IMAGE_NAME:-ui}"
+    container_name: "${APP_UI_IMAGE_NAME:-ui}"
+    hostname: "${APP_UI_HOSTNAME:-ui}"
+    depends_on:
+      monorepo-api:
+        condition: service_started
+    environment:
+      NODE_ENV: "${APP_UI_NODE_ENV:-production}"
+      APP_UI_SITE_DOMAIN: "${APP_UI_SITE_DOMAIN:-app.localhost}"
+      # Nota: Variáveis VITE_* não são necessárias em runtime (apenas build-time)
+      # Elas são "embutidas" no bundle JavaScript durante o build
+    ports:
+      - "${APP_UI_PORT:-5174}:80"
+    restart: unless-stopped

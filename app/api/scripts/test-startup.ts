@@ -9,7 +9,9 @@
 
 const API_URL = process.env.API_URL || "";
 if (!API_URL) {
-  console.error("ERRO: API_URL não está configurada. Configure no docker-compose.yml ou .env");
+  console.error(
+    "ERRO: API_URL não está configurada. Configure no docker-compose.yml ou .env",
+  );
   process.exit(1);
 }
 const MAX_RETRIES = 30;

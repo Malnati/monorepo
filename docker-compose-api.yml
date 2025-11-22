@@ -1,0 +1,54 @@
+# docker-compose-api.yml
+# Serviço de API NestJS
+
+services:
+  monorepo-api:
+    build:
+      context: ./app/api
+      dockerfile: Dockerfile
+    image: "${APP_API_IMAGE_NAME:-api}"
+    container_name: "${APP_API_CONTAINER_NAME:-api}"
+    hostname: "${APP_API_HOSTNAME:-api}"
+    depends_on:
+      monorepo-db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: "${APP_API_NODE_ENV:-development}"
+      PORT: "${APP_API_PORT:-3001}"
+      HOST: "${APP_API_HOST:-0.0.0.0}"
+      CORS_ORIGIN: "${APP_API_CORS_ORIGIN:-*}"
+      DATABASE_HOST: "${APP_DB_HOST:-localhost}"
+      DATABASE_PORT: "5432"
+      DATABASE_USER: "${APP_DB_USER:-postgres}"
+      DATABASE_PASSWORD: "${APP_DB_PASSWORD:-postgres}"
+      DATABASE_NAME: "${APP_DB_NAME:-db}"
+      GOOGLE_MAPS_SERVER_KEY: "${GOOGLE_MAPS_SERVER_KEY:-}"
+      GOOGLE_CLIENT_ID: "${APP_GOOGLE_CLIENT_ID:-}"
+      GOOGLE_CLIENT_SECRET: "${APP_GOOGLE_CLIENT_SECRET:-}"
+      JWT_SECRET: "${APP_JWT_SECRET:-}"
+      JWT_EXPIRES_IN: "${APP_JWT_EXPIRES_IN:-24h}"
+      GMAIL_CLIENT_ID: "${GMAIL_CLIENT_ID:-}"
+      GMAIL_CLIENT_SECRET: "${GMAIL_CLIENT_SECRET:-}"
+      GMAIL_REFRESH_TOKEN: "${GMAIL_REFRESH_TOKEN:-}"
+      GMAIL_SENDER: "${GMAIL_SENDER:-noreply@cranio.dev}"
+      APP_BASE_URL: "${APP_BASE_URL:-http://localhost:5174}"
+      API_BASE_URL: "${APP_API_BASE_URL:-http://localhost:3001}"
+      API_PRODUCTION_URL: "${APP_API_PRODUCTION_URL:-${APP_API_BASE_URL:-http://localhost:3001}}"
+      API_URL: "${APP_API_URL:-http://localhost:3001/api}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+      OPENROUTER_BASE_URL: "${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1/chat/completions}"
+      OPENROUTER_MODEL: "${OPENROUTER_MODEL:-anthropic/claude-3.5-sonnet}"
+      OPENROUTER_HTTP_REFERER: "${OPENROUTER_HTTP_REFERER:-}"
+      OPENROUTER_APP_TITLE: "${OPENROUTER_APP_TITLE:-APP}"
+      GOOGLE_MAPS_GEOCODING_API_URL: "${GOOGLE_MAPS_GEOCODING_API_URL:-https://maps.googleapis.com/maps/api/geocode/json}"
+      APP_JOB_SERVICE_TOKEN: "${APP_JOB_SERVICE_TOKEN:-default-service-token}"
+      API_HEALTHCHECK_URL: "${APP_API_HEALTHCHECK_URL:-http://localhost:3001/api/health}"
+    ports:
+      - "${APP_API_PORT:-3001}:3001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "response=$$(curl -sf $${API_HEALTHCHECK_URL:-http://localhost:3001/api/health}) && echo \"$$response\" | grep -q '\"status\":\"ok\"' && echo \"$$response\" | grep -q '\"database\":\"connected\"'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

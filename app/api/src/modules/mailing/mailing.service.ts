@@ -10,7 +10,9 @@ const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 const GMAIL_SENDER = process.env.GMAIL_SENDER || "noreply@example.com";
 const APP_BASE_URL = process.env.APP_BASE_URL || "";
 if (!APP_BASE_URL) {
-  throw new Error("APP_BASE_URL não está configurada. Configure no docker-compose.yml ou .env");
+  throw new Error(
+    "APP_BASE_URL não está configurada. Configure no docker-compose.yml ou .env",
+  );
 }
 
 interface EmailOptions {

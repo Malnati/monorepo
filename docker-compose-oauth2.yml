@@ -1,0 +1,49 @@
+# docker-compose-oauth2.yml
+# Serviço de Proxy OAuth2
+
+services:
+  monorepo-oauth2:
+    build:
+      context: ./app/oauth2
+      dockerfile: Dockerfile
+    image: "${APP_OAUTH2_PROXY_IMAGE_NAME:-monorepo-oauth2}"
+    container_name: "${APP_OAUTH2_PROXY_CONTAINER_NAME:-monorepo-oauth2}"
+    hostname: "${APP_OAUTH2_PROXY_HOSTNAME:-monorepo-oauth2}"
+    depends_on:
+      monorepo-ui:
+        condition: service_started
+      monorepo-api:
+        condition: service_started
+    environment:
+      OAUTH2_PROXY_PROVIDER: "google"
+      OAUTH2_PROXY_CLIENT_ID: "${APP_OAUTH2_PROXY_CLIENT_ID:-${APP_GOOGLE_CLIENT_ID:-}}"
+      OAUTH2_PROXY_CLIENT_SECRET: "${APP_OAUTH2_PROXY_CLIENT_SECRET:-${APP_GOOGLE_CLIENT_SECRET:-}}"
+      OAUTH2_PROXY_COOKIE_SECRET: "${APP_OAUTH2_PROXY_COOKIE_SECRET:-}"
+      OAUTH2_PROXY_REDIRECT_URL: "${APP_OAUTH2_PROXY_REDIRECT_URL:-https://monorepo.cranio.dev/oauth2/callback}"
+      OAUTH2_PROXY_EMAIL_DOMAINS: "${APP_OAUTH2_PROXY_EMAIL_DOMAINS:-*}"
+      OAUTH2_PROXY_UPSTREAM: "${APP_OAUTH2_PROXY_UPSTREAM:-http://localhost:5174}"
+      OAUTH2_PROXY_HTTP_ADDRESS: "${APP_OAUTH2_PROXY_HTTP_ADDRESS:-0.0.0.0:4180}"
+      OAUTH2_PROXY_REVERSE_PROXY: "${APP_OAUTH2_PROXY_REVERSE_PROXY:-true}"
+      OAUTH2_PROXY_SET_AUTHORIZATION_HEADER: "${APP_OAUTH2_PROXY_SET_AUTHORIZATION_HEADER:-true}"
+      OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "${APP_OAUTH2_PROXY_SKIP_PROVIDER_BUTTON:-true}"
+      OAUTH2_PROXY_SKIP_AUTH_ROUTE: "${APP_OAUTH2_PROXY_SKIP_AUTH_ROUTE:-GET=/assets/* GET=/icons/* GET=/manifest.webmanifest GET=/registerSW.js}"
+      OAUTH2_PROXY_COOKIE_DOMAIN: "${APP_OAUTH2_PROXY_COOKIE_DOMAIN:-monorepo.cranio.dev}"
+      OAUTH2_PROXY_COOKIE_SECURE: "${APP_OAUTH2_PROXY_COOKIE_SECURE:-true}"
+      OAUTH2_PROXY_COOKIE_SAMESITE: "${APP_OAUTH2_PROXY_COOKIE_SAMESITE:-none}"
+      OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST: "${APP_OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST:-false}"
+      OAUTH2_PROXY_PASS_HOST_HEADER: "${APP_OAUTH2_PROXY_PASS_HOST_HEADER:-true}"
+      OAUTH2_PROXY_PASS_USER_HEADERS: "${APP_OAUTH2_PROXY_PASS_USER_HEADERS:-true}"
+    ports:
+      - "${APP_OAUTH2_PROXY_PORT:-5180}:4180"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
+    dns_search: []
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:4180/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s

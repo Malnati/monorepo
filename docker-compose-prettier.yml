@@ -1,0 +1,20 @@
+# docker-compose-prettier.yml
+# Serviço de Formatação de Código (Prettier)
+
+services:
+  prettier:
+    build:
+      context: .
+      dockerfile: prettier/Dockerfile
+    image: "${APP_PRETTIER_IMAGE_NAME:-prettier}"
+    container_name: "${APP_PRETTIER_CONTAINER_NAME:-prettier}"
+    volumes:
+      - .:/workspace:rw
+    environment:
+      IN_DOCKER: "${APP_PRETTIER_IN_DOCKER:-true}"
+      WORK_DIR: "${APP_PRETTIER_WORK_DIR:-/workspace}"
+    working_dir: /workspace
+    entrypoint: ["/bin/bash", "/workspace/prettier/entrypoint.sh"]
+    profiles:
+      - tools
+    # Não precisa de restart, healthcheck ou portas (serviço utilitário)
