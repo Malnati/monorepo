@@ -9,6 +9,8 @@ import express from "express";
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "0.0.0.0";
 const JSON_PAYLOAD_LIMIT = process.env.JSON_PAYLOAD_LIMIT || "10mb";
+const API_BASE_URL = process.env.API_BASE_URL || `http://${HOST}:${PORT}`;
+const API_PRODUCTION_URL = process.env.API_PRODUCTION_URL || API_BASE_URL;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -59,8 +61,8 @@ async function bootstrap() {
       },
       "JWT-auth",
     )
-    .addServer(`http://localhost:${PORT}`, "Desenvolvimento Local")
-    .addServer("https://monorepo.cranio.dev", "Produção")
+    .addServer(API_BASE_URL, "Desenvolvimento Local")
+    .addServer(API_PRODUCTION_URL, "Produção")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -71,8 +73,8 @@ async function bootstrap() {
   });
 
   await app.listen(PORT, HOST);
-  console.log(`🚀 API rodando em http://${HOST}:${PORT}/api`);
-  console.log(`📚 Swagger disponível em http://${HOST}:${PORT}/api/docs`);
+  console.log(`🚀 API rodando em ${API_BASE_URL}/api`);
+  console.log(`📚 Swagger disponível em ${API_BASE_URL}/api/docs`);
 }
 
 bootstrap();

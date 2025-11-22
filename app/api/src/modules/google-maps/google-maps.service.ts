@@ -2,8 +2,8 @@
 import { Injectable, BadRequestException, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
-const GEOCODING_API_URL =
-  "https://maps.googleapis.com/maps/app/api/geocode/json";
+const DEFAULT_GEOCODING_API_URL =
+  "https://maps.googleapis.com/maps/api/geocode/json";
 
 interface GeocodeResult {
   formattedAddress: string;
@@ -36,10 +36,14 @@ interface ExtractedLayers {
 export class GoogleMapsService {
   private readonly logger = new Logger(GoogleMapsService.name);
   private readonly apiKey: string;
+  private readonly geocodingApiUrl: string;
 
   constructor(private readonly configService: ConfigService) {
     this.apiKey =
       this.configService.get<string>("GOOGLE_MAPS_SERVER_KEY") || "";
+    this.geocodingApiUrl =
+      this.configService.get<string>("GOOGLE_MAPS_GEOCODING_API_URL") ||
+      DEFAULT_GEOCODING_API_URL;
     if (!this.apiKey) {
       this.logger.warn(
         "GOOGLE_MAPS_SERVER_KEY not configured - geocoding validation disabled",
@@ -65,7 +69,7 @@ export class GoogleMapsService {
     }
 
     try {
-      const url = `${GEOCODING_API_URL}?place_id=${encodeURIComponent(placeId)}&key=${this.apiKey}`;
+      const url = `${this.geocodingApiUrl}?place_id=${encodeURIComponent(placeId)}&key=${this.apiKey}`;
       const response = await fetch(url);
       const data = await response.json();
 
@@ -116,7 +120,7 @@ export class GoogleMapsService {
     }
 
     try {
-      const url = `${GEOCODING_API_URL}?address=${encodeURIComponent(address)}&key=${this.apiKey}`;
+      const url = `${this.geocodingApiUrl}?address=${encodeURIComponent(address)}&key=${this.apiKey}`;
       const response = await fetch(url);
       const data = await response.json();
 
@@ -273,7 +277,7 @@ export class GoogleMapsService {
       }
 
       // Fazer reverse geocoding no ponto aproximado
-      const url = `${GEOCODING_API_URL}?latlng=${approxLat},${approxLng}&key=${this.apiKey}`;
+      const url = `${this.geocodingApiUrl}?latlng=${approxLat},${approxLng}&key=${this.apiKey}`;
       const response = await fetch(url);
       const data = await response.json();
 

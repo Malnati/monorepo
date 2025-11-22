@@ -8,7 +8,8 @@ const GMAIL_CLIENT_ID = process.env.GMAIL_CLIENT_ID || "";
 const GMAIL_CLIENT_SECRET = process.env.GMAIL_CLIENT_SECRET || "";
 const GMAIL_REFRESH_TOKEN = process.env.GMAIL_REFRESH_TOKEN || "";
 const GMAIL_SENDER = process.env.GMAIL_SENDER || "noreply@example.com";
-const APP_BASE_URL = process.env.APP_BASE_URL || "http://localhost:5174";
+const DEFAULT_APP_BASE_URL = "http://localhost:5174";
+const APP_BASE_URL = process.env.APP_BASE_URL || DEFAULT_APP_BASE_URL;
 
 interface EmailOptions {
   to: string;
@@ -258,7 +259,7 @@ APP - Template Corporation
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Olá, ${nome}!</p>
                             <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Recebemos sua tentativa de cadastro, mas apenas e-mails <strong>Gmail</strong> ou <strong>Google Workspace</strong> são aceitos atualmente.</p>
                             <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.5; color: #1C1D22;">Para se cadastrar, por favor acesse:</p>
-                            <a href="${APP_BASE_URL || "https://monorepo.cranio.dev"}" style="display: inline-block; padding: 16px 32px; background-color: #00B5B8; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Acessar APP</a>
+                            <a href="${APP_BASE_URL}" style="display: inline-block; padding: 16px 32px; background-color: #00B5B8; color: #FFFFFF; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: 600;">Acessar APP</a>
                             <p style="margin: 32px 0 0; font-size: 12px; line-height: 1.4; color: #6B7280;">Use um e-mail Gmail ou Google Workspace para criar sua conta.</p>
                         </td>
                     </tr>
@@ -287,7 +288,7 @@ Olá, ${nome}!
 
 Recebemos sua tentativa de cadastro, mas apenas e-mails Gmail ou Google Workspace são aceitos atualmente.
 
-Para se cadastrar, por favor acesse: ${APP_BASE_URL || "https://monorepo.cranio.dev"}
+Para se cadastrar, por favor acesse: ${APP_BASE_URL}
 
 Use um e-mail Gmail ou Google Workspace para criar sua conta.
 
