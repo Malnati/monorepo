@@ -9,11 +9,6 @@ services:
     image: "${APP_OAUTH2_PROXY_IMAGE_NAME:-monorepo-oauth2}"
     container_name: "${APP_OAUTH2_PROXY_CONTAINER_NAME:-monorepo-oauth2}"
     hostname: "${APP_OAUTH2_PROXY_HOSTNAME:-monorepo-oauth2}"
-    depends_on:
-      monorepo-ui:
-        condition: service_started
-      monorepo-api:
-        condition: service_started
     environment:
       OAUTH2_PROXY_PROVIDER: "google"
       OAUTH2_PROXY_CLIENT_ID: "${APP_OAUTH2_PROXY_CLIENT_ID:-${APP_GOOGLE_CLIENT_ID:-}}"

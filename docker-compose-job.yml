@@ -14,9 +14,6 @@ services:
     image: "${APP_JOB_IMAGE_NAME:-job}"
     container_name: "${APP_JOB_CONTAINER_NAME:-job}"
     hostname: "${APP_JOB_HOSTNAME:-job}"
-    depends_on:
-      monorepo-api:
-        condition: service_started
     environment:
       NODE_ENV: "${APP_JOB_NODE_ENV:-development}"
       PORT: "${APP_JOB_PORT:-3002}"

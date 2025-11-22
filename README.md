@@ -210,14 +210,9 @@ docker compose -f docker-compose-api.yml logs -f
 
 ### Dependências entre Serviços
 
-As dependências são gerenciadas automaticamente quando múltiplos arquivos são usados juntos. Os arquivos docker-compose individuais contêm `depends_on` que funcionam quando os arquivos são combinados:
+Os serviços são completamente independentes e não possuem dependências explícitas definidas nos arquivos docker-compose. Cada serviço pode ser iniciado, parado e gerenciado de forma independente. A comunicação entre serviços é feita via portas expostas no host (`localhost:porta`).
 
-- **API** depende de **DB** (healthcheck)
-- **UI** depende de **API** (service_started)
-- **Job** depende de **API** (service_started)
-- **OAuth2** depende de **UI** e **API** (service_started)
-
-**Nota:** Ao validar um arquivo isolado com `docker compose config`, você pode ver avisos sobre serviços dependentes não encontrados. Isso é esperado - os arquivos devem ser usados juntos para funcionar corretamente.
+**Nota:** É responsabilidade do usuário garantir que os serviços dependentes estejam em execução antes de iniciar serviços que dependem deles. Por exemplo, o serviço DB deve estar rodando antes de iniciar a API.
 
 ### Troubleshooting
 
@@ -229,17 +224,17 @@ Certifique-se de que:
 3. As portas não estão em conflito com outros serviços no host
 4. Os serviços estão acessíveis via `localhost` (não via hostname de container)
 
-#### Ordem de inicialização
+#### Ordem de inicialização recomendada
 
-Para garantir que as dependências sejam respeitadas, sempre inicie os serviços na ordem:
+Embora os serviços sejam independentes, recomenda-se iniciar os serviços na seguinte ordem para garantir que as dependências funcionais sejam atendidas:
 
 1. DB
-2. API (depende de DB)
-3. UI (depende de API)
-4. Job (depende de API)
-5. OAuth2 (depende de UI e API)
+2. API (comunica com DB via `localhost:5432`)
+3. UI (comunica com API via `localhost:3001`)
+4. Job (comunica com API via `localhost:3001`)
+5. OAuth2 (comunica com UI via `localhost:5174`)
 
-O Makefile.docker gerencia isso automaticamente.
+O Makefile.docker permite iniciar serviços individualmente ou em conjunto, mas não gerencia automaticamente a ordem de inicialização.
 
 ### Para novos times
 - Consulte o changelog completo: [`CHANGELOG/20251117204729.md`](./CHANGELOG/20251117204729.md)
