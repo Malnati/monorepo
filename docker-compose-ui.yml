@@ -26,13 +26,10 @@ services:
       - "${APP_UI_PORT:-5174}:80"
     restart: unless-stopped
     networks:
-      monorepo_net:
+      global_net:
         ipv4_address: 172.30.0.51
 
 networks:
-  monorepo_net:
-    name: monorepo_net
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.30.0.0/24
+  global_net:
+    external: true
+    name: global_net
