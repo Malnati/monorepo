@@ -5,9 +5,9 @@ import { CredentialResponse } from "@react-oauth/google";
 import GoogleSignInButton from "../components/GoogleSignInButton";
 import { googleLogin } from "../services/auth.service";
 import { useAuth } from "../contexts/AuthContext";
-import { brandTokens } from "../constants/brand";
 
 const LOGO_PATH = "/assets/dominio-logo-transparencia-colors.png";
+const LOGO_ALT_TEXT = "APP";
 const ERROR_MSG_LOGIN_FAILED = "Falha no login. Verifique suas credenciais.";
 const ERROR_MSG_EMAIL_NOT_AUTHORIZED =
   "Email não autorizado. Entre em contato com o administrador.";
@@ -67,7 +67,7 @@ export default function LoginPage() {
           <div className="flex justify-center mb-8">
             <img
               src={LOGO_PATH}
-              alt={brandTokens.name}
+              alt={LOGO_ALT_TEXT}
               className="h-32 w-auto cursor-pointer"
               onClick={() => window.location.reload()}
               role="button"
