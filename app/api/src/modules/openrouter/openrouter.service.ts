@@ -12,7 +12,8 @@ interface ChatOptions {
   maxTokens?: number;
 }
 
-const DEFAULT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1/chat/completions";
+const DEFAULT_OPENROUTER_BASE_URL =
+  "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_MODEL = "anthropic/claude-3.5-sonnet";
 const DEFAULT_TEMPERATURE = 0.7;
 const DEFAULT_MAX_TOKENS = 1000;
@@ -29,7 +30,8 @@ export class OpenRouterService {
   private readonly defaultModel: string;
 
   constructor() {
-    this.baseUrl = process.env.OPENROUTER_BASE_URL || DEFAULT_OPENROUTER_BASE_URL;
+    this.baseUrl =
+      process.env.OPENROUTER_BASE_URL || DEFAULT_OPENROUTER_BASE_URL;
     this.apiKey = (process.env.OPENROUTER_API_KEY || "").trim();
     this.httpReferer = (process.env.OPENROUTER_HTTP_REFERER || "").trim();
     this.appTitle = (process.env.OPENROUTER_APP_TITLE || "APP").trim();
