@@ -21,7 +21,7 @@ COMPOSE_FILES = -f $(COMPOSE_DB) -f $(COMPOSE_API) -f $(COMPOSE_UI) -f $(COMPOSE
 # Targets principais
 # ========================================
 
-.PHONY: build start stop dev logs clean help
+.PHONY: build start stop dev logs clean clean-force help
 
 build: ## Build all services
 	$(COMPOSE) $(COMPOSE_FILES) build
@@ -39,21 +39,32 @@ logs: ## Show logs for all services
 	$(COMPOSE) $(COMPOSE_FILES) logs -f
 
 clean: ## Stop and remove all containers, networks, images and volumes
-	@echo "Limpando containers, volumes e imagens..."
-	@# Parar e remover containers por nome (caso não estejam nos arquivos compose)
-	@for container in $$(docker ps -a --filter "name=monorepo-" --format "{{.Names}}" 2>/dev/null); do \
-		docker stop $$container 2>/dev/null || true; \
-		docker rm -f $$container 2>/dev/null || true; \
-	done
-	@for container in $$(docker ps -a --filter "name=prettier" --format "{{.Names}}" 2>/dev/null); do \
-		docker stop $$container 2>/dev/null || true; \
-		docker rm -f $$container 2>/dev/null || true; \
-	done
-	@# Limpar via docker compose (remove containers, volumes, imagens e órfãos)
+	$(COMPOSE) $(COMPOSE_FILES) down -v --rmi all --remove-orphans
+
+clean-force: ## Force clean: stop and remove containers by name from compose files
+	@echo "Limpando containers, volumes e imagens (modo forçado)..."
+	@# Primeiro executa o clean padrão
 	@$(COMPOSE) $(COMPOSE_FILES) down -v --rmi all --remove-orphans 2>/dev/null || true
+	@# Extrai nomes dos containers usando docker compose ps
+	@echo "Procurando containers por nome dos serviços..."
+	@for compose_file in $(COMPOSE_DB) $(COMPOSE_API) $(COMPOSE_UI) $(COMPOSE_JOB) $(COMPOSE_OAUTH2) $(COMPOSE_PRETTIER); do \
+		if [ -f "$$compose_file" ]; then \
+			container_ids=$$($(COMPOSE) -f $$compose_file ps -q 2>/dev/null); \
+			for container_id in $$container_ids; do \
+				if [ -n "$$container_id" ]; then \
+					container_name=$$(docker inspect --format '{{.Name}}' $$container_id 2>/dev/null | sed 's|^/||'); \
+					if [ -n "$$container_name" ] && docker ps -a --format "{{.Names}}" 2>/dev/null | grep -q "^$$container_name$$"; then \
+						echo "Parando e removendo container: $$container_name"; \
+						docker stop $$container_name 2>/dev/null || true; \
+						docker rm -f $$container_name 2>/dev/null || true; \
+					fi; \
+				fi; \
+			done; \
+		fi; \
+	done
 	@# Limpar containers órfãos restantes
 	@docker container prune -f 2>/dev/null || true
-	@echo "Limpeza concluida"
+	@echo "Limpeza forçada concluida"
 
 # ========================================
 # Targets por serviço
